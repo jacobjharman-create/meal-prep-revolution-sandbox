@@ -103,7 +103,7 @@ const builderSteps = [
     id: "protein",
     label: "Protein",
     prompt: "Choose your protein.",
-    help: "Pick one, or tap the selected protein again to skip it.",
+    help: "Pick one, or tap it again to skip. Tap a food group above when ready.",
     icon: "icon-protein",
     rail: builderItemImages.chicken,
     options: [
@@ -121,7 +121,7 @@ const builderSteps = [
     id: "carb",
     label: "Grain",
     prompt: "Choose your grain.",
-    help: "Pick one carb base, or tap it again to skip.",
+    help: "Pick one carb base, or tap it again to skip. Tap a food group above when ready.",
     icon: "icon-carb",
     rail: builderItemImages["brown-rice"],
     options: [
@@ -139,7 +139,7 @@ const builderSteps = [
     id: "veg",
     label: "Vegetables",
     prompt: "Choose vegetables.",
-    help: "Tap one or more vegetables, then continue.",
+    help: "Tap one or more vegetables. Tap a food group above when ready.",
     icon: "icon-leaf",
     rail: builderItemImages.broccoli,
     multi: true,
@@ -494,9 +494,6 @@ builderOptions.addEventListener("click", (event) => {
   }
 
   builderState.reviewReady = false;
-  if (!step.multi && builderState.stepIndex < builderSteps.length - 1) {
-    builderState.stepIndex += 1;
-  }
   renderBuilder();
   renderCart();
 });
