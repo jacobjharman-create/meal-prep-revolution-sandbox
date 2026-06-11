@@ -923,9 +923,9 @@ h2 {
   overflow: hidden;
   margin-bottom: 14px;
   background: #010201;
-  border: 1px solid var(--line-bright);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
-  box-shadow: inset 0 0 42px rgba(22, 209, 0, 0.08);
+  box-shadow: inset 0 0 42px rgba(255, 255, 255, 0.04);
   min-height: clamp(360px, 45vw, 620px);
 }
 
@@ -935,7 +935,8 @@ h2 {
   min-height: inherit;
   object-fit: cover;
   object-position: center;
-  filter: saturate(1.08) contrast(1.04);
+  filter: brightness(1.08) saturate(1.06) contrast(1.04);
+  transform: scale(1.08);
 }
 
 .ingredient-slider::after {
@@ -943,9 +944,7 @@ h2 {
   inset: 0;
   pointer-events: none;
   content: "";
-  background:
-    linear-gradient(180deg, transparent 58%, rgba(1, 2, 1, 0.82) 100%),
-    radial-gradient(circle at 85% 12%, rgba(22, 209, 0, 0.18), transparent 28%);
+  background: linear-gradient(180deg, transparent 62%, rgba(1, 2, 1, 0.72) 100%);
 }
 
 .ingredient-slider img.slide-in {
@@ -992,7 +991,7 @@ h2 {
   overflow: hidden;
   aspect-ratio: 1.28 / 1;
   background: #030403;
-  border: 1px solid rgba(140, 255, 120, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
 }
 
@@ -1000,14 +999,15 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.03);
+  transform: scale(1.12);
+  filter: brightness(1.06) saturate(1.04);
   transition: transform 180ms ease, filter 180ms ease;
 }
 
 .option-card:hover .food-thumb img,
 .option-card.selected .food-thumb img {
-  filter: saturate(1.12) contrast(1.08);
-  transform: scale(1.09);
+  filter: brightness(1.1) saturate(1.08) contrast(1.06);
+  transform: scale(1.18);
 }
 
 .meal-calculator .option-card > span:last-child {
@@ -1085,12 +1085,12 @@ h2 {
 @keyframes foodSlideIn {
   from {
     opacity: 0;
-    transform: translateX(34px) scale(1.035);
+    transform: translateX(34px) scale(1.12);
   }
 
   to {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0) scale(1.08);
   }
 }
 
