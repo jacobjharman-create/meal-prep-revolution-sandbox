@@ -471,7 +471,6 @@ h2 {
 
 .builder-shell {
   display: grid;
-  align-items: start;
   grid-template-columns: minmax(210px, 0.68fr) minmax(440px, 1.62fr) minmax(300px, 0.9fr);
   gap: 16px;
   max-width: 1240px;
@@ -583,9 +582,7 @@ h2 {
 .builder-preview img {
   width: 100%;
   aspect-ratio: 1.05 / 1;
-  object-fit: contain;
-  object-position: center center;
-  background: #061006;
+  object-fit: cover;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius);
   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
@@ -604,18 +601,9 @@ h2 {
 .cart-head,
 .cart-summary {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
-  flex-wrap: wrap;
-}
-
-.builder-panel-head {
-  min-width: 0;
-}
-
-.builder-panel-head > div {
-  min-width: 0;
 }
 
 .builder-label {
@@ -630,7 +618,7 @@ h2 {
 .builder-cart h3 {
   margin-top: 6px;
   color: var(--white);
-  font-size: clamp(20px, 2.1vw, 30px);
+  font-size: 24px;
   font-weight: 950;
   line-height: 1.05;
   text-transform: uppercase;
@@ -639,22 +627,11 @@ h2 {
 .builder-target {
   display: grid;
   place-items: center;
-  gap: 2px;
-  padding: 10px 12px 8px;
   min-width: 84px;
   min-height: 72px;
   color: #071107;
   background: var(--green);
   border-radius: var(--radius);
-  text-align: center;
-}
-
-.builder-target-group {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-left: auto;
-  flex-wrap: wrap;
 }
 
 .builder-target strong {
@@ -674,8 +651,6 @@ h2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 22px;
-  grid-auto-rows: minmax(0, 1fr);
-  align-items: stretch;
 }
 
 .option-card {
@@ -717,19 +692,13 @@ h2 {
   margin-top: 5px;
   color: var(--muted);
   font-size: 12px;
-  line-height: 1.28;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  line-height: 1.32;
 }
 
 .builder-controls {
   margin-top: 18px;
   padding-top: 18px;
   border-top: 1px solid var(--line);
-  gap: 12px;
-  justify-content: flex-end;
 }
 
 .builder-quantity-setup .builder-controls {
@@ -743,7 +712,7 @@ h2 {
 }
 
 .builder-quantity-setup .builder-panel-head {
-  align-items: flex-start;
+  align-items: center;
 }
 
 .builder-panel .builder-rail {
@@ -985,11 +954,9 @@ h2 {
   height: 100%;
   min-height: inherit;
   object-fit: cover;
-  background: #050705;
-  object-position: center 36%;
-  padding: 0;
-  filter: saturate(1.06) contrast(1.04) brightness(1.06) drop-shadow(0 0 1px rgba(255, 255, 255, 0.16));
-  transform: scale(1);
+  object-position: center;
+  filter: saturate(1.35) contrast(1.09) brightness(1.04) drop-shadow(0 0 1px rgba(255, 255, 255, 0.12));
+  transform: scale(1.08);
   transform-origin: center;
   will-change: transform, opacity, filter;
 }
@@ -1018,12 +985,6 @@ h2 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin-top: 18px;
-  grid-auto-rows: minmax(0, auto);
-}
-
-.meal-calculator .calculator-main {
-  display: grid;
-  gap: 14px;
 }
 
 .meal-calculator .option-card {
@@ -1052,10 +1013,10 @@ h2 {
   position: relative;
   width: 100%;
   overflow: hidden;
-  aspect-ratio: 16 / 10;
-  background: #020202;
+  aspect-ratio: 1.28 / 1;
+  background: #030403;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: calc(var(--radius) - 3px);
+  border-radius: var(--radius);
   box-shadow: inset 0 0 28px rgba(255, 255, 255, 0.1);
 }
 
@@ -1063,17 +1024,15 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 33%;
-  background: #020202;
-  transform: scale(1);
-  filter: brightness(1.04) saturate(1.04) contrast(1.02);
+  transform: scale(1.12);
+  filter: brightness(1.05) saturate(1.2) contrast(1.08);
   transition: transform 180ms ease, filter 180ms ease;
 }
 
 .option-card:hover .food-thumb img,
 .option-card.selected .food-thumb img {
-  filter: brightness(1.06) saturate(1.12) contrast(1.05);
-  transform: scale(1.01);
+  filter: brightness(1.12) saturate(1.28) contrast(1.1);
+  transform: scale(1.18);
 }
 
 .meal-calculator .option-card > span:last-child {
@@ -1088,8 +1047,6 @@ h2 {
   grid-template-columns: 1fr;
   min-height: 100%;
   padding: 20px;
-  gap: 10px;
-  align-items: start;
   background:
     linear-gradient(180deg, rgba(22, 209, 0, 0.12), rgba(255, 255, 255, 0.035)),
     rgba(3, 4, 3, 0.68);
@@ -1099,18 +1056,15 @@ h2 {
   width: 100%;
   aspect-ratio: 1.12 / 1;
   margin-top: 16px;
-  object-fit: cover;
-  object-position: center 32%;
-  background: #060807;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  filter: saturate(1.06) contrast(1.04) brightness(1.04);
+  clip-path: inset(4% 4% 16% 4% round 8px);
+  filter: saturate(1.18) contrast(1.06) brightness(0.9);
   transition: filter 220ms ease, transform 220ms ease, border-color 220ms ease;
 }
 
 .meal-calculator .builder-preview img.generated {
   border-color: var(--green);
   filter: saturate(1.12) contrast(1.06) brightness(1);
-  transform: translateY(-2px) scale(0.985);
+  transform: translateY(-2px);
 }
 
 .selection-stack {
@@ -1438,10 +1392,8 @@ h2 {
 
 .meal-card img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 1.32 / 1;
   object-fit: cover;
-  object-position: center 35%;
-  background: #020202;
 }
 
 .meal-card-body {
@@ -1835,20 +1787,18 @@ cite {
     flex-direction: column;
   }
 
-  .builder-target-group,
   .builder-quantity-setup .builder-controls {
     margin-top: 8px;
     padding-top: 0;
-    width: 100%;
+  }
+
+  .builder-quantity-controls {
+    justify-content: center;
   }
 
   .builder-target {
     min-width: 100%;
     min-height: 60px;
-  }
-
-  .builder-quantity-controls {
-    justify-content: center;
   }
 
   .builder-actions,

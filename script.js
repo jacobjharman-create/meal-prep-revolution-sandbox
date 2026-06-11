@@ -7,56 +7,84 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
-const aiImageStyle =
-  "luxury editorial food photograph, full-plate framing, matte black ceramic plate, subtle reflections, premium cutlery-free styling, clean dark tabletop, Porsche-level premium color grading, ultra realistic, high resolution, appetizing, full meal detail, not macro, no text, cinematic";
-
-function plateImage(subject, seed, width = 1280, height = 960) {
-  const prompt = `${subject}, ${aiImageStyle}`;
-  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux&seed=${seed}&width=${width}&height=${height}&nologo=true`;
-}
+const appetizerImageBank = {
+  hero: "https://mealpreprev.com/wp-content/uploads/2025/12/111-2.jpeg",
+  pack: "https://mealpreprev.com/wp-content/uploads/2025/12/menu-1.jpg",
+  proteinChicken: "https://mealpreprev.com/wp-content/uploads/2025/12/222-1.jpeg",
+  proteinSteak: "https://mealpreprev.com/wp-content/uploads/2025/12/333-1.jpeg",
+  proteinSalmon: "https://mealpreprev.com/wp-content/uploads/2025/12/444-2.jpeg",
+  proteinTurkey: "https://mealpreprev.com/wp-content/uploads/2025/12/444-2-1.jpeg",
+  proteinShrimp: "https://mealpreprev.com/wp-content/uploads/2025/12/555.jpeg",
+  proteinTofu: "https://mealpreprev.com/wp-content/uploads/2025/12/555-1.jpeg",
+  proteinEggs: "https://mealpreprev.com/wp-content/uploads/2025/12/666.jpeg",
+  proteinMeatballs: "https://mealpreprev.com/wp-content/uploads/2025/12/666-1.jpeg",
+  grainJasmine: "https://mealpreprev.com/wp-content/uploads/2025/12/111.jpeg",
+  grainSweetPotato: "https://mealpreprev.com/wp-content/uploads/2025/12/1111.jpeg",
+  grainQuinoa: "https://mealpreprev.com/wp-content/uploads/2025/12/1111-1.jpeg",
+  grainBrownRice: "https://mealpreprev.com/wp-content/uploads/2025/12/222.jpeg",
+  grainPotatoes: "https://mealpreprev.com/wp-content/uploads/2025/12/333.jpeg",
+  grainCauliRice: "https://mealpreprev.com/wp-content/uploads/2025/12/333-2.jpeg",
+  grainNoodles: "https://mealpreprev.com/wp-content/uploads/2025/12/444.jpeg",
+  grainBlackBeans: "https://mealpreprev.com/wp-content/uploads/2025/12/22.jpg",
+  vegBroccoli: "https://mealpreprev.com/wp-content/uploads/2025/12/33.jpg",
+  vegAsparagus: "https://mealpreprev.com/wp-content/uploads/2025/12/333-3.jpeg",
+  vegPeppers: "https://mealpreprev.com/wp-content/uploads/2025/12/666-1.jpeg",
+  vegGreenBeans: "https://mealpreprev.com/wp-content/uploads/2025/12/555-1.jpeg",
+  vegSpinach: "https://mealpreprev.com/wp-content/uploads/2025/12/444-1.jpeg",
+  vegCarrots: "https://mealpreprev.com/wp-content/uploads/2025/12/555.jpeg",
+  vegZucchini: "https://mealpreprev.com/wp-content/uploads/2025/12/111-2.jpeg",
+  vegSprouts: "https://mealpreprev.com/wp-content/uploads/2025/12/333-1.jpeg",
+  sauceLemonHerb: "https://mealpreprev.com/wp-content/uploads/2025/12/111.jpeg",
+  sauceChimichurri: "https://mealpreprev.com/wp-content/uploads/2025/12/444.jpeg",
+  sauceTeriyaki: "https://mealpreprev.com/wp-content/uploads/2025/12/444-1.jpeg",
+  sauceBuffalo: "https://mealpreprev.com/wp-content/uploads/2025/12/555.jpeg",
+  sauceGarlicAioli: "https://mealpreprev.com/wp-content/uploads/2025/12/555-1.jpeg",
+  sauceSalsaVerde: "https://mealpreprev.com/wp-content/uploads/2025/12/666.jpeg",
+  sauceTahini: "https://mealpreprev.com/wp-content/uploads/2025/12/666-1.jpeg",
+};
 
 const mealImages = {
-  chicken: plateImage("grilled chicken breast with rice, broccoli, and peppers on black plate", 2101),
-  steak: plateImage("garlic butter steak with potatoes, asparagus, and green beans on black plate", 2102),
-  salmon: plateImage("pan-seared salmon with quinoa and asparagus on black plate", 2103),
-  salad: plateImage("high-protein grilled chicken salad with mixed greens on black plate", 2104),
-  breakfast: plateImage("high-protein breakfast plate with eggs, potatoes, and turkey sausage on black plate", 2105),
-  pack: plateImage("premium meal prep pack arranged on black plates with proteins, carbs, vegetables, and sauces", 2106),
+  chicken: appetizerImageBank.proteinChicken,
+  steak: appetizerImageBank.proteinSteak,
+  salmon: appetizerImageBank.proteinSalmon,
+  salad: appetizerImageBank.vegAsparagus,
+  breakfast: appetizerImageBank.proteinEggs,
+  pack: appetizerImageBank.pack,
 };
 
 const builderItemImages = {
-  chicken: plateImage("grilled chicken breast and rice plated on sleek black ceramic plate", 2201),
-  steak: plateImage("garlic-charred steak with roasted potatoes and green beans on black plate", 2202),
-  salmon: plateImage("honey-glazed salmon with jasmine rice and asparagus on black plate", 2203),
-  turkey: plateImage("ground turkey medallions and vegetables on black plate", 2204),
-  shrimp: plateImage("garlic butter shrimp with lemon herbs on black plate", 2205),
-  tofu: plateImage("seared tofu with roasted vegetables on black plate", 2206),
-  eggs: plateImage("perfectly boiled eggs with herbs on black plate", 2207),
-  meatballs: plateImage("turkey meatballs with roasted vegetables on black plate", 2208),
-  "jasmine-rice": plateImage("steaming jasmine rice side dish on black plate with garnish", 2209),
-  "sweet-potato": plateImage("roasted sweet potatoes and vegetables on black plate", 2210),
-  quinoa: plateImage("lightly fluffed quinoa with herbs on black plate", 2211),
-  "brown-rice": plateImage("steamed brown rice with crisp vegetables on black plate", 2212),
-  potatoes: plateImage("golden roasted potatoes on black plate", 2213),
-  "cauli-rice": plateImage("garlic roasted cauliflower rice and herbs on black plate", 2214),
-  noodles: plateImage("cooked noodles with sesame oil and vegetables on black plate", 2215),
-  "black-beans": plateImage("black beans with fresh herbs on black plate", 2216),
-  broccoli: plateImage("roasted broccoli florets on black plate", 2217),
-  asparagus: plateImage("charred asparagus spears on black plate", 2218),
-  peppers: plateImage("roasted red pepper strips on black plate", 2219),
-  "green-beans": plateImage("roasted green beans on black plate", 2220),
-  spinach: plateImage("creamy wilted spinach with olive oil finish on black plate", 2221),
-  carrots: plateImage("glazed carrots on black plate", 2222),
-  zucchini: plateImage("sautéed zucchini rounds on black plate", 2223),
-  sprouts: plateImage("roasted Brussels sprouts and crispy crumbs on black plate", 2224),
-  "lemon-herb": plateImage("lemon herb sauce in a small ramekin with herbs on black plate", 2225),
-  chimichurri: plateImage("chimichurri sauce with olive oil on black plate", 2226),
-  teriyaki: plateImage("teriyaki glaze in a small bowl on black plate", 2227),
-  buffalo: plateImage("fiery buffalo sauce in a dipping bowl on black plate", 2228),
-  "garlic-aioli": plateImage("garlic aioli creamy dip on black plate", 2229),
-  "salsa-verde": plateImage("fresh salsa verde sauce in ramekin on black plate", 2230),
-  tahini: plateImage("rich tahini sauce on black plate", 2231),
-  none: plateImage("clean side dish selection with no sauce on black plate", 2232),
+  chicken: appetizerImageBank.proteinChicken,
+  steak: appetizerImageBank.proteinSteak,
+  salmon: appetizerImageBank.proteinSalmon,
+  turkey: appetizerImageBank.proteinTurkey,
+  shrimp: appetizerImageBank.proteinShrimp,
+  tofu: appetizerImageBank.proteinTofu,
+  eggs: appetizerImageBank.proteinEggs,
+  meatballs: appetizerImageBank.proteinMeatballs,
+  "jasmine-rice": appetizerImageBank.grainJasmine,
+  "sweet-potato": appetizerImageBank.grainSweetPotato,
+  quinoa: appetizerImageBank.grainQuinoa,
+  "brown-rice": appetizerImageBank.grainBrownRice,
+  potatoes: appetizerImageBank.grainPotatoes,
+  "cauli-rice": appetizerImageBank.grainCauliRice,
+  noodles: appetizerImageBank.grainNoodles,
+  "black-beans": appetizerImageBank.grainBlackBeans,
+  broccoli: appetizerImageBank.vegBroccoli,
+  asparagus: appetizerImageBank.vegAsparagus,
+  peppers: appetizerImageBank.vegPeppers,
+  "green-beans": appetizerImageBank.vegGreenBeans,
+  spinach: appetizerImageBank.vegSpinach,
+  carrots: appetizerImageBank.vegCarrots,
+  zucchini: appetizerImageBank.vegZucchini,
+  sprouts: appetizerImageBank.vegSprouts,
+  "lemon-herb": appetizerImageBank.sauceLemonHerb,
+  chimichurri: appetizerImageBank.sauceChimichurri,
+  teriyaki: appetizerImageBank.sauceTeriyaki,
+  buffalo: appetizerImageBank.sauceBuffalo,
+  "garlic-aioli": appetizerImageBank.sauceGarlicAioli,
+  "salsa-verde": appetizerImageBank.sauceSalsaVerde,
+  tahini: appetizerImageBank.sauceTahini,
+  none: appetizerImageBank.sauceLemonHerb,
 };
 
 const menus = {
@@ -112,7 +140,7 @@ const builderSteps = [
     label: "Protein",
     prompt: "Tap a protein.",
     icon: "icon-protein",
-    rail: builderItemImages.chicken,
+    rail: appetizerImageBank.proteinChicken,
     options: [
       { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: builderItemImages.chicken },
       { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: builderItemImages.steak },
@@ -129,7 +157,7 @@ const builderSteps = [
     label: "Grain",
     prompt: "Tap a grain or carb.",
     icon: "icon-carb",
-    rail: builderItemImages["jasmine-rice"],
+    rail: appetizerImageBank.grainBrownRice,
     options: [
       { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, image: builderItemImages["jasmine-rice"] },
       { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, image: builderItemImages["sweet-potato"] },
@@ -146,7 +174,7 @@ const builderSteps = [
     label: "Vegetables",
     prompt: "Tap vegetables.",
     icon: "icon-leaf",
-    rail: builderItemImages.broccoli,
+    rail: appetizerImageBank.vegBroccoli,
     multi: true,
     options: [
       { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", image: builderItemImages.broccoli },
@@ -164,7 +192,7 @@ const builderSteps = [
     label: "Sauce",
     prompt: "Tap a sauce.",
     icon: "icon-drop",
-    rail: builderItemImages["lemon-herb"],
+    rail: appetizerImageBank.sauceTahini,
     options: [
       { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", image: builderItemImages["lemon-herb"] },
       { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", image: builderItemImages.chimichurri },
@@ -198,7 +226,6 @@ const builderOptions = document.querySelector("#builderOptions");
 const builderPrompt = document.querySelector("#builderPrompt");
 const builderStepCount = document.querySelector("#builderStepCount");
 const builderMealCount = document.querySelector("#builderMealCount");
-const builtMealCount = document.querySelector("#builtMealCount");
 const builderPlateTitle = document.querySelector("#builderPlateTitle");
 const builderPlateDesc = document.querySelector("#builderPlateDesc");
 const builderImage = document.querySelector("#builderImage");
@@ -223,18 +250,6 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-function getBuiltMealTotal() {
-  return builderState.cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-}
-
-function refreshMealTotals() {
-  const totalMeals = getBuiltMealTotal();
-  if (builtMealCount) {
-    builtMealCount.textContent = String(totalMeals);
-  }
-  cartMealTotal.textContent = String(totalMeals);
 }
 
 function getStep(id) {
@@ -275,7 +290,7 @@ function currentBuild() {
     title,
     description,
     price,
-    image: builderState.aiRendered ? protein?.image || mealImages.pack : mealImages.chicken,
+    image: builderState.aiRendered ? protein?.image || mealImages.pack : appetizerImageBank.hero,
     selections: {
       protein: protein?.name || "",
       carb: carb?.name || "",
@@ -309,7 +324,6 @@ function renderBuilder() {
   const build = currentBuild();
   const selectedForStep = getSelectedOptions(step.id).at(-1) || step.options[0];
   const featuredIngredient = selectedForStep?.image || step.rail;
-  refreshMealTotals();
 
   document.querySelectorAll(".builder-step").forEach((button) => {
     button.classList.toggle("active", button.dataset.builderStep === step.id);
@@ -396,8 +410,9 @@ function renderCart() {
       .join("");
   }
 
+  const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  refreshMealTotals();
+  cartMealTotal.textContent = totalMeals;
   cartPriceTotal.textContent = builderState.reviewReady ? dollars(totalPrice) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
 }
