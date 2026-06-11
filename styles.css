@@ -920,23 +920,36 @@ h2 {
 
 .ingredient-slider {
   position: relative;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   margin-bottom: 14px;
   background: #010201;
   border: 1px solid var(--line-bright);
   border-radius: var(--radius);
   box-shadow: inset 0 0 42px rgba(22, 209, 0, 0.08);
-  scrollbar-width: thin;
-  scrollbar-color: var(--green) rgba(255, 255, 255, 0.08);
+  min-height: clamp(360px, 45vw, 620px);
 }
 
 .ingredient-slider img {
-  width: max(100%, 980px);
-  max-width: none;
-  aspect-ratio: 3.05 / 1;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
   object-fit: cover;
   object-position: center;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.ingredient-slider::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(180deg, transparent 58%, rgba(1, 2, 1, 0.82) 100%),
+    radial-gradient(circle at 85% 12%, rgba(22, 209, 0, 0.18), transparent 28%);
+}
+
+.ingredient-slider img.slide-in {
+  animation: foodSlideIn 320ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
 }
 
 .meal-calculator .builder-panel {
@@ -954,8 +967,9 @@ h2 {
 .meal-calculator .option-card {
   grid-template-columns: 1fr;
   justify-items: center;
-  min-height: 132px;
-  padding: 14px 10px;
+  min-height: 158px;
+  overflow: hidden;
+  padding: 8px;
   text-align: center;
   transform-origin: top center;
   animation: padIn 180ms ease both;
@@ -972,23 +986,35 @@ h2 {
   color: rgba(7, 17, 7, 0.72);
 }
 
-.food-glyph {
-  display: grid;
-  width: 46px;
-  height: 46px;
-  place-items: center;
-  color: var(--green-soft);
-  background: rgba(22, 209, 0, 0.08);
-  border: 1px solid currentColor;
+.food-thumb {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: 1.28 / 1;
+  background: #030403;
+  border: 1px solid rgba(140, 255, 120, 0.18);
   border-radius: var(--radius);
-  font-size: 13px;
-  font-weight: 950;
-  letter-spacing: 0.03em;
 }
 
-.option-card.selected .food-glyph {
-  color: #071107;
-  background: rgba(7, 17, 7, 0.1);
+.food-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.03);
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.option-card:hover .food-thumb img,
+.option-card.selected .food-thumb img {
+  filter: saturate(1.12) contrast(1.08);
+  transform: scale(1.09);
+}
+
+.meal-calculator .option-card > span:last-child {
+  display: grid;
+  min-height: 48px;
+  align-content: center;
+  padding: 4px 2px 2px;
 }
 
 .meal-calculator .builder-preview {
@@ -1053,6 +1079,18 @@ h2 {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes foodSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(34px) scale(1.035);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
   }
 }
 
@@ -1744,11 +1782,15 @@ cite {
   }
 
   .meal-calculator .option-card {
-    min-height: 112px;
+    min-height: 138px;
+  }
+
+  .ingredient-slider {
+    min-height: 330px;
   }
 
   .ingredient-slider img {
-    width: 860px;
+    width: 100%;
   }
 
   .macro-glass {

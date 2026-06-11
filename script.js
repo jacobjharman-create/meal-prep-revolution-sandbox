@@ -16,6 +16,41 @@ const mealImages = {
   pack: "assets/images/batch-black-containers.png",
 };
 
+const builderItemImages = {
+  chicken: "assets/images/builder-items/protein-chicken.png",
+  steak: "assets/images/builder-items/protein-steak.png",
+  salmon: "assets/images/builder-items/protein-salmon.png",
+  turkey: "assets/images/builder-items/protein-turkey.png",
+  shrimp: "assets/images/builder-items/protein-shrimp.png",
+  tofu: "assets/images/builder-items/protein-tofu.png",
+  eggs: "assets/images/builder-items/protein-eggs.png",
+  meatballs: "assets/images/builder-items/protein-meatballs.png",
+  "jasmine-rice": "assets/images/builder-items/grain-jasmine-rice.png",
+  "sweet-potato": "assets/images/builder-items/grain-sweet-potato.png",
+  quinoa: "assets/images/builder-items/grain-quinoa.png",
+  "brown-rice": "assets/images/builder-items/grain-brown-rice.png",
+  potatoes: "assets/images/builder-items/grain-potatoes.png",
+  "cauli-rice": "assets/images/builder-items/grain-cauli-rice.png",
+  noodles: "assets/images/builder-items/grain-noodles.png",
+  "black-beans": "assets/images/builder-items/grain-black-beans.png",
+  broccoli: "assets/images/builder-items/veg-broccoli.png",
+  asparagus: "assets/images/builder-items/veg-asparagus.png",
+  peppers: "assets/images/builder-items/veg-peppers.png",
+  "green-beans": "assets/images/builder-items/veg-green-beans.png",
+  spinach: "assets/images/builder-items/veg-spinach.png",
+  carrots: "assets/images/builder-items/veg-carrots.png",
+  zucchini: "assets/images/builder-items/veg-zucchini.png",
+  sprouts: "assets/images/builder-items/veg-sprouts.png",
+  "lemon-herb": "assets/images/builder-items/sauce-lemon-herb.png",
+  chimichurri: "assets/images/builder-items/sauce-chimichurri.png",
+  teriyaki: "assets/images/builder-items/sauce-teriyaki.png",
+  buffalo: "assets/images/builder-items/sauce-buffalo.png",
+  "garlic-aioli": "assets/images/builder-items/sauce-garlic-aioli.png",
+  "salsa-verde": "assets/images/builder-items/sauce-salsa-verde.png",
+  tahini: "assets/images/builder-items/sauce-tahini.png",
+  none: "assets/images/builder-items/sauce-none.png",
+};
+
 const menus = {
   build: [
     ["Lemon Herb Chicken", "Jasmine rice, roasted broccoli, red bell peppers.", "$12.49+", mealImages.chicken],
@@ -71,14 +106,14 @@ const builderSteps = [
     icon: "icon-protein",
     rail: "assets/images/ingredient-proteins.png",
     options: [
-      { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: mealImages.chicken, glyph: "C" },
-      { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: mealImages.steak, glyph: "S" },
-      { id: "salmon", name: "Honey Garlic Salmon", detail: "Clean fats and coastal flavor.", price: 14.49, image: mealImages.salmon, glyph: "F" },
-      { id: "turkey", name: "Ground Turkey", detail: "Light, flexible, athlete friendly.", price: 12.99, image: mealImages.chicken, glyph: "T" },
-      { id: "shrimp", name: "Grilled Shrimp", detail: "Light coastal protein.", price: 14.49, image: mealImages.salmon, glyph: "SH" },
-      { id: "tofu", name: "Tofu", detail: "Plant-powered option.", price: 12.49, image: mealImages.salad, glyph: "TO" },
-      { id: "eggs", name: "Boiled Eggs", detail: "Simple breakfast protein.", price: 10.49, image: mealImages.breakfast, glyph: "E" },
-      { id: "meatballs", name: "Turkey Meatballs", detail: "Comfort meal energy.", price: 13.49, image: mealImages.steak, glyph: "M" },
+      { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: builderItemImages.chicken },
+      { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: builderItemImages.steak },
+      { id: "salmon", name: "Honey Garlic Salmon", detail: "Clean fats and coastal flavor.", price: 14.49, image: builderItemImages.salmon },
+      { id: "turkey", name: "Ground Turkey", detail: "Light, flexible, athlete friendly.", price: 12.99, image: builderItemImages.turkey },
+      { id: "shrimp", name: "Grilled Shrimp", detail: "Light coastal protein.", price: 14.49, image: builderItemImages.shrimp },
+      { id: "tofu", name: "Tofu", detail: "Plant-powered option.", price: 12.49, image: builderItemImages.tofu },
+      { id: "eggs", name: "Boiled Eggs", detail: "Simple breakfast protein.", price: 10.49, image: builderItemImages.eggs },
+      { id: "meatballs", name: "Turkey Meatballs", detail: "Comfort meal energy.", price: 13.49, image: builderItemImages.meatballs },
     ],
   },
   {
@@ -88,14 +123,14 @@ const builderSteps = [
     icon: "icon-carb",
     rail: "assets/images/ingredient-grains.png",
     options: [
-      { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, glyph: "JR" },
-      { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, glyph: "SP" },
-      { id: "quinoa", name: "Quinoa", detail: "Higher fiber and lighter feel.", price: 1, glyph: "Q" },
-      { id: "brown-rice", name: "Brown Rice", detail: "Steady everyday carb.", price: 0, glyph: "BR" },
-      { id: "potatoes", name: "Roasted Potatoes", detail: "Simple and filling.", price: 0, glyph: "P" },
-      { id: "cauli-rice", name: "Cauli Rice", detail: "Lower-carb plate.", price: 1, glyph: "CR" },
-      { id: "noodles", name: "Noodles", detail: "Comfort carb day.", price: 1, glyph: "N" },
-      { id: "black-beans", name: "Black Beans", detail: "Fiber and volume.", price: 0, glyph: "BB" },
+      { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, image: builderItemImages["jasmine-rice"] },
+      { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, image: builderItemImages["sweet-potato"] },
+      { id: "quinoa", name: "Quinoa", detail: "Higher fiber and lighter feel.", price: 1, image: builderItemImages.quinoa },
+      { id: "brown-rice", name: "Brown Rice", detail: "Steady everyday carb.", price: 0, image: builderItemImages["brown-rice"] },
+      { id: "potatoes", name: "Roasted Potatoes", detail: "Simple and filling.", price: 0, image: builderItemImages.potatoes },
+      { id: "cauli-rice", name: "Cauli Rice", detail: "Lower-carb plate.", price: 1, image: builderItemImages["cauli-rice"] },
+      { id: "noodles", name: "Noodles", detail: "Comfort carb day.", price: 1, image: builderItemImages.noodles },
+      { id: "black-beans", name: "Black Beans", detail: "Fiber and volume.", price: 0, image: builderItemImages["black-beans"] },
     ],
   },
   {
@@ -106,14 +141,14 @@ const builderSteps = [
     rail: "assets/images/ingredient-vegetables.png",
     multi: true,
     options: [
-      { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", glyph: "B" },
-      { id: "asparagus", name: "Asparagus", detail: "Premium green finish.", glyph: "A" },
-      { id: "peppers", name: "Red Peppers", detail: "Color, crunch, flavor.", glyph: "RP" },
-      { id: "green-beans", name: "Green Beans", detail: "Simple performance side.", glyph: "GB" },
-      { id: "spinach", name: "Spinach", detail: "Fresh and light.", glyph: "S" },
-      { id: "carrots", name: "Carrots", detail: "Slightly sweet crunch.", glyph: "C" },
-      { id: "zucchini", name: "Zucchini", detail: "Light and clean.", glyph: "Z" },
-      { id: "sprouts", name: "Brussels Sprouts", detail: "Roasted premium side.", glyph: "BS" },
+      { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", image: builderItemImages.broccoli },
+      { id: "asparagus", name: "Asparagus", detail: "Premium green finish.", image: builderItemImages.asparagus },
+      { id: "peppers", name: "Red Peppers", detail: "Color, crunch, flavor.", image: builderItemImages.peppers },
+      { id: "green-beans", name: "Green Beans", detail: "Simple performance side.", image: builderItemImages["green-beans"] },
+      { id: "spinach", name: "Spinach", detail: "Fresh and light.", image: builderItemImages.spinach },
+      { id: "carrots", name: "Carrots", detail: "Slightly sweet crunch.", image: builderItemImages.carrots },
+      { id: "zucchini", name: "Zucchini", detail: "Light and clean.", image: builderItemImages.zucchini },
+      { id: "sprouts", name: "Brussels Sprouts", detail: "Roasted premium side.", image: builderItemImages.sprouts },
     ],
   },
   {
@@ -123,14 +158,14 @@ const builderSteps = [
     icon: "icon-drop",
     rail: "assets/images/ingredient-sauces.png",
     options: [
-      { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", glyph: "LH" },
-      { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", glyph: "CH" },
-      { id: "teriyaki", name: "Teriyaki", detail: "Sweet-savory classic.", glyph: "TK" },
-      { id: "buffalo", name: "Buffalo", detail: "Heat without overthinking.", glyph: "BF" },
-      { id: "garlic-aioli", name: "Garlic Aioli", detail: "Creamy comfort finish.", glyph: "GA" },
-      { id: "salsa-verde", name: "Salsa Verde", detail: "Fresh green punch.", glyph: "SV" },
-      { id: "tahini", name: "Tahini", detail: "Rich, clean, savory.", glyph: "TH" },
-      { id: "none", name: "No Sauce", detail: "Keep it clean.", glyph: "NO" },
+      { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", image: builderItemImages["lemon-herb"] },
+      { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", image: builderItemImages.chimichurri },
+      { id: "teriyaki", name: "Teriyaki", detail: "Sweet-savory classic.", image: builderItemImages.teriyaki },
+      { id: "buffalo", name: "Buffalo", detail: "Heat without overthinking.", image: builderItemImages.buffalo },
+      { id: "garlic-aioli", name: "Garlic Aioli", detail: "Creamy comfort finish.", image: builderItemImages["garlic-aioli"] },
+      { id: "salsa-verde", name: "Salsa Verde", detail: "Fresh green punch.", image: builderItemImages["salsa-verde"] },
+      { id: "tahini", name: "Tahini", detail: "Rich, clean, savory.", image: builderItemImages.tahini },
+      { id: "none", name: "No Sauce", detail: "Keep it clean.", image: builderItemImages.none },
     ],
   },
 ];
@@ -166,6 +201,7 @@ const cartMealTotal = document.querySelector("#cartMealTotal");
 const cartPriceTotal = document.querySelector("#cartPriceTotal");
 const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
+let lastFeaturedIngredient = "";
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -250,6 +286,8 @@ function renderMenu(category) {
 function renderBuilder() {
   const step = builderSteps[builderState.stepIndex];
   const build = currentBuild();
+  const selectedForStep = getSelectedOptions(step.id).at(-1) || step.options[0];
+  const featuredIngredient = selectedForStep?.image || step.rail;
 
   document.querySelectorAll(".builder-step").forEach((button) => {
     button.classList.toggle("active", button.dataset.builderStep === step.id);
@@ -266,8 +304,16 @@ function renderBuilder() {
   builderImage.src = build.image;
   builderImage.alt = `${build.title} preview`;
   builderImage.classList.toggle("generated", builderState.aiRendered);
-  ingredientRail.src = step.rail;
-  ingredientRail.alt = `AI generated ${step.label.toLowerCase()} ingredient rail`;
+  if (featuredIngredient && ingredientRail.getAttribute("src") !== featuredIngredient) {
+    ingredientRail.src = featuredIngredient;
+  }
+  ingredientRail.alt = `${selectedForStep?.name || step.label} featured food image`;
+  if (lastFeaturedIngredient !== featuredIngredient) {
+    ingredientRail.classList.remove("slide-in");
+    void ingredientRail.offsetWidth;
+    ingredientRail.classList.add("slide-in");
+    lastFeaturedIngredient = featuredIngredient;
+  }
   document.querySelector("#renderMeal").textContent = builderState.aiRendered ? "Re-render Meal" : "Generate Meal";
   selectionStack.innerHTML = [
     ["Protein", build.selections.protein],
@@ -291,7 +337,9 @@ function renderBuilder() {
 
       return `
         <button class="option-card${selected ? " selected" : ""}" type="button" data-option="${option.id}" aria-pressed="${selected}">
-          <span class="food-glyph" aria-hidden="true">${escapeHtml(option.glyph || option.name.slice(0, 2))}</span>
+          <span class="food-thumb" aria-hidden="true">
+            <img src="${option.image || step.rail}" alt="">
+          </span>
           <span>
             <strong>${escapeHtml(option.name)}</strong>
             <small>${escapeHtml(option.detail)}</small>
