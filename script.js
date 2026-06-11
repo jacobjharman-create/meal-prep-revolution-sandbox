@@ -8,47 +8,47 @@ const squareLinks = {
 };
 
 const mealImages = {
-  chicken: "assets/images/chicken-black-container.png",
-  steak: "assets/images/steak-black-container.png",
-  salmon: "assets/images/salmon-black-container.png",
-  salad: "assets/images/salmon-black-container.png",
-  breakfast: "assets/images/breakfast-black-container.png",
-  pack: "assets/images/batch-black-containers.png",
+  chicken: "assets/images/ai-builder/chicken.jpg",
+  steak: "assets/images/ai-builder/steak.jpg",
+  salmon: "assets/images/ai-builder/salmon.jpg",
+  salad: "assets/images/ai-builder/salad.jpg",
+  breakfast: "assets/images/ai-builder/breakfast.jpg",
+  pack: "assets/images/ai-builder/pack.jpg",
 };
 
 const builderItemImages = {
-  chicken: "assets/images/builder-items/protein-chicken.png",
-  steak: "assets/images/builder-items/protein-steak.png",
-  salmon: "assets/images/builder-items/protein-salmon.png",
-  turkey: "assets/images/builder-items/protein-turkey.png",
-  shrimp: "assets/images/builder-items/protein-shrimp.png",
-  tofu: "assets/images/builder-items/protein-tofu.png",
-  eggs: "assets/images/builder-items/protein-eggs.png",
-  meatballs: "assets/images/builder-items/protein-meatballs.png",
-  "jasmine-rice": "assets/images/builder-items/grain-jasmine-rice.png",
-  "sweet-potato": "assets/images/builder-items/grain-sweet-potato.png",
-  quinoa: "assets/images/builder-items/grain-quinoa.png",
-  "brown-rice": "assets/images/builder-items/grain-brown-rice.png",
-  potatoes: "assets/images/builder-items/grain-potatoes.png",
-  "cauli-rice": "assets/images/builder-items/grain-cauli-rice.png",
-  noodles: "assets/images/builder-items/grain-noodles.png",
-  "black-beans": "assets/images/builder-items/grain-black-beans.png",
-  broccoli: "assets/images/builder-items/veg-broccoli.png",
-  asparagus: "assets/images/builder-items/veg-asparagus.png",
-  peppers: "assets/images/builder-items/veg-peppers.png",
-  "green-beans": "assets/images/builder-items/veg-green-beans.png",
-  spinach: "assets/images/builder-items/veg-spinach.png",
-  carrots: "assets/images/builder-items/veg-carrots.png",
-  zucchini: "assets/images/builder-items/veg-zucchini.png",
-  sprouts: "assets/images/builder-items/veg-sprouts.png",
-  "lemon-herb": "assets/images/builder-items/sauce-lemon-herb.png",
-  chimichurri: "assets/images/builder-items/sauce-chimichurri.png",
-  teriyaki: "assets/images/builder-items/sauce-teriyaki.png",
-  buffalo: "assets/images/builder-items/sauce-buffalo.png",
-  "garlic-aioli": "assets/images/builder-items/sauce-garlic-aioli.png",
-  "salsa-verde": "assets/images/builder-items/sauce-salsa-verde.png",
-  tahini: "assets/images/builder-items/sauce-tahini.png",
-  none: "assets/images/builder-items/sauce-none.png",
+  chicken: "assets/images/ai-builder/protein-chicken.jpg",
+  steak: "assets/images/ai-builder/protein-steak.jpg",
+  salmon: "assets/images/ai-builder/protein-salmon.jpg",
+  turkey: "assets/images/ai-builder/protein-turkey.jpg",
+  shrimp: "assets/images/ai-builder/protein-shrimp.jpg",
+  tofu: "assets/images/ai-builder/protein-tofu.jpg",
+  eggs: "assets/images/ai-builder/protein-eggs.jpg",
+  meatballs: "assets/images/ai-builder/protein-meatballs.jpg",
+  "jasmine-rice": "assets/images/ai-builder/grain-jasmine-rice.jpg",
+  "sweet-potato": "assets/images/ai-builder/grain-sweet-potato.jpg",
+  quinoa: "assets/images/ai-builder/grain-quinoa.jpg",
+  "brown-rice": "assets/images/ai-builder/grain-brown-rice.jpg",
+  potatoes: "assets/images/ai-builder/grain-potatoes.jpg",
+  "cauli-rice": "assets/images/ai-builder/grain-cauli-rice.jpg",
+  noodles: "assets/images/ai-builder/grain-noodles.jpg",
+  "black-beans": "assets/images/ai-builder/grain-black-beans.jpg",
+  broccoli: "assets/images/ai-builder/veg-broccoli.jpg",
+  asparagus: "assets/images/ai-builder/veg-asparagus.jpg",
+  peppers: "assets/images/ai-builder/veg-peppers.jpg",
+  "green-beans": "assets/images/ai-builder/veg-green-beans.jpg",
+  spinach: "assets/images/ai-builder/veg-spinach.jpg",
+  carrots: "assets/images/ai-builder/veg-carrots.jpg",
+  zucchini: "assets/images/ai-builder/veg-zucchini.jpg",
+  sprouts: "assets/images/ai-builder/veg-sprouts.jpg",
+  "lemon-herb": "assets/images/ai-builder/sauce-lemon-herb.jpg",
+  chimichurri: "assets/images/ai-builder/sauce-chimichurri.jpg",
+  teriyaki: "assets/images/ai-builder/sauce-teriyaki.jpg",
+  buffalo: "assets/images/ai-builder/sauce-buffalo.jpg",
+  "garlic-aioli": "assets/images/ai-builder/sauce-garlic-aioli.jpg",
+  "salsa-verde": "assets/images/ai-builder/sauce-salsa-verde.jpg",
+  tahini: "assets/images/ai-builder/sauce-tahini.jpg",
+  none: "assets/images/ai-builder/sauce-none.jpg",
 };
 
 const menus = {
@@ -104,7 +104,7 @@ const builderSteps = [
     label: "Protein",
     prompt: "Tap a protein.",
     icon: "icon-protein",
-    rail: "assets/images/ingredient-proteins.png",
+    rail: "assets/images/ai-builder/protein-chicken.jpg",
     options: [
       { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: builderItemImages.chicken },
       { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: builderItemImages.steak },
@@ -121,7 +121,7 @@ const builderSteps = [
     label: "Grain",
     prompt: "Tap a grain or carb.",
     icon: "icon-carb",
-    rail: "assets/images/ingredient-grains.png",
+    rail: "assets/images/ai-builder/grain-jasmine-rice.jpg",
     options: [
       { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, image: builderItemImages["jasmine-rice"] },
       { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, image: builderItemImages["sweet-potato"] },
@@ -138,7 +138,7 @@ const builderSteps = [
     label: "Vegetables",
     prompt: "Tap vegetables.",
     icon: "icon-leaf",
-    rail: "assets/images/ingredient-vegetables.png",
+    rail: "assets/images/ai-builder/veg-broccoli.jpg",
     multi: true,
     options: [
       { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", image: builderItemImages.broccoli },
@@ -156,7 +156,7 @@ const builderSteps = [
     label: "Sauce",
     prompt: "Tap a sauce.",
     icon: "icon-drop",
-    rail: "assets/images/ingredient-sauces.png",
+    rail: "assets/images/ai-builder/sauce-lemon-herb.jpg",
     options: [
       { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", image: builderItemImages["lemon-herb"] },
       { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", image: builderItemImages.chimichurri },
@@ -190,6 +190,7 @@ const builderOptions = document.querySelector("#builderOptions");
 const builderPrompt = document.querySelector("#builderPrompt");
 const builderStepCount = document.querySelector("#builderStepCount");
 const builderMealCount = document.querySelector("#builderMealCount");
+const builtMealCount = document.querySelector("#builtMealCount");
 const builderPlateTitle = document.querySelector("#builderPlateTitle");
 const builderPlateDesc = document.querySelector("#builderPlateDesc");
 const builderImage = document.querySelector("#builderImage");
@@ -254,7 +255,7 @@ function currentBuild() {
     title,
     description,
     price,
-    image: builderState.aiRendered ? protein?.image || mealImages.pack : "assets/images/hero-single-black-container.png",
+    image: builderState.aiRendered ? protein?.image || mealImages.pack : "assets/images/ai-builder/chicken.jpg",
     selections: {
       protein: protein?.name || "",
       carb: carb?.name || "",
@@ -377,6 +378,7 @@ function renderCart() {
   const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   cartMealTotal.textContent = totalMeals;
+  builtMealCount.textContent = totalMeals;
   cartPriceTotal.textContent = builderState.reviewReady ? dollars(totalPrice) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
 }
