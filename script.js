@@ -139,7 +139,7 @@ const builderSteps = [
     id: "protein",
     label: "Protein",
     prompt: "Choose your protein.",
-    help: "Pick one. The next choice opens automatically.",
+    help: "Pick one, or tap the selected protein again to skip it.",
     icon: "icon-protein",
     rail: appetizerImageBank.proteinChicken,
     options: [
@@ -157,7 +157,7 @@ const builderSteps = [
     id: "carb",
     label: "Grain",
     prompt: "Choose your grain.",
-    help: "Pick one carb base. You can come back and change it.",
+    help: "Pick one carb base, or tap it again to skip.",
     icon: "icon-carb",
     rail: appetizerImageBank.grainBrownRice,
     options: [
@@ -194,7 +194,7 @@ const builderSteps = [
     id: "sauce",
     label: "Sauce",
     prompt: "Choose a sauce.",
-    help: "Pick one sauce, then add this meal to your week.",
+    help: "Pick one sauce, or tap it again for no sauce.",
     icon: "icon-drop",
     rail: appetizerImageBank.sauceTahini,
     options: [
@@ -264,6 +264,7 @@ function getStep(id) {
 }
 
 function getOption(stepId, optionId) {
+  if (!optionId) return null;
   return getStep(stepId).options.find((option) => option.id === optionId);
 }
 
@@ -282,14 +283,21 @@ function currentBuild() {
   const veg = getSelectedOptions("veg");
   const sauce = getSelectedOptions("sauce")[0];
   const vegNames = veg.map((option) => option.name);
-  const price = (protein?.price || 0) + (carb?.price || 0);
-  const title = `${protein?.name || "Custom"} Plate`;
-  const description = `${protein?.name || "Protein"} with ${carb?.name || "your carb"}, ${vegNames.join(", ") || "fresh vegetables"}, and ${sauce?.name || "sauce on side"}.`;
+  const plantForwardBasePrice = 10.49;
+  const price = (protein?.price || plantForwardBasePrice) + (carb?.price || 0);
+  const title = protein ? `${protein.name} Plate` : "Plant-Forward Plate";
+  const carbText = carb?.name || "no grain";
+  const vegText = vegNames.join(", ") || "fresh vegetables";
+  const sauceText = sauce?.name || "no sauce";
+  const plantBase = [carb?.name, vegText].filter(Boolean).join(" with ");
+  const description = protein
+    ? `${protein.name} with ${carbText}, ${vegText}, and ${sauceText}.`
+    : `${plantBase} ${sauce ? `and ${sauce.name}` : "with no sauce"}.`;
   const key = [
-    protein?.id,
-    carb?.id,
+    protein?.id || "no-protein",
+    carb?.id || "no-grain",
     [...builderState.selections.veg].sort().join("+"),
-    sauce?.id,
+    sauce?.id || "no-sauce",
   ].join("|");
 
   return {
@@ -299,10 +307,10 @@ function currentBuild() {
     price,
     image: protein?.image || mealImages.pack,
     selections: {
-      protein: protein?.name || "",
-      carb: carb?.name || "",
+      protein: protein?.name || "No protein",
+      carb: carb?.name || "No grain",
       veg: vegNames,
-      sauce: sauce?.name || "",
+      sauce: sauce?.name || "No sauce",
     },
   };
 }
@@ -518,7 +526,7 @@ builderOptions.addEventListener("click", (event) => {
       builderState.selections[step.id] = [...selected, optionId];
     }
   } else {
-    builderState.selections[step.id] = optionId;
+    builderState.selections[step.id] = builderState.selections[step.id] === optionId ? null : optionId;
   }
 
   builderState.reviewReady = false;
