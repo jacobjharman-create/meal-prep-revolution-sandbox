@@ -701,6 +701,24 @@ h2 {
   border-top: 1px solid var(--line);
 }
 
+.builder-quantity-setup .builder-controls {
+  margin-top: 10px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.builder-quantity-controls {
+  justify-content: flex-start;
+}
+
+.builder-quantity-setup .builder-panel-head {
+  align-items: center;
+}
+
+.builder-panel .builder-rail {
+  margin-bottom: 14px;
+}
+
 .stepper {
   display: inline-grid;
   grid-template-columns: 42px 70px 42px;
@@ -1767,6 +1785,15 @@ cite {
   .cart-summary {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .builder-quantity-setup .builder-controls {
+    margin-top: 8px;
+    padding-top: 0;
+  }
+
+  .builder-quantity-controls {
+    justify-content: center;
   }
 
   .builder-target {

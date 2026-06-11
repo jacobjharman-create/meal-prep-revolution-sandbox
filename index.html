@@ -116,23 +116,24 @@
 
         <div class="builder-shell meal-calculator">
           <div class="calculator-main">
-            <div class="builder-rail" aria-label="Meal builder steps">
-              <button class="builder-step active" type="button" data-builder-step="protein">
-                <span class="icon icon-protein"></span>
-                <strong>Protein</strong>
-              </button>
-              <button class="builder-step" type="button" data-builder-step="carb">
-                <span class="icon icon-carb"></span>
-                <strong>Grain</strong>
-              </button>
-              <button class="builder-step" type="button" data-builder-step="veg">
-                <span class="icon icon-leaf"></span>
-                <strong>Vegetables</strong>
-              </button>
-              <button class="builder-step" type="button" data-builder-step="sauce">
-                <span class="icon icon-drop"></span>
-                <strong>Sauce</strong>
-              </button>
+            <div class="builder-panel builder-quantity-setup">
+              <div class="builder-panel-head">
+                <div>
+                  <span class="builder-label">Batch</span>
+                  <h3>Build your weekly meals</h3>
+                </div>
+                <div class="builder-target">
+                  <strong id="builderMealCount">12</strong>
+                  <span>meals</span>
+                </div>
+              </div>
+              <div class="builder-controls builder-quantity-controls">
+                <div class="stepper" aria-label="Number of meals">
+                  <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
+                  <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
+                  <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
+                </div>
+              </div>
             </div>
 
             <div class="ingredient-slider" aria-label="AI ingredient rail">
@@ -140,25 +141,34 @@
             </div>
 
             <div class="builder-panel">
+              <div class="builder-rail" aria-label="Meal builder steps">
+                <button class="builder-step active" type="button" data-builder-step="protein">
+                  <span class="icon icon-protein"></span>
+                  <strong>Protein</strong>
+                </button>
+                <button class="builder-step" type="button" data-builder-step="carb">
+                  <span class="icon icon-carb"></span>
+                  <strong>Grain</strong>
+                </button>
+                <button class="builder-step" type="button" data-builder-step="veg">
+                  <span class="icon icon-leaf"></span>
+                  <strong>Vegetables</strong>
+                </button>
+                <button class="builder-step" type="button" data-builder-step="sauce">
+                  <span class="icon icon-drop"></span>
+                  <strong>Sauce</strong>
+                </button>
+              </div>
               <div class="builder-panel-head">
                 <div>
                   <span class="builder-label" id="builderStepCount">Step 1 of 4</span>
                   <h3 id="builderPrompt">Tap a protein.</h3>
-                </div>
-                <div class="builder-target">
-                  <strong id="builderMealCount">12</strong>
-                  <span>meals</span>
                 </div>
               </div>
 
               <div class="builder-options" id="builderOptions" aria-live="polite"></div>
 
               <div class="builder-controls">
-                <div class="stepper" aria-label="Number of meals">
-                  <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
-                  <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
-                  <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
-                </div>
                 <div class="builder-actions">
                   <button class="button button-ghost" type="button" id="builderBack">Back</button>
                   <button class="button button-outline" type="button" id="builderNext">Next</button>
