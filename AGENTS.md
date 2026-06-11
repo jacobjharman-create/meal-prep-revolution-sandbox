@@ -8,20 +8,20 @@ Source of truth:
   - Benchmark reference: https://www.factor75.com/
 
 Editable surface:
-- This repository (durable source) and the Hostinger sandbox editor (once provisioned).
+- This repository (durable source) and the Hostinger Git deployment surface.
 
 Generated output:
 - Static HTML/CSS/JS snapshot package for the Hostinger sandbox.
 
 Live destination:
-- To be provisioned by Jacob: Meal Prep Revolution Hostinger sandbox (GitHub-linked).
+- Meal Prep Revolution Hostinger sandbox: https://beige-cattle-772158.hostingersite.com/
 - Existing live WordPress/Square properties remain untouched.
 
 Manual sink path:
-- Update this repo in PR/commit form, then publish through Hostinger sandbox update surface.
+- Update this repo in PR/commit form, then deploy through the Hostinger Git deployment connected to `main`.
 
 Publish trigger:
-- Jacob approves publish in Hostinger after sandbox review.
+- Hostinger Git deployment from `main` to `public_html`.
 
 Disconnect trigger:
 - Any divergence between Hostinger live sandbox and this GitHub repo, or explicit project closure.
@@ -31,4 +31,4 @@ Rollback source:
 
 Verification:
 - Verify source snapshot file hashes against local render.
-- Verify Hostinger sandbox live URL (when provisioned) on mobile and desktop.
+- Verify Hostinger sandbox live URL on mobile and desktop.
