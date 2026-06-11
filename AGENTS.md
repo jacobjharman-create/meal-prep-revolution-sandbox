@@ -1,33 +1,34 @@
 # Meal Prep Revolution Sandbox
 
 Source of truth:
-- Current public brand and copy signal: https://mealpreprev.com/
-- Current ordering/catalog signal: https://ordermealpreprevolution.square.site/
-- Benchmark inspiration only: https://www.factor75.com/
+- GitHub repo source: this repository, `main` branch (after `git push`)
+- Current brand signals:
+  - Live WordPress: https://mealpreprev.com/
+  - Live ordering/catalog: https://ordermealpreprevolution.square.site/
+  - Benchmark reference: https://www.factor75.com/
 
 Editable surface:
-- Local GitHub-backed sandbox files in this repository.
-- Do not route future builds through Hostinger Horizons unless Jacob explicitly requests it.
+- This repository (durable source) and the Hostinger sandbox editor (once provisioned).
 
 Generated output:
-- A sandbox website concept for Meal Prep Revolution with upgraded positioning, IA, visual polish, and conversion flow.
+- Static HTML/CSS/JS snapshot package for the Hostinger sandbox.
 
 Live destination:
-- No live destination approved yet.
-- Do not modify mealpreprev.com, Square ordering, DNS, hosting, billing, accounts, or public assets without explicit confirmation.
+- To be provisioned by Jacob: Meal Prep Revolution Hostinger sandbox (GitHub-linked).
+- Existing live WordPress/Square properties remain untouched.
 
 Manual sink path:
-- GitHub repository and GitHub Pages preview URL.
+- Update this repo in PR/commit form, then publish through Hostinger sandbox update surface.
 
 Publish trigger:
-- Jacob explicitly approves launch/publish after sandbox review.
+- Jacob approves publish in Hostinger after sandbox review.
 
 Disconnect trigger:
-- Any request involving DNS, hosting account changes, Square catalog edits, payment settings, credentials, or replacing live client data.
+- Any divergence between Hostinger live sandbox and this GitHub repo, or explicit project closure.
 
 Rollback source:
-- Existing WordPress site and Square ordering site remain untouched.
+- This repo commit history plus the source snapshot in `jacobjharman-create/prometheus-design-studios-ai-studio/public/clients/meal-prep-revolution`.
 
 Verification:
-- Review local and GitHub Pages sandbox URL on mobile and desktop.
-- Confirm CTAs route to existing public order/contact paths unless a new path is approved.
+- Verify source snapshot file hashes against local render.
+- Verify Hostinger sandbox live URL (when provisioned) on mobile and desktop.
