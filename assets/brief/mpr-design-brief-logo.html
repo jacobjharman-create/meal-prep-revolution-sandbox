@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MPR Design Brief</title>
+    <style>
+      :root {
+        --green: #18f000;
+        --green-soft: rgba(24, 240, 0, 0.18);
+        --ink: #020702;
+        --panel: #071008;
+        --panel-2: #0c1510;
+        --line: rgba(24, 240, 0, 0.45);
+        --muted: #9ba79b;
+        --white: #f7fff4;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        min-height: 1600px;
+        background: var(--ink);
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        color: var(--white);
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      .board {
+        position: relative;
+        width: 1200px;
+        height: 1600px;
+        padding: 42px 54px;
+        background:
+          linear-gradient(rgba(24, 240, 0, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(24, 240, 0, 0.05) 1px, transparent 1px),
+          radial-gradient(circle at 78% 16%, rgba(24, 240, 0, 0.16), transparent 30%),
+          linear-gradient(180deg, #031003 0%, #020603 55%, #030704 100%);
+        background-size: 54px 54px, 54px 54px, auto, auto;
+      }
+
+      .topbar,
+      .hero-card,
+      .system-card,
+      .tile,
+      .tool,
+      .summary-strip {
+        border: 1px solid rgba(24, 240, 0, 0.2);
+        background: linear-gradient(135deg, rgba(9, 19, 10, 0.98), rgba(4, 9, 5, 0.98));
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.36);
+      }
+
+      .topbar {
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        border-radius: 16px;
+      }
+
+      .logo {
+        display: block;
+        object-fit: contain;
+      }
+
+      .topbar .logo {
+        width: 132px;
+        height: 48px;
+      }
+
+      .nav {
+        display: flex;
+        gap: 26px;
+        color: #d8e7d7;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 132px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--green);
+        color: #001800;
+        font-size: 11px;
+        font-weight: 950;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: 0 0 26px rgba(24, 240, 0, 0.32);
+      }
+
+      .hero-card {
+        position: relative;
+        margin-top: 28px;
+        height: 710px;
+        border-radius: 28px;
+        overflow: hidden;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.72) 43%, rgba(0, 0, 0, 0.12) 100%),
+          radial-gradient(circle at 72% 32%, rgba(24, 240, 0, 0.18), transparent 34%);
+        z-index: 1;
+      }
+
+      .hero-copy {
+        position: absolute;
+        z-index: 2;
+        left: 58px;
+        top: 70px;
+        width: 430px;
+      }
+
+      .kicker {
+        margin: 0 0 22px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 74px;
+        line-height: 0.88;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1 span {
+        color: var(--green);
+      }
+
+      .hero-copy p {
+        margin: 26px 0 0;
+        width: 350px;
+        color: #d6e2d5;
+        font-size: 17px;
+        line-height: 1.5;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 14px;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        color: #e7f2e5;
+        font-size: 11px;
+        font-weight: 850;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 32px;
+      }
+
+      .secondary {
+        min-width: 122px;
+        background: transparent;
+        border: 1px solid rgba(24, 240, 0, 0.32);
+        color: var(--green);
+      }
+
+      .meal-stage {
+        position: absolute;
+        z-index: 2;
+        right: 48px;
+        top: 64px;
+        width: 560px;
+        height: 536px;
+      }
+
+      .glow-line {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        width: 470px;
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, transparent, var(--green), transparent);
+        filter: blur(1px);
+        transform: rotate(-8deg);
+        box-shadow: 0 0 24px rgba(24, 240, 0, 0.72);
+        z-index: 4;
+      }
+
+      .meal-photo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+        filter: saturate(1.12) contrast(1.04);
+        box-shadow: 0 26px 80px rgba(0, 0, 0, 0.58);
+      }
+
+      .wrapper {
+        position: absolute;
+        left: 62px;
+        right: 62px;
+        bottom: 42px;
+        height: 96px;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(24, 240, 0, 0.38);
+        border-radius: 16px;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(5, 20, 5, 0.92));
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 0 28px rgba(24, 240, 0, 0.08);
+        transform: perspective(500px) rotateX(3deg);
+      }
+
+      .wrapper .logo {
+        width: 260px;
+        height: 72px;
+      }
+
+      .mini-card {
+        position: absolute;
+        right: 64px;
+        bottom: 66px;
+        z-index: 6;
+        width: 178px;
+        padding: 16px;
+        border: 1px solid rgba(24, 240, 0, 0.4);
+        border-radius: 14px;
+        background: rgba(0, 0, 0, 0.74);
+      }
+
+      .mini-card strong,
+      .system-title strong {
+        display: block;
+        color: var(--white);
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .mini-card span {
+        display: block;
+        margin-top: 7px;
+        color: #cad7c8;
+        font-size: 11px;
+      }
+
+      .system-card {
+        margin-top: 34px;
+        height: 614px;
+        border-radius: 28px;
+        padding: 34px;
+        overflow: hidden;
+      }
+
+      .system-title {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .system-title h2 {
+        margin: 0;
+        width: 650px;
+        font-size: 44px;
+        line-height: 0.95;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .system-title p {
+        margin: 0;
+        width: 290px;
+        color: #adbaac;
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .flow {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 13px;
+        margin-top: 32px;
+      }
+
+      .flow::before {
+        content: "";
+        position: absolute;
+        left: 58px;
+        right: 58px;
+        top: 42px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--line), transparent);
+      }
+
+      .tile {
+        position: relative;
+        z-index: 1;
+        min-height: 144px;
+        padding: 18px 14px 16px;
+        border-radius: 16px;
+      }
+
+      .tile .icon,
+      .tool .icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 18px;
+        border: 2px solid rgba(24, 240, 0, 0.8);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--green);
+      }
+
+      .tile strong,
+      .tool strong {
+        display: block;
+        font-size: 13px;
+        line-height: 1.05;
+        text-transform: uppercase;
+      }
+
+      .tile span,
+      .tool span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.3;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        stroke-width: 2.2;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .builder {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1.15fr;
+        gap: 12px;
+      }
+
+      .tool {
+        min-height: 126px;
+        padding: 15px 12px;
+        border-radius: 15px;
+      }
+
+      .tool .icon {
+        width: 36px;
+        height: 36px;
+        margin-bottom: 14px;
+        border-radius: 11px;
+      }
+
+      .connector {
+        height: 34px;
+        margin: 16px 60px 0;
+        border-left: 2px solid var(--line);
+        border-bottom: 2px solid var(--line);
+        border-right: 2px solid var(--line);
+        border-radius: 0 0 22px 22px;
+        opacity: 0.82;
+      }
+
+      .summary-strip {
+        height: 76px;
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+        border-radius: 16px;
+      }
+
+      .summary-strip span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        height: 100%;
+        color: #e6f3e4;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border-right: 1px solid rgba(24, 240, 0, 0.18);
+      }
+
+      .summary-strip span:last-child {
+        border-right: 0;
+      }
+
+      .footer-note {
+        position: absolute;
+        left: 54px;
+        right: 54px;
+        bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #70806f;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <header class="topbar">
+        <img class="logo" src="mpr-logo.png" alt="Meal Prep Revolution">
+        <nav class="nav" aria-label="Design brief navigation">
+          <span>Builder</span>
+          <span>Service Area</span>
+          <span>Goals</span>
+          <span>Menu</span>
+          <span>Reviews</span>
+        </nav>
+        <div class="cta">Order Online</div>
+      </header>
+
+      <section class="hero-card" aria-label="Homepage concept">
+        <div class="hero-copy">
+          <p class="kicker">Fresh. Easy. Delicious.</p>
+          <h1><span>Clean eating</span> built around your week.</h1>
+          <p>Premium local meal prep for coastal Orange County. Custom meals, flexible pickup or delivery, and no subscription friction.</p>
+          <div class="hero-actions">
+            <div class="cta">Build Meals</div>
+            <div class="cta secondary">View Menu</div>
+          </div>
+          <div class="chips">
+            <span class="chip">Custom meals</span>
+            <span class="chip">Pickup + delivery</span>
+            <span class="chip">No subscription</span>
+            <span class="chip">Coastal OC</span>
+          </div>
+        </div>
+
+        <div class="meal-stage">
+          <div class="glow-line"></div>
+          <img class="meal-photo" src="../images/hero-black-meal-prep.png" alt="">
+          <div class="wrapper">
+            <img class="logo" src="mpr-logo.png" alt="">
+          </div>
+        </div>
+
+        <div class="mini-card">
+          <strong>Build Profile</strong>
+          <span>Protein first</span>
+          <span>Fresh vegetables</span>
+          <span>Sauce on your terms</span>
+        </div>
+      </section>
+
+      <section class="system-card" aria-label="Guided ordering flow">
+        <div class="system-title">
+          <div>
+            <p class="kicker">Guided ordering flow</p>
+            <h2>Homepage logic that moves people from appetite to checkout.</h2>
+          </div>
+          <p>Every section reduces decision load: promise, proof, goal path, menu confidence, local trust, and a clear order action.</p>
+        </div>
+
+        <div class="flow">
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="7"/></svg></div>
+            <strong>Hero / Promise</strong>
+            <span>Instant clarity on custom clean eating.</span>
+          </div>
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M8 10h8M8 14h5"/></svg></div>
+            <strong>Meal Builder</strong>
+            <span>Turn choices into a simple build path.</span>
+          </div>
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 19V5M18 19V5M6 9h12M6 15h12"/></svg></div>
+            <strong>Goal Paths</strong>
+            <span>Performance, lean, balanced, family.</span>
+          </div>
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/><path d="M18 15l2 2 3-4"/></svg></div>
+            <strong>Menu Catalog</strong>
+            <span>Preview categories before Square.</span>
+          </div>
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+            <strong>Local Area</strong>
+            <span>Huntington Beach plus coastal OC.</span>
+          </div>
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6-5.4-2.9-5.4 2.9 1-6-4.4-4.3 6.1-.9L12 3Z"/></svg></div>
+            <strong>Proof</strong>
+            <span>Reviews, freshness, real portions.</span>
+          </div>
+          <div class="tile">
+            <div class="icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 4h2l2.5 11h10.8l2-7H7"/></svg></div>
+            <strong>Order CTA</strong>
+            <span>Route cleanly into checkout.</span>
+          </div>
+        </div>
+
+        <div class="connector"></div>
+
+        <div class="builder">
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M5 11c2-5 9-6 14-3-1 6-6 10-13 9-1-2-1-4-1-6Z"/><path d="M5 17c4-3 8-5 14-9"/></svg></div>
+            <strong>Protein</strong>
+            <span>Chicken, steak, salmon.</span>
+          </div>
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><rect x="5" y="6" width="14" height="12" rx="4"/><path d="M8 10h8M8 14h8"/></svg></div>
+            <strong>Carb</strong>
+            <span>Rice, potato, quinoa.</span>
+          </div>
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 20c8-1 12-6 12-16-8 1-12 6-12 16Z"/><path d="M6 20c3-5 6-8 12-16"/></svg></div>
+            <strong>Vegetables</strong>
+            <span>Fresh flexible sides.</span>
+          </div>
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.2 6 11a6 6 0 1 1-12 0c0-4.8 6-11 6-11Z"/></svg></div>
+            <strong>Sauce</strong>
+            <span>Flavor control.</span>
+          </div>
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 8h12M6 12h12M6 16h12"/><path d="M4 6h16v12H4z"/></svg></div>
+            <strong>Quantity</strong>
+            <span>Batch the week.</span>
+          </div>
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 17h13V6H4z"/><path d="M17 10h3l2 3v4h-5z"/><circle cx="7" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg></div>
+            <strong>Pickup / Delivery</strong>
+            <span>Schedule handoff.</span>
+          </div>
+          <div class="tool">
+            <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/></svg></div>
+            <strong>Square Checkout</strong>
+            <span>Keep the current order path.</span>
+          </div>
+        </div>
+
+        <div class="summary-strip">
+          <span>Premium local meal prep</span>
+          <span>Fast decisions</span>
+          <span>Flexible ordering</span>
+          <span>Trust before checkout</span>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        <span>Meal Prep Revolution Website Direction</span>
+        <span>Design Brief / Homepage + Ordering System</span>
+      </div>
+    </main>
+  </body>
+</html>
