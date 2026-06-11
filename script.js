@@ -7,49 +7,13 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
-const appetizerImageBank = {
-  hero: "https://mealpreprev.com/wp-content/uploads/2025/12/111-2.jpeg",
-  pack: "https://mealpreprev.com/wp-content/uploads/2025/12/menu-1.jpg",
-  proteinChicken: "https://mealpreprev.com/wp-content/uploads/2025/12/222-1.jpeg",
-  proteinSteak: "https://mealpreprev.com/wp-content/uploads/2025/12/333-1.jpeg",
-  proteinSalmon: "https://mealpreprev.com/wp-content/uploads/2025/12/444-2.jpeg",
-  proteinTurkey: "https://mealpreprev.com/wp-content/uploads/2025/12/444-2-1.jpeg",
-  proteinShrimp: "https://mealpreprev.com/wp-content/uploads/2025/12/555.jpeg",
-  proteinTofu: "https://mealpreprev.com/wp-content/uploads/2025/12/555-1.jpeg",
-  proteinEggs: "https://mealpreprev.com/wp-content/uploads/2025/12/666.jpeg",
-  proteinMeatballs: "https://mealpreprev.com/wp-content/uploads/2025/12/666-1.jpeg",
-  grainJasmine: "https://mealpreprev.com/wp-content/uploads/2025/12/111.jpeg",
-  grainSweetPotato: "https://mealpreprev.com/wp-content/uploads/2025/12/1111.jpeg",
-  grainQuinoa: "https://mealpreprev.com/wp-content/uploads/2025/12/1111-1.jpeg",
-  grainBrownRice: "https://mealpreprev.com/wp-content/uploads/2025/12/222.jpeg",
-  grainPotatoes: "https://mealpreprev.com/wp-content/uploads/2025/12/333.jpeg",
-  grainCauliRice: "https://mealpreprev.com/wp-content/uploads/2025/12/333-2.jpeg",
-  grainNoodles: "https://mealpreprev.com/wp-content/uploads/2025/12/444.jpeg",
-  grainBlackBeans: "https://mealpreprev.com/wp-content/uploads/2025/12/22.jpg",
-  vegBroccoli: "https://mealpreprev.com/wp-content/uploads/2025/12/33.jpg",
-  vegAsparagus: "https://mealpreprev.com/wp-content/uploads/2025/12/333-3.jpeg",
-  vegPeppers: "https://mealpreprev.com/wp-content/uploads/2025/12/666-1.jpeg",
-  vegGreenBeans: "https://mealpreprev.com/wp-content/uploads/2025/12/555-1.jpeg",
-  vegSpinach: "https://mealpreprev.com/wp-content/uploads/2025/12/444-1.jpeg",
-  vegCarrots: "https://mealpreprev.com/wp-content/uploads/2025/12/555.jpeg",
-  vegZucchini: "https://mealpreprev.com/wp-content/uploads/2025/12/111-2.jpeg",
-  vegSprouts: "https://mealpreprev.com/wp-content/uploads/2025/12/333-1.jpeg",
-  sauceLemonHerb: "https://mealpreprev.com/wp-content/uploads/2025/12/111.jpeg",
-  sauceChimichurri: "https://mealpreprev.com/wp-content/uploads/2025/12/444.jpeg",
-  sauceTeriyaki: "https://mealpreprev.com/wp-content/uploads/2025/12/444-1.jpeg",
-  sauceBuffalo: "https://mealpreprev.com/wp-content/uploads/2025/12/555.jpeg",
-  sauceGarlicAioli: "https://mealpreprev.com/wp-content/uploads/2025/12/555-1.jpeg",
-  sauceSalsaVerde: "https://mealpreprev.com/wp-content/uploads/2025/12/666.jpeg",
-  sauceTahini: "https://mealpreprev.com/wp-content/uploads/2025/12/666-1.jpeg",
-};
-
 const mealImages = {
   chicken: "assets/images/builder-items/protein-chicken.png",
   steak: "assets/images/builder-items/protein-steak.png",
   salmon: "assets/images/builder-items/protein-salmon.png",
-  salad: appetizerImageBank.vegAsparagus,
-  breakfast: appetizerImageBank.proteinEggs,
-  pack: appetizerImageBank.pack,
+  salad: "assets/images/builder-items/veg-asparagus.png",
+  breakfast: "assets/images/builder-items/protein-eggs.png",
+  pack: "assets/images/builder-items/protein-chicken.png",
 };
 
 const builderItemImages = {
