@@ -134,6 +134,12 @@ button {
   transform: translateY(-1px);
 }
 
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.38;
+  transform: none;
+}
+
 .button-primary {
   color: #061006;
   background: var(--green);
@@ -624,6 +630,15 @@ h2 {
   text-transform: uppercase;
 }
 
+.builder-help {
+  max-width: 520px;
+  margin-top: 8px;
+  color: #d6e2d3;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
 .builder-target {
   display: grid;
   place-items: center;
@@ -761,6 +776,10 @@ h2 {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: flex-end;
+}
+
+.builder-actions .button {
+  min-width: 118px;
 }
 
 .builder-cart {

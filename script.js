@@ -138,7 +138,8 @@ const builderSteps = [
   {
     id: "protein",
     label: "Protein",
-    prompt: "Tap a protein.",
+    prompt: "Choose your protein.",
+    help: "Pick one. The next choice opens automatically.",
     icon: "icon-protein",
     rail: appetizerImageBank.proteinChicken,
     options: [
@@ -155,7 +156,8 @@ const builderSteps = [
   {
     id: "carb",
     label: "Grain",
-    prompt: "Tap a grain or carb.",
+    prompt: "Choose your grain.",
+    help: "Pick one carb base. You can come back and change it.",
     icon: "icon-carb",
     rail: appetizerImageBank.grainBrownRice,
     options: [
@@ -172,7 +174,8 @@ const builderSteps = [
   {
     id: "veg",
     label: "Vegetables",
-    prompt: "Tap vegetables.",
+    prompt: "Choose vegetables.",
+    help: "Tap one or more vegetables, then continue.",
     icon: "icon-leaf",
     rail: appetizerImageBank.vegBroccoli,
     multi: true,
@@ -190,7 +193,8 @@ const builderSteps = [
   {
     id: "sauce",
     label: "Sauce",
-    prompt: "Tap a sauce.",
+    prompt: "Choose a sauce.",
+    help: "Pick one sauce, then add this meal to your week.",
     icon: "icon-drop",
     rail: appetizerImageBank.sauceTahini,
     options: [
@@ -210,7 +214,6 @@ const builderState = {
   stepIndex: 0,
   quantity: 12,
   reviewReady: false,
-  aiRendered: false,
   selections: {
     protein: "chicken",
     carb: "jasmine-rice",
@@ -224,6 +227,7 @@ const menuGrid = document.querySelector("#mealGrid");
 const categoryLink = document.querySelector("#categoryLink");
 const builderOptions = document.querySelector("#builderOptions");
 const builderPrompt = document.querySelector("#builderPrompt");
+const builderHelp = document.querySelector("#builderHelp");
 const builderStepCount = document.querySelector("#builderStepCount");
 const builderMealCount = document.querySelector("#builderMealCount");
 const builderPlateTitle = document.querySelector("#builderPlateTitle");
@@ -237,6 +241,9 @@ const cartMealTotal = document.querySelector("#cartMealTotal");
 const cartPriceTotal = document.querySelector("#cartPriceTotal");
 const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
+const builderBack = document.querySelector("#builderBack");
+const builderNext = document.querySelector("#builderNext");
+const addMealButton = document.querySelector("#addMeal");
 let lastFeaturedIngredient = "";
 
 function dollars(value) {
@@ -290,7 +297,7 @@ function currentBuild() {
     title,
     description,
     price,
-    image: builderState.aiRendered ? protein?.image || mealImages.pack : appetizerImageBank.hero,
+    image: protein?.image || mealImages.pack,
     selections: {
       protein: protein?.name || "",
       carb: carb?.name || "",
@@ -329,17 +336,18 @@ function renderBuilder() {
     button.classList.toggle("active", button.dataset.builderStep === step.id);
   });
 
+  const isLastStep = builderState.stepIndex === builderSteps.length - 1;
+
   builderStepCount.textContent = `Step ${builderState.stepIndex + 1} of ${builderSteps.length}`;
   builderPrompt.textContent = step.prompt;
+  builderHelp.textContent = step.help;
   builderMealCount.textContent = builderState.quantity;
   mealQuantity.value = builderState.quantity;
   builderPlateTitle.textContent = build.title;
-  builderPlateDesc.textContent = builderState.aiRendered
-    ? `AI preview generated: ${build.description}`
-    : `Select components, then generate a visual preview: ${build.description}`;
+  builderPlateDesc.textContent = `Current plate: ${build.description}`;
   builderImage.src = build.image;
   builderImage.alt = `${build.title} preview`;
-  builderImage.classList.toggle("generated", builderState.aiRendered);
+  builderImage.classList.add("generated");
   if (featuredIngredient && ingredientRail.getAttribute("src") !== featuredIngredient) {
     ingredientRail.src = featuredIngredient;
   }
@@ -350,7 +358,9 @@ function renderBuilder() {
     ingredientRail.classList.add("slide-in");
     lastFeaturedIngredient = featuredIngredient;
   }
-  document.querySelector("#renderMeal").textContent = builderState.aiRendered ? "Re-render Meal" : "Generate Meal";
+  builderBack.disabled = builderState.stepIndex === 0;
+  builderNext.textContent = isLastStep ? `Add ${builderState.quantity} to Week` : "Continue";
+  addMealButton.textContent = `Add ${builderState.quantity} Meals to Week`;
   selectionStack.innerHTML = [
     ["Protein", build.selections.protein],
     ["Grain", build.selections.carb],
@@ -388,7 +398,7 @@ function renderBuilder() {
 
 function renderCart() {
   if (!builderState.cart.length) {
-    cartItems.innerHTML = `<div class="cart-empty">Build a clean plate and stack the week. Pricing stays out of the way until review.</div>`;
+    cartItems.innerHTML = `<div class="cart-empty">Your week will appear here. Choose a plate, add the quantity, then show the total when ready.</div>`;
   } else {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
@@ -398,7 +408,7 @@ function renderCart() {
             <p>${escapeHtml(item.description)}</p>
           </div>
           <div class="cart-row">
-            <strong>${builderState.reviewReady ? dollars(item.price * item.quantity) : "Review to reveal"}</strong>
+            <strong>${builderState.reviewReady ? dollars(item.price * item.quantity) : "Ready"}</strong>
             <div class="cart-qty" aria-label="${escapeHtml(item.title)} quantity">
               <button type="button" data-cart-action="decrease" data-cart-key="${item.key}" aria-label="Decrease ${escapeHtml(item.title)}">-</button>
               <span>${item.quantity}</span>
@@ -423,16 +433,16 @@ function setQuantity(value) {
 }
 
 function moveStep(direction) {
+  if (direction > 0 && builderState.stepIndex === builderSteps.length - 1) {
+    addCurrentBuildToCart();
+    return;
+  }
+
   builderState.stepIndex = Math.min(builderSteps.length - 1, Math.max(0, builderState.stepIndex + direction));
   renderBuilder();
 }
 
 function addCurrentBuildToCart() {
-  if (!builderState.aiRendered) {
-    builderState.aiRendered = true;
-    renderBuilder();
-  }
-
   const build = currentBuild();
   const existing = builderState.cart.find((item) => item.key === build.key);
   builderState.reviewReady = false;
@@ -443,7 +453,9 @@ function addCurrentBuildToCart() {
     builderState.cart.push({ ...build, quantity: builderState.quantity });
   }
 
-  orderNote.textContent = `${builderState.quantity} ${build.title.toLowerCase()} meals stacked. Keep customizing, then review when the week feels right.`;
+  orderNote.textContent = `${builderState.quantity} ${build.title.toLowerCase()} meals added. Adjust quantities here or show the total when ready.`;
+  builderState.stepIndex = 0;
+  renderBuilder();
   renderCart();
 }
 
@@ -462,14 +474,6 @@ function prepareStoreOrder() {
 
   renderCart();
   orderNote.innerHTML = `<strong>${dollars(totalPrice)} for ${totalMeals} meals.</strong> ${escapeHtml(lines)}`;
-}
-
-function renderAiMeal() {
-  builderState.aiRendered = true;
-  builderState.reviewReady = false;
-  orderNote.textContent = "AI meal preview generated. Add it to the week stack or keep customizing.";
-  renderBuilder();
-  renderCart();
 }
 
 renderMenu("build");
@@ -518,18 +522,19 @@ builderOptions.addEventListener("click", (event) => {
   }
 
   builderState.reviewReady = false;
-  builderState.aiRendered = false;
+  if (!step.multi && builderState.stepIndex < builderSteps.length - 1) {
+    builderState.stepIndex += 1;
+  }
   renderBuilder();
   renderCart();
 });
 
-document.querySelector("#builderBack").addEventListener("click", () => moveStep(-1));
-document.querySelector("#builderNext").addEventListener("click", () => moveStep(1));
+builderBack.addEventListener("click", () => moveStep(-1));
+builderNext.addEventListener("click", () => moveStep(1));
 document.querySelector("#qtyMinus").addEventListener("click", () => setQuantity(builderState.quantity - 1));
 document.querySelector("#qtyPlus").addEventListener("click", () => setQuantity(builderState.quantity + 1));
 mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
-document.querySelector("#addMeal").addEventListener("click", addCurrentBuildToCart);
-document.querySelector("#renderMeal").addEventListener("click", renderAiMeal);
+addMealButton.addEventListener("click", addCurrentBuildToCart);
 document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
 
 cartItems.addEventListener("click", (event) => {
