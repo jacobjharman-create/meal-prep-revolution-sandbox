@@ -12,7 +12,7 @@ const mealImages = {
   steak: "assets/images/black-container-builder/protein-steak.png",
   salmon: "assets/images/black-container-builder/protein-salmon.png",
   salad: "assets/images/black-container-builder/veg-asparagus.png",
-  breakfast: "assets/images/black-container-builder/protein-eggs.png",
+  breakfast: "assets/images/breakfast-black-container.png",
   pack: "assets/images/black-container-builder/protein-chicken.png",
 };
 
@@ -98,120 +98,236 @@ const recommendations = {
   bulk: "Bulk Items and Flavor Station let you stock proteins, carbs, and sauces for flexible meals all week.",
 };
 
-const builderSteps = [
-  {
-    id: "protein",
-    label: "Protein",
-    prompt: "Choose your protein.",
-    help: "Pick one, or tap it again to skip. Tap a food group above when ready.",
-    icon: "icon-protein",
-    rail: builderItemImages.chicken,
-    options: [
-      { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: builderItemImages.chicken },
-      { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: builderItemImages.steak },
-      { id: "salmon", name: "Honey Garlic Salmon", detail: "Clean fats and coastal flavor.", price: 14.49, image: builderItemImages.salmon },
-      { id: "turkey", name: "Ground Turkey", detail: "Light, flexible, athlete friendly.", price: 12.99, image: builderItemImages.turkey },
-      { id: "shrimp", name: "Grilled Shrimp", detail: "Light coastal protein.", price: 14.49, image: builderItemImages.shrimp },
-      { id: "tofu", name: "Tofu", detail: "Plant-powered option.", price: 12.49, image: builderItemImages.tofu },
-      { id: "eggs", name: "Boiled Eggs", detail: "Simple breakfast protein.", price: 10.49, image: builderItemImages.eggs },
-      { id: "meatballs", name: "Turkey Meatballs", detail: "Comfort meal energy.", price: 13.49, image: builderItemImages.meatballs },
-    ],
+const portionPricing = {
+  breakfast: {
+    small: 9.5,
+    medium: 10.5,
+    large: 12.5,
   },
-  {
-    id: "carb",
-    label: "Grain",
-    prompt: "Choose your grain.",
-    help: "Pick one carb base, or tap it again to skip. Tap a food group above when ready.",
-    icon: "icon-carb",
-    rail: builderItemImages["brown-rice"],
-    options: [
-      { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, image: builderItemImages["jasmine-rice"] },
-      { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, image: builderItemImages["sweet-potato"] },
-      { id: "quinoa", name: "Quinoa", detail: "Higher fiber and lighter feel.", price: 1, image: builderItemImages.quinoa },
-      { id: "brown-rice", name: "Brown Rice", detail: "Steady everyday carb.", price: 0, image: builderItemImages["brown-rice"] },
-      { id: "potatoes", name: "Roasted Potatoes", detail: "Simple and filling.", price: 0, image: builderItemImages.potatoes },
-      { id: "cauli-rice", name: "Cauli Rice", detail: "Lower-carb plate.", price: 1, image: builderItemImages["cauli-rice"] },
-      { id: "noodles", name: "Noodles", detail: "Comfort carb day.", price: 1, image: builderItemImages.noodles },
-      { id: "black-beans", name: "Black Beans", detail: "Fiber and volume.", price: 0, image: builderItemImages["black-beans"] },
-    ],
+  lunch: {
+    small: 11,
+    medium: 13,
+    large: 15,
   },
-  {
-    id: "veg",
-    label: "Vegetables",
-    prompt: "Choose vegetables.",
-    help: "Tap one or more vegetables. Tap a food group above when ready.",
-    icon: "icon-leaf",
-    rail: builderItemImages.broccoli,
-    multi: true,
-    options: [
-      { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", image: builderItemImages.broccoli },
-      { id: "asparagus", name: "Asparagus", detail: "Premium green finish.", image: builderItemImages.asparagus },
-      { id: "peppers", name: "Red Peppers", detail: "Color, crunch, flavor.", image: builderItemImages.peppers },
-      { id: "green-beans", name: "Green Beans", detail: "Simple performance side.", image: builderItemImages["green-beans"] },
-      { id: "spinach", name: "Spinach", detail: "Fresh and light.", image: builderItemImages.spinach },
-      { id: "carrots", name: "Carrots", detail: "Slightly sweet crunch.", image: builderItemImages.carrots },
-      { id: "zucchini", name: "Zucchini", detail: "Light and clean.", image: builderItemImages.zucchini },
-      { id: "sprouts", name: "Brussels Sprouts", detail: "Roasted premium side.", image: builderItemImages.sprouts },
+};
+
+const builderCatalog = {
+  breakfast: {
+    label: "Breakfast",
+    mealLabel: "breakfast",
+    hero: "assets/images/breakfast-black-container.png",
+    defaultPortion: "medium",
+    defaultGroup: "protein",
+    groups: [
+      {
+        id: "protein",
+        label: "Protein",
+        icon: "icon-protein",
+        multi: false,
+        options: [
+          { id: "eggs", name: "Eggs", image: builderItemImages.eggs },
+          { id: "turkey", name: "Turkey", image: builderItemImages.turkey },
+          { id: "steak", name: "Steak", image: builderItemImages.steak },
+          { id: "tofu", name: "Tofu", image: builderItemImages.tofu },
+          { id: "chicken", name: "Chicken", image: builderItemImages.chicken },
+          { id: "salmon", name: "Salmon", image: builderItemImages.salmon },
+          { id: "shrimp", name: "Shrimp", image: builderItemImages.shrimp },
+          { id: "meatballs", name: "Meatballs", image: builderItemImages.meatballs },
+        ],
+      },
+      {
+        id: "base",
+        label: "Base",
+        icon: "icon-carb",
+        multi: false,
+        options: [
+          { id: "potatoes", name: "Potatoes", image: builderItemImages.potatoes },
+          { id: "oats", name: "Oats", image: builderItemImages.quinoa },
+          { id: "sweet-potato", name: "Sweet Potato", image: builderItemImages["sweet-potato"] },
+          { id: "rice", name: "Rice", image: builderItemImages["jasmine-rice"] },
+          { id: "beans", name: "Beans", image: builderItemImages["black-beans"] },
+          { id: "cauli-rice", name: "Cauli Rice", image: builderItemImages["cauli-rice"] },
+          { id: "noodles", name: "Noodles", image: builderItemImages.noodles },
+          { id: "no-base", name: "No Base", image: builderItemImages.none },
+        ],
+      },
+      {
+        id: "fruit",
+        label: "Fruit",
+        icon: "icon-leaf",
+        multi: true,
+        options: [
+          { id: "berries", name: "Berries", image: builderItemImages.peppers },
+          { id: "avocado", name: "Avocado", image: builderItemImages.asparagus },
+          { id: "banana", name: "Banana", image: builderItemImages["sweet-potato"] },
+          { id: "apple", name: "Apple", image: builderItemImages.carrots },
+          { id: "pineapple", name: "Pineapple", image: builderItemImages.potatoes },
+          { id: "spinach", name: "Spinach", image: builderItemImages.spinach },
+          { id: "peppers", name: "Peppers", image: builderItemImages.peppers },
+          { id: "no-fruit", name: "No Fruit", image: builderItemImages.none },
+        ],
+      },
+      {
+        id: "sauce",
+        label: "Sauce",
+        icon: "icon-drop",
+        multi: false,
+        options: [
+          { id: "salsa-verde", name: "Salsa", image: builderItemImages["salsa-verde"] },
+          { id: "lemon-herb", name: "Lemon Herb", image: builderItemImages["lemon-herb"] },
+          { id: "buffalo", name: "Buffalo", image: builderItemImages.buffalo },
+          { id: "garlic-aioli", name: "Aioli", image: builderItemImages["garlic-aioli"] },
+          { id: "teriyaki", name: "Teriyaki", image: builderItemImages.teriyaki },
+          { id: "chimichurri", name: "Chimichurri", image: builderItemImages.chimichurri },
+          { id: "tahini", name: "Tahini", image: builderItemImages.tahini },
+          { id: "none", name: "No Sauce", image: builderItemImages.none },
+        ],
+      },
     ],
+    defaults: {
+      protein: "eggs",
+      base: "potatoes",
+      fruit: ["berries"],
+      sauce: "salsa-verde",
+    },
   },
-  {
-    id: "sauce",
-    label: "Sauce",
-    prompt: "Choose a sauce.",
-    help: "Pick one sauce, or tap it again for no sauce.",
-    icon: "icon-drop",
-    rail: builderItemImages.tahini,
-    options: [
-      { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", image: builderItemImages["lemon-herb"] },
-      { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", image: builderItemImages.chimichurri },
-      { id: "teriyaki", name: "Teriyaki", detail: "Sweet-savory classic.", image: builderItemImages.teriyaki },
-      { id: "buffalo", name: "Buffalo", detail: "Heat without overthinking.", image: builderItemImages.buffalo },
-      { id: "garlic-aioli", name: "Garlic Aioli", detail: "Creamy comfort finish.", image: builderItemImages["garlic-aioli"] },
-      { id: "salsa-verde", name: "Salsa Verde", detail: "Fresh green punch.", image: builderItemImages["salsa-verde"] },
-      { id: "tahini", name: "Tahini", detail: "Rich, clean, savory.", image: builderItemImages.tahini },
-      { id: "none", name: "No Sauce", detail: "Keep it clean.", image: builderItemImages.none },
+  lunch: {
+    label: "Lunch / Dinner",
+    mealLabel: "lunch/dinner",
+    hero: "assets/images/steak-black-container.png",
+    defaultPortion: "large",
+    defaultGroup: "protein",
+    groups: [
+      {
+        id: "protein",
+        label: "Protein",
+        icon: "icon-protein",
+        multi: false,
+        options: [
+          { id: "chicken", name: "Chicken", image: builderItemImages.chicken },
+          { id: "steak", name: "Steak", image: builderItemImages.steak },
+          { id: "salmon", name: "Salmon", image: builderItemImages.salmon },
+          { id: "turkey", name: "Turkey", image: builderItemImages.turkey },
+          { id: "shrimp", name: "Shrimp", image: builderItemImages.shrimp },
+          { id: "tofu", name: "Tofu", image: builderItemImages.tofu },
+          { id: "eggs", name: "Eggs", image: builderItemImages.eggs },
+          { id: "meatballs", name: "Meatballs", image: builderItemImages.meatballs },
+        ],
+      },
+      {
+        id: "grain",
+        label: "Grain",
+        icon: "icon-carb",
+        multi: false,
+        options: [
+          { id: "jasmine-rice", name: "Rice", image: builderItemImages["jasmine-rice"] },
+          { id: "sweet-potato", name: "Sweet Potato", image: builderItemImages["sweet-potato"] },
+          { id: "quinoa", name: "Quinoa", image: builderItemImages.quinoa },
+          { id: "brown-rice", name: "Brown Rice", image: builderItemImages["brown-rice"] },
+          { id: "potatoes", name: "Potatoes", image: builderItemImages.potatoes },
+          { id: "cauli-rice", name: "Cauli Rice", image: builderItemImages["cauli-rice"] },
+          { id: "noodles", name: "Noodles", image: builderItemImages.noodles },
+          { id: "black-beans", name: "Black Beans", image: builderItemImages["black-beans"] },
+        ],
+      },
+      {
+        id: "vegetables",
+        label: "Vegetables",
+        icon: "icon-leaf",
+        multi: true,
+        options: [
+          { id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli },
+          { id: "asparagus", name: "Asparagus", image: builderItemImages.asparagus },
+          { id: "peppers", name: "Peppers", image: builderItemImages.peppers },
+          { id: "green-beans", name: "Green Beans", image: builderItemImages["green-beans"] },
+          { id: "spinach", name: "Spinach", image: builderItemImages.spinach },
+          { id: "carrots", name: "Carrots", image: builderItemImages.carrots },
+          { id: "zucchini", name: "Zucchini", image: builderItemImages.zucchini },
+          { id: "sprouts", name: "Sprouts", image: builderItemImages.sprouts },
+        ],
+      },
+      {
+        id: "sauce",
+        label: "Sauce",
+        icon: "icon-drop",
+        multi: false,
+        options: [
+          { id: "lemon-herb", name: "Lemon Herb", image: builderItemImages["lemon-herb"] },
+          { id: "chimichurri", name: "Chimichurri", image: builderItemImages.chimichurri },
+          { id: "teriyaki", name: "Teriyaki", image: builderItemImages.teriyaki },
+          { id: "buffalo", name: "Buffalo", image: builderItemImages.buffalo },
+          { id: "garlic-aioli", name: "Aioli", image: builderItemImages["garlic-aioli"] },
+          { id: "salsa-verde", name: "Salsa Verde", image: builderItemImages["salsa-verde"] },
+          { id: "tahini", name: "Tahini", image: builderItemImages.tahini },
+          { id: "none", name: "No Sauce", image: builderItemImages.none },
+        ],
+      },
     ],
+    defaults: {
+      protein: "steak",
+      grain: "jasmine-rice",
+      vegetables: ["broccoli"],
+      sauce: "chimichurri",
+    },
   },
-];
+};
+
+const heroByProtein = {
+  breakfast: {
+    eggs: "assets/images/breakfast-black-container.png",
+    turkey: "assets/images/breakfast-black-container.png",
+    steak: "assets/images/steak-black-container.png",
+    tofu: "assets/images/breakfast-black-container.png",
+  },
+  lunch: {
+    chicken: "assets/images/chicken-black-container.png",
+    steak: "assets/images/steak-black-container.png",
+    salmon: "assets/images/salmon-black-container.png",
+  },
+};
 
 const builderState = {
-  stepIndex: 0,
+  mode: "breakfast",
+  portion: "medium",
+  activeGroup: "protein",
   quantity: 12,
-  reviewReady: false,
   selections: {
-    protein: "chicken",
-    carb: "jasmine-rice",
-    veg: ["broccoli", "asparagus"],
-    sauce: "lemon-herb",
+    breakfast: cloneData(builderCatalog.breakfast.defaults),
+    lunch: cloneData(builderCatalog.lunch.defaults),
   },
   cart: [],
+  reviewReady: false,
 };
 
 const menuGrid = document.querySelector("#mealGrid");
 const categoryLink = document.querySelector("#categoryLink");
+const modeButtons = document.querySelectorAll("[data-mode]");
+const portionButtons = document.querySelectorAll("[data-portion]");
+const builderGroups = document.querySelector("#builderGroups");
 const builderOptions = document.querySelector("#builderOptions");
-const builderPrompt = document.querySelector("#builderPrompt");
-const builderHelp = document.querySelector("#builderHelp");
-const builderStepCount = document.querySelector("#builderStepCount");
-const builderMealCount = document.querySelector("#builderMealCount");
-const builderPlateTitle = document.querySelector("#builderPlateTitle");
-const builderPlateDesc = document.querySelector("#builderPlateDesc");
-const builderImage = document.querySelector("#builderImage");
-const ingredientRail = document.querySelector("#ingredientRail");
+const builderHeroImage = document.querySelector("#builderHeroImage");
 const selectionStack = document.querySelector("#selectionStack");
 const mealQuantity = document.querySelector("#mealQuantity");
+const heroTotal = document.querySelector("#heroTotal");
+const currentMealLabel = document.querySelector("#currentMealLabel");
+const currentAverage = document.querySelector("#currentAverage");
+const currentTotal = document.querySelector("#currentTotal");
+const addMealButton = document.querySelector("#addMeal");
 const cartItems = document.querySelector("#cartItems");
 const cartMealTotal = document.querySelector("#cartMealTotal");
 const cartPriceTotal = document.querySelector("#cartPriceTotal");
 const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
-const builderBack = document.querySelector("#builderBack");
-const builderNext = document.querySelector("#builderNext");
-const addMealButton = document.querySelector("#addMeal");
-let lastFeaturedIngredient = "";
+const wooPayload = document.querySelector("#wooPayload");
+const copyWooPayload = document.querySelector("#copyWooPayload");
+let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+}
+
+function moneyCompact(value) {
+  return dollars(value).replace(".00", "");
 }
 
 function escapeHtml(value) {
@@ -223,63 +339,94 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function getStep(id) {
-  return builderSteps.find((step) => step.id === id);
+function cloneData(value) {
+  return JSON.parse(JSON.stringify(value));
 }
 
-function getOption(stepId, optionId) {
+function getCurrentMode() {
+  return builderCatalog[builderState.mode];
+}
+
+function getCurrentGroup() {
+  return getCurrentMode().groups.find((group) => group.id === builderState.activeGroup);
+}
+
+function getOption(groupId, optionId, mode = builderState.mode) {
   if (!optionId) return null;
-  return getStep(stepId).options.find((option) => option.id === optionId);
+  const group = builderCatalog[mode].groups.find((item) => item.id === groupId);
+  return group?.options.find((item) => item.id === optionId) || null;
 }
 
-function getSelectedOptions(stepId) {
-  const step = getStep(stepId);
-  const value = builderState.selections[stepId];
-  if (step.multi) {
-    return value.map((id) => getOption(stepId, id)).filter(Boolean);
+function selectedOptions(groupId, mode = builderState.mode) {
+  const group = builderCatalog[mode].groups.find((item) => item.id === groupId);
+  const value = builderState.selections[mode][groupId];
+  if (!group) return [];
+  if (group.multi) {
+    return (value || []).map((id) => getOption(groupId, id, mode)).filter(Boolean);
   }
-  return [getOption(stepId, value)].filter(Boolean);
+  return [getOption(groupId, value, mode)].filter(Boolean);
 }
 
 function currentBuild() {
-  const protein = getSelectedOptions("protein")[0];
-  const carb = getSelectedOptions("carb")[0];
-  const veg = getSelectedOptions("veg");
-  const sauce = getSelectedOptions("sauce")[0];
-  const vegNames = veg.map((option) => option.name);
-  const plantForwardBasePrice = 10.49;
-  const price = (protein?.price || plantForwardBasePrice) + (carb?.price || 0);
-  const title = protein ? `${protein.name} Plate` : "Plant-Forward Plate";
-  const carbText = carb?.name || "no grain";
-  const vegText = vegNames.join(", ") || "fresh vegetables";
-  const sauceText = sauce?.name || "no sauce";
-  const plantBase = [carb?.name, vegText].filter(Boolean).join(" with ");
-  const description = protein
-    ? `${protein.name} with ${carbText}, ${vegText}, and ${sauceText}.`
-    : `${plantBase} ${sauce ? `and ${sauce.name}` : "with no sauce"}.`;
+  const mode = getCurrentMode();
+  const groups = mode.groups.map((group) => ({
+    id: group.id,
+    label: group.label,
+    selected: selectedOptions(group.id),
+  }));
+  const protein = selectedOptions("protein")[0];
+  const unitPrice = portionPricing[builderState.mode][builderState.portion];
+  const total = unitPrice * builderState.quantity;
+  const summary = groups
+    .map((group) => group.selected.map((item) => item.name).join(" + "))
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(" + ");
   const key = [
-    protein?.id || "no-protein",
-    carb?.id || "no-grain",
-    [...builderState.selections.veg].sort().join("+"),
-    sauce?.id || "no-sauce",
+    builderState.mode,
+    builderState.portion,
+    builderState.quantity,
+    ...groups.map((group) => `${group.id}:${group.selected.map((item) => item.id).sort().join("+") || "none"}`),
   ].join("|");
+  const hero = heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
+  const title = `${builderState.portion} ${mode.mealLabel} build`;
+  const description = groups
+    .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)
+    .join(" / ");
 
   return {
     key,
+    mode: builderState.mode,
+    mealType: mode.mealLabel,
+    portion: builderState.portion,
+    quantity: builderState.quantity,
+    unitPrice,
+    total,
+    avg: unitPrice,
     title,
     description,
-    price,
-    image: protein?.image || carb?.image || veg[0]?.image || mealImages.pack,
-    selections: {
-      protein: protein?.name || "No protein",
-      carb: carb?.name || "No grain",
-      veg: vegNames,
-      sauce: sauce?.name || "No sauce",
-    },
+    summary,
+    hero,
+    groups,
+    selections: Object.fromEntries(groups.map((group) => [group.id, group.selected.map((item) => item.name)])),
   };
 }
 
+function setImageWithSlide(image, src) {
+  if (!image || !src || lastHeroImage === src) return;
+  lastHeroImage = src;
+  image.classList.remove("slide-in");
+  image.classList.add("slide-out");
+  window.setTimeout(() => {
+    image.src = src;
+    image.classList.remove("slide-out");
+    void image.offsetWidth;
+    image.classList.add("slide-in");
+  }, 120);
+}
+
 function renderMenu(category) {
+  if (!menuGrid || !categoryLink) return;
   menuGrid.innerHTML = menus[category]
     .map(([title, desc, price, image]) => `
       <article class="meal-card">
@@ -298,79 +445,105 @@ function renderMenu(category) {
   categoryLink.href = squareLinks[category];
 }
 
-function renderBuilder() {
-  const step = builderSteps[builderState.stepIndex];
-  const build = currentBuild();
-  const selectedForStep = getSelectedOptions(step.id).at(-1) || step.options[0];
-  const featuredIngredient = selectedForStep?.image || step.rail;
-
-  document.querySelectorAll(".builder-step").forEach((button) => {
-    button.classList.toggle("active", button.dataset.builderStep === step.id);
+function renderToggles() {
+  modeButtons.forEach((button) => {
+    const active = button.dataset.mode === builderState.mode;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
   });
 
-  const isLastStep = builderState.stepIndex === builderSteps.length - 1;
+  portionButtons.forEach((button) => {
+    const active = button.dataset.portion === builderState.portion;
+    const price = portionPricing[builderState.mode][button.dataset.portion];
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-checked", String(active));
+    button.querySelector("span").textContent = dollars(price);
+  });
+}
 
-  builderStepCount.textContent = `Step ${builderState.stepIndex + 1} of ${builderSteps.length}`;
-  builderPrompt.textContent = step.prompt;
-  builderHelp.textContent = step.help;
-  builderMealCount.textContent = builderState.quantity;
-  mealQuantity.value = builderState.quantity;
-  builderPlateTitle.textContent = build.title;
-  builderPlateDesc.textContent = `Current plate: ${build.description}`;
-  builderImage.src = build.image;
-  builderImage.alt = `${build.title} preview`;
-  builderImage.classList.add("generated");
-  if (featuredIngredient && ingredientRail.getAttribute("src") !== featuredIngredient) {
-    ingredientRail.src = featuredIngredient;
-  }
-  ingredientRail.alt = `${selectedForStep?.name || step.label} featured food image`;
-  if (lastFeaturedIngredient !== featuredIngredient) {
-    ingredientRail.classList.remove("slide-in");
-    void ingredientRail.offsetWidth;
-    ingredientRail.classList.add("slide-in");
-    lastFeaturedIngredient = featuredIngredient;
-  }
-  builderBack.disabled = builderState.stepIndex === 0;
-  builderNext.textContent = isLastStep ? `Add ${builderState.quantity} to Week` : "Continue";
-  addMealButton.textContent = `Add ${builderState.quantity} Meals to Week`;
-  selectionStack.innerHTML = [
-    ["Protein", build.selections.protein],
-    ["Grain", build.selections.carb],
-    ["Vegetables", build.selections.veg.join(" + ")],
-    ["Sauce", build.selections.sauce],
-  ]
-    .map(([label, value]) => `
-      <span>
-        <small>${label}</small>
-        <strong>${escapeHtml(value || "Choose")}</strong>
-      </span>
+function renderGroups() {
+  const mode = getCurrentMode();
+  builderGroups.innerHTML = mode.groups
+    .map((group) => `
+      <button class="builder-step${group.id === builderState.activeGroup ? " active" : ""}" type="button" data-builder-step="${group.id}" aria-pressed="${group.id === builderState.activeGroup}">
+        <span class="icon ${group.icon}"></span>
+        <strong>${escapeHtml(group.label)}</strong>
+      </button>
     `)
     .join("");
+}
 
-  builderOptions.innerHTML = step.options
+function renderOptions() {
+  const group = getCurrentGroup();
+  const selectedValue = builderState.selections[builderState.mode][group.id];
+  builderOptions.innerHTML = group.options
     .map((option) => {
-      const selected = step.multi
-        ? builderState.selections[step.id].includes(option.id)
-        : builderState.selections[step.id] === option.id;
-
+      const selected = group.multi ? (selectedValue || []).includes(option.id) : selectedValue === option.id;
       return `
         <button class="option-card${selected ? " selected" : ""}" type="button" data-option="${option.id}" aria-pressed="${selected}">
           <span class="food-thumb" aria-hidden="true">
-            <img src="${option.image || step.rail}" alt="">
+            <img src="${option.image}" alt="">
           </span>
-          <span>
-            <strong>${escapeHtml(option.name)}</strong>
-            <small>${escapeHtml(option.detail)}</small>
-          </span>
+          <strong>${escapeHtml(option.name)}</strong>
         </button>
       `;
     })
     .join("");
 }
 
+function renderCurrentBuild() {
+  const build = currentBuild();
+  const mealLabel = `${build.quantity} ${build.portion} ${build.mealType} meals`;
+  setImageWithSlide(builderHeroImage, build.hero);
+  builderHeroImage.alt = `${build.title} preview`;
+  heroTotal.textContent = moneyCompact(build.total);
+  currentTotal.textContent = moneyCompact(build.total);
+  currentMealLabel.textContent = mealLabel;
+  currentAverage.textContent = `Avg ${dollars(build.avg)}/meal`;
+  addMealButton.textContent = `Add ${build.quantity}`;
+  mealQuantity.value = build.quantity;
+
+  selectionStack.innerHTML = build.groups
+    .map((group) => {
+      const names = group.selected.map((item) => item.name);
+      return names.length
+        ? `<span><small>${escapeHtml(group.label)}</small>${names.map((name) => `<strong>${escapeHtml(name)}</strong>`).join("")}</span>`
+        : "";
+    })
+    .filter(Boolean)
+    .join("");
+}
+
+function buildWooPayload() {
+  const lines = builderState.cart.map((item) => ({
+    sku: `mpr-${item.mode}-${item.portion}-custom-meal`,
+    name: item.title,
+    quantity: item.quantity,
+    unit_price: item.unitPrice,
+    line_total: item.total,
+    meta_data: [
+      { key: "Meal Type", value: item.mealType },
+      { key: "Portion", value: item.portion },
+      { key: "Average Meal Price", value: dollars(item.avg) },
+      { key: "Selections", value: item.description },
+    ],
+  }));
+  const totalMeals = lines.reduce((sum, line) => sum + line.quantity, 0);
+  const totalPrice = lines.reduce((sum, line) => sum + line.line_total, 0);
+
+  return {
+    source: "meal-prep-revolution-sandbox-builder",
+    version: "2026-06-11",
+    currency: "USD",
+    total_meals: totalMeals,
+    estimated_total: Number(totalPrice.toFixed(2)),
+    line_items: lines,
+  };
+}
+
 function renderCart() {
   if (!builderState.cart.length) {
-    cartItems.innerHTML = `<div class="cart-empty">Your week will appear here. Choose a plate, add the quantity, then show the total when ready.</div>`;
+    cartItems.innerHTML = `<div class="cart-empty">Your WooCommerce order draft will appear here after you add a build.</div>`;
   } else {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
@@ -378,9 +551,10 @@ function renderCart() {
           <div>
             <h4>${escapeHtml(item.title)}</h4>
             <p>${escapeHtml(item.description)}</p>
+            <small>${dollars(item.avg)}/meal</small>
           </div>
           <div class="cart-row">
-            <strong>${builderState.reviewReady ? dollars(item.price * item.quantity) : "Ready"}</strong>
+            <strong>${dollars(item.total)}</strong>
             <div class="cart-qty" aria-label="${escapeHtml(item.title)} quantity">
               <button type="button" data-cart-action="decrease" data-cart-key="${item.key}" aria-label="Decrease ${escapeHtml(item.title)}">-</button>
               <span>${item.quantity}</span>
@@ -392,25 +566,25 @@ function renderCart() {
       .join("");
   }
 
-  const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  cartMealTotal.textContent = totalMeals;
-  cartPriceTotal.textContent = builderState.reviewReady ? dollars(totalPrice) : "Review";
+  const payload = buildWooPayload();
+  cartMealTotal.textContent = payload.total_meals;
+  cartPriceTotal.textContent = builderState.cart.length ? dollars(payload.estimated_total) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
+  wooPayload.textContent = builderState.reviewReady ? JSON.stringify(payload, null, 2) : "";
+  localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
+}
+
+function renderBuilder() {
+  renderToggles();
+  renderGroups();
+  renderOptions();
+  renderCurrentBuild();
+  renderCart();
 }
 
 function setQuantity(value) {
   builderState.quantity = Math.min(48, Math.max(1, Number.parseInt(value, 10) || 1));
-  renderBuilder();
-}
-
-function moveStep(direction) {
-  if (direction > 0 && builderState.stepIndex === builderSteps.length - 1) {
-    addCurrentBuildToCart();
-    return;
-  }
-
-  builderState.stepIndex = Math.min(builderSteps.length - 1, Math.max(0, builderState.stepIndex + direction));
+  builderState.reviewReady = false;
   renderBuilder();
 }
 
@@ -420,37 +594,30 @@ function addCurrentBuildToCart() {
   builderState.reviewReady = false;
 
   if (existing) {
-    existing.quantity += builderState.quantity;
+    existing.quantity += build.quantity;
+    existing.total = existing.quantity * existing.unitPrice;
   } else {
-    builderState.cart.push({ ...build, quantity: builderState.quantity });
+    builderState.cart.push({ ...build });
   }
 
-  orderNote.textContent = `${builderState.quantity} ${build.title.toLowerCase()} meals added. Adjust quantities here or show the total when ready.`;
-  builderState.stepIndex = 0;
-  renderBuilder();
+  orderNote.textContent = `${build.quantity} ${build.title} meals added. Prepare checkout when the stack is ready.`;
   renderCart();
 }
 
 function prepareStoreOrder() {
   if (!builderState.cart.length) {
-    orderNote.textContent = "Stack at least one meal build before reviewing checkout.";
+    orderNote.textContent = "Add at least one meal build before preparing the WooCommerce order.";
     return;
   }
 
   builderState.reviewReady = true;
-  const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const lines = builderState.cart
-    .map((item) => `${item.quantity}x ${item.title}: ${item.description}`)
-    .join(" / ");
-
+  const payload = buildWooPayload();
   renderCart();
-  orderNote.innerHTML = `<strong>${dollars(totalPrice)} for ${totalMeals} meals.</strong> ${escapeHtml(lines)}`;
+  orderNote.innerHTML = `<strong>${dollars(payload.estimated_total)} for ${payload.total_meals} meals.</strong> WooCommerce order payload is ready for the backend handoff.`;
 }
 
 renderMenu("build");
 renderBuilder();
-renderCart();
 
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -468,43 +635,64 @@ document.querySelectorAll(".goal-card").forEach((card) => {
   });
 });
 
-document.querySelectorAll(".builder-step").forEach((step) => {
-  step.addEventListener("click", () => {
-    builderState.stepIndex = builderSteps.findIndex((item) => item.id === step.dataset.builderStep);
+modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const nextMode = button.dataset.mode;
+    if (nextMode === builderState.mode) return;
+    builderState.mode = nextMode;
+    builderState.portion = builderCatalog[nextMode].defaultPortion;
+    builderState.activeGroup = builderCatalog[nextMode].defaultGroup;
+    builderState.reviewReady = false;
     renderBuilder();
   });
+});
+
+portionButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    builderState.portion = button.dataset.portion;
+    builderState.reviewReady = false;
+    renderBuilder();
+  });
+});
+
+builderGroups.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-builder-step]");
+  if (!button) return;
+  builderState.activeGroup = button.dataset.builderStep;
+  renderBuilder();
 });
 
 builderOptions.addEventListener("click", (event) => {
   const optionButton = event.target.closest(".option-card");
   if (!optionButton) return;
 
-  const step = builderSteps[builderState.stepIndex];
+  const group = getCurrentGroup();
   const optionId = optionButton.dataset.option;
+  const current = builderState.selections[builderState.mode][group.id];
 
-  if (step.multi) {
-    const selected = builderState.selections[step.id];
-    if (selected.includes(optionId)) {
-      builderState.selections[step.id] = selected.filter((id) => id !== optionId);
-    } else {
-      builderState.selections[step.id] = [...selected, optionId];
-    }
+  if (group.multi) {
+    builderState.selections[builderState.mode][group.id] = current.includes(optionId)
+      ? current.filter((id) => id !== optionId)
+      : [...current, optionId];
   } else {
-    builderState.selections[step.id] = builderState.selections[step.id] === optionId ? null : optionId;
+    builderState.selections[builderState.mode][group.id] = current === optionId ? null : optionId;
   }
 
   builderState.reviewReady = false;
   renderBuilder();
-  renderCart();
 });
 
-builderBack.addEventListener("click", () => moveStep(-1));
-builderNext.addEventListener("click", () => moveStep(1));
 document.querySelector("#qtyMinus").addEventListener("click", () => setQuantity(builderState.quantity - 1));
 document.querySelector("#qtyPlus").addEventListener("click", () => setQuantity(builderState.quantity + 1));
 mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
 addMealButton.addEventListener("click", addCurrentBuildToCart);
 document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
+
+copyWooPayload.addEventListener("click", async () => {
+  const payload = JSON.stringify(buildWooPayload(), null, 2);
+  await navigator.clipboard.writeText(payload);
+  orderNote.textContent = "WooCommerce payload copied.";
+});
 
 cartItems.addEventListener("click", (event) => {
   const button = event.target.closest("[data-cart-action]");
@@ -514,6 +702,7 @@ cartItems.addEventListener("click", (event) => {
   if (!item) return;
 
   item.quantity += button.dataset.cartAction === "increase" ? 1 : -1;
+  item.total = item.quantity * item.unitPrice;
   builderState.reviewReady = false;
   builderState.cart = builderState.cart.filter((cartItem) => cartItem.quantity > 0);
   renderCart();

@@ -61,19 +61,39 @@
             No set menus. Just meals built the way you actually eat.
           </p>
           <div class="hero-promise-list" aria-label="Meal Prep Revolution ordering promises">
-            <span><strong>Custom meals</strong> You choose. We cook.</span>
-            <span><strong>No subscriptions</strong> Order when you want.</span>
-            <span><strong>Pickup or delivery</strong> On your schedule.</span>
-            <span><strong>Coastal OC</strong> Local, fresh, reliable.</span>
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="m15 9 4-4"></path><path d="M19 5h-4V1"></path></svg>
+              <strong>Custom meals built for your goals</strong> You choose. We cook.
+            </span>
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16"></path></svg>
+              <strong>No subscriptions. No contracts.</strong> Order when you want.
+            </span>
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 17h13V7H4z"></path><path d="M17 11h3l2 3v3h-5z"></path><circle cx="7" cy="19" r="2"></circle><circle cx="19" cy="19" r="2"></circle></svg>
+              <strong>Pickup or delivery</strong> On your schedule.
+            </span>
+            <span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              <strong>Proudly serving Coastal OC</strong> Local, fresh, reliable.
+            </span>
           </div>
           <div class="hero-actions">
             <a class="button button-primary" href="#wizard">Build Meals</a>
             <a class="button button-ghost" href="#menu">View Menu</a>
           </div>
-          <div class="signal-row" aria-label="Meal Prep Revolution highlights">
-            <span>Huntington Beach based</span>
-            <span>Pickup or delivery</span>
-            <span>45 Google reviews</span>
+          <div class="hero-chip-row" aria-label="Meal Prep Revolution highlights">
+            <span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m4 19 6-6M14 5l5-3 3 3-3 5"></path><path d="m5 4 15 15"></path></svg>Custom Meals</span>
+            <span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 8h12l1 12H5z"></path><path d="M9 8a3 3 0 0 1 6 0"></path></svg>Pickup + Delivery</span>
+            <span><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m5.7 18.3 12.6-12.6"></path></svg>No Subscription</span>
+            <span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>Coastal OC</span>
+          </div>
+          <div class="hero-cta-band">
+            <span class="hero-cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M8 7v6M12 7v10M16 7v6"></path></svg>
+            </span>
+            <p><strong>Fresh. Custom. Flexible.</strong> Meals that fit your life.</p>
+            <a class="button button-primary" href="#wizard">Build Your Meals</a>
           </div>
         </div>
 
@@ -81,9 +101,17 @@
           <div class="hero-frame">
             <img
               class="hero-meal"
-              src="assets/images/hero-single-black-container.png"
-              alt="Premium black meal prep container with grilled steak, chicken, rice, sweet potato, asparagus, broccoli, peppers, and sauce"
+              src="assets/images/hero-mpr-wrapper-dynamic.png"
+              alt="Premium black meal prep containers with grilled chicken, steak, salmon, rice, vegetables, sauce, and Meal Prep Revolution branded packaging"
             >
+            <div class="hero-wrapper-card" aria-hidden="true">
+              <img src="assets/brief/mpr-logo.png" alt="">
+              <div class="wrapper-points">
+                <span><svg viewBox="0 0 24 24"><path d="M5 20c8-1 13-6 14-16C11 5 6 10 5 20Z"></path><path d="M5 20c4-5 8-9 14-16"></path></svg>Fresh<br>Ingredients</span>
+                <span><svg viewBox="0 0 24 24"><path d="M6 13h12v8H6z"></path><path d="M9 13a3 3 0 0 1 6 0"></path><path d="M7 9a5 5 0 0 1 10 0"></path></svg>Chef<br>Prepared</span>
+                <span><svg viewBox="0 0 24 24"><path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>Made<br>Locally</span>
+              </div>
+            </div>
             <div class="macro-glass">
               <strong>Build Profile</strong>
               <span>Protein first</span>
@@ -114,87 +142,71 @@
           <span>Pickup or delivery</span>
         </div>
 
-        <div class="builder-shell meal-calculator">
-          <div class="calculator-main">
-            <div class="builder-panel builder-quantity-setup">
-              <div class="builder-panel-head">
-                <div>
-                  <span class="builder-label">Batch</span>
-                  <h3>How many meals?</h3>
-                </div>
-                <div class="builder-target">
-                  <strong id="builderMealCount">12</strong>
-                  <span>meals</span>
-                </div>
+        <div class="builder-shell meal-system" data-woo-system="meal-builder">
+          <div class="meal-builder-phone" aria-label="Meal Prep Revolution meal builder">
+            <div class="builder-toggle-row" role="tablist" aria-label="Meal type">
+              <button class="segmented-pill is-active" type="button" data-mode="breakfast" aria-selected="true">
+                <span class="icon icon-sun"></span>
+                <strong>Breakfast</strong>
+              </button>
+              <button class="segmented-pill" type="button" data-mode="lunch" aria-selected="false">
+                <span class="icon icon-fork"></span>
+                <strong>Lunch / Dinner</strong>
+              </button>
+            </div>
+
+            <div class="builder-size-row" role="radiogroup" aria-label="Portion size">
+              <button class="portion-pill" type="button" data-portion="small" aria-checked="false">
+                <strong>Small</strong>
+                <span id="smallPrice">$9.50</span>
+              </button>
+              <button class="portion-pill is-active" type="button" data-portion="medium" aria-checked="true">
+                <strong>Medium</strong>
+                <span id="mediumPrice">$10.50</span>
+              </button>
+              <button class="portion-pill" type="button" data-portion="large" aria-checked="false">
+                <strong>Large</strong>
+                <span id="largePrice">$12.50</span>
+              </button>
+            </div>
+
+            <div class="builder-hero-card">
+              <img id="builderHeroImage" src="assets/images/breakfast-black-container.png" alt="Breakfast meal in a premium black meal prep container">
+              <div class="hero-quantity-chip" aria-label="Meal quantity">
+                <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
+                <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
+                <span>meals</span>
+                <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
               </div>
-              <div class="builder-controls builder-quantity-controls">
-                <div class="stepper" aria-label="Number of meals">
-                  <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
-                  <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
-                  <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
-                </div>
+              <div class="hero-price-chip">
+                <strong id="heroTotal">$126</strong>
+                <span>est.</span>
               </div>
             </div>
 
-            <div class="ingredient-slider" aria-label="AI ingredient rail">
-              <img id="ingredientRail" src="assets/images/black-container-builder/protein-chicken.png" alt="Premium black-container protein ingredient rail">
-            </div>
+            <div class="builder-rail compact-rail" id="builderGroups" aria-label="Meal builder food groups"></div>
+            <div class="builder-options calculator-grid" id="builderOptions" aria-live="polite"></div>
 
-            <div class="builder-panel">
-              <div class="builder-rail" aria-label="Meal builder steps">
-                <button class="builder-step active" type="button" data-builder-step="protein">
-                  <span class="icon icon-protein"></span>
-                  <strong>Protein</strong>
-                </button>
-                <button class="builder-step" type="button" data-builder-step="carb">
-                  <span class="icon icon-carb"></span>
-                  <strong>Grain</strong>
-                </button>
-                <button class="builder-step" type="button" data-builder-step="veg">
-                  <span class="icon icon-leaf"></span>
-                  <strong>Vegetables</strong>
-                </button>
-                <button class="builder-step" type="button" data-builder-step="sauce">
-                  <span class="icon icon-drop"></span>
-                  <strong>Sauce</strong>
-                </button>
-              </div>
-              <div class="builder-panel-head">
+            <div class="builder-summary-tray">
+              <div class="selection-stack compact-stack" id="selectionStack" aria-live="polite"></div>
+              <div class="builder-bottom-row">
                 <div>
-                  <span class="builder-label" id="builderStepCount">Step 1 of 4</span>
-                  <h3 id="builderPrompt">Tap a protein.</h3>
-                  <p class="builder-help" id="builderHelp">Pick one, then choose the next food group when ready.</p>
+                  <strong id="currentMealLabel">12 medium breakfast meals</strong>
+                  <span id="currentAverage">Avg $10.50/meal</span>
                 </div>
-              </div>
-
-              <div class="builder-options" id="builderOptions" aria-live="polite"></div>
-
-              <div class="builder-controls">
-                <div class="builder-actions">
-                  <button class="button button-ghost" type="button" id="builderBack">Back</button>
-                  <button class="button button-primary" type="button" id="builderNext">Continue</button>
+                <div class="builder-price-block">
+                  <span>Total</span>
+                  <strong id="currentTotal">$126</strong>
                 </div>
+                <button class="button button-primary add-build-button" type="button" id="addMeal">Add 12</button>
               </div>
             </div>
           </div>
 
-          <div class="builder-workspace">
-            <div class="builder-preview">
-              <div>
-                <span class="builder-label">Live meal preview</span>
-                <h3 id="builderPlateTitle">Performance Chicken Plate</h3>
-                <p id="builderPlateDesc">Grilled chicken with jasmine rice, broccoli, asparagus, and lemon herb sauce.</p>
-              </div>
-              <img id="builderImage" src="assets/images/black-container-builder/protein-chicken.png" alt="Current meal build preview">
-              <div class="selection-stack" id="selectionStack" aria-live="polite"></div>
-              <button class="button button-primary" type="button" id="addMeal">Add 12 Meals to Week</button>
-            </div>
-          </div>
-
-          <aside class="builder-cart" aria-labelledby="cart-title">
+          <aside class="builder-cart woo-order-panel" aria-labelledby="cart-title">
             <div class="cart-head">
-              <span class="builder-label">Review & buy</span>
-              <h3 id="cart-title">Week stack</h3>
+              <span class="builder-label">WooCommerce draft</span>
+              <h3 id="cart-title">Order stack</h3>
             </div>
             <div class="cart-items" id="cartItems" aria-live="polite"></div>
             <div class="cart-summary">
@@ -207,13 +219,13 @@
                 <strong id="cartPriceTotal">Review</strong>
               </div>
             </div>
-            <button class="button button-primary cart-submit" type="button" id="submitOrder">Show Total & Checkout</button>
+            <button class="button button-primary cart-submit" type="button" id="submitOrder">Prepare Woo Checkout</button>
             <div class="purchase-actions" id="purchaseActions" hidden>
-              <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Buy This Week</a>
-              <a class="button button-outline" href="https://ordermealpreprevolution.square.site/">Add to Cart</a>
-              <a class="button button-ghost" href="https://ordermealpreprevolution.square.site/shop/stacks-packs/14">Repeat Weekly</a>
+              <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Temporary Checkout Link</a>
+              <button class="button button-outline" type="button" id="copyWooPayload">Copy Order Payload</button>
             </div>
-            <p class="order-note" id="orderNote">Build one meal, stack the quantity, then show the total next to checkout.</p>
+            <pre class="woo-payload" id="wooPayload" aria-live="polite"></pre>
+            <p class="order-note" id="orderNote">Build a meal, add it to the stack, then prepare the WooCommerce-ready order draft.</p>
           </aside>
         </div>
       </section>
@@ -365,6 +377,6 @@
       <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Order Online</a>
     </footer>
 
-    <script src="script.js?v=manual-builder-steps-20260611"></script>
+    <script src="script.js?v=meal-system-20260611"></script>
   </body>
 </html>
