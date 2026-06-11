@@ -1031,6 +1031,7 @@ h2 {
   width: 100%;
   aspect-ratio: 1.12 / 1;
   margin-top: 16px;
+  clip-path: inset(4% 4% 16% 4% round 8px);
   filter: saturate(0.82) contrast(0.88) brightness(0.72);
   transition: filter 220ms ease, transform 220ms ease, border-color 220ms ease;
 }
