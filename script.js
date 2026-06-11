@@ -8,12 +8,12 @@ const squareLinks = {
 };
 
 const mealImages = {
-  chicken: "https://mealpreprev.com/wp-content/uploads/2025/12/888-1.jpg",
-  steak: "https://mealpreprev.com/wp-content/uploads/2025/12/1111-1.jpeg",
-  salmon: "https://mealpreprev.com/wp-content/uploads/2025/12/222-1.jpeg",
-  salad: "https://mealpreprev.com/wp-content/uploads/2025/12/480928684_938727001754931_3860524944187570366_n.jpg",
-  breakfast: "https://mealpreprev.com/wp-content/uploads/2025/12/333-1.jpeg",
-  pack: "https://mealpreprev.com/wp-content/uploads/2025/12/486839121_1000212768924260_2372069187925382675_n-1.jpg",
+  chicken: "assets/images/chicken-black-container.png",
+  steak: "assets/images/steak-black-container.png",
+  salmon: "assets/images/salmon-black-container.png",
+  salad: "assets/images/salmon-black-container.png",
+  breakfast: "assets/images/breakfast-black-container.png",
+  pack: "assets/images/batch-black-containers.png",
 };
 
 const menus = {
@@ -32,7 +32,7 @@ const menus = {
   breakfast: [
     ["Protein Breakfast Bowl", "Eggs, potatoes, turkey, and fresh salsa.", "$10.49+", mealImages.breakfast],
     ["Clean Morning Stack", "Balanced breakfast built for busy mornings.", "$10.49+", mealImages.pack],
-    ["Greek Yogurt Cup", "Fruit-forward, simple, and ready fast.", "$7.49+", mealImages.salad],
+    ["Greek Yogurt Cup", "Fruit-forward, simple, and ready fast.", "$7.49+", mealImages.breakfast],
     ["Breakfast Pack", "Stock the fridge for the early part of the week.", "Order", mealImages.breakfast],
   ],
   salads: [
