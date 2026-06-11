@@ -937,6 +937,8 @@ h2 {
   object-position: center;
   filter: brightness(1.08) saturate(1.06) contrast(1.04);
   transform: scale(1.08);
+  transform-origin: center;
+  will-change: transform, opacity, filter;
 }
 
 .ingredient-slider::after {
@@ -948,7 +950,7 @@ h2 {
 }
 
 .ingredient-slider img.slide-in {
-  animation: foodSlideIn 320ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+  animation: foodSlideIn 680ms cubic-bezier(0.16, 0.84, 0.28, 1) both;
 }
 
 .meal-calculator .builder-panel {
@@ -1084,13 +1086,21 @@ h2 {
 }
 
 @keyframes foodSlideIn {
-  from {
+  0% {
     opacity: 0;
-    transform: translateX(34px) scale(1.12);
+    filter: brightness(0.86) saturate(0.96) contrast(1.02) blur(10px);
+    transform: translateX(86px) scale(1.16);
   }
 
-  to {
+  58% {
     opacity: 1;
+    filter: brightness(1.12) saturate(1.08) contrast(1.05) blur(0);
+    transform: translateX(-8px) scale(1.095);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1.08) saturate(1.06) contrast(1.04) blur(0);
     transform: translateX(0) scale(1.08);
   }
 }
@@ -1843,6 +1853,7 @@ cite {
   *,
   *::before,
   *::after {
+    animation: none !important;
     scroll-behavior: auto !important;
     transition: none !important;
   }
