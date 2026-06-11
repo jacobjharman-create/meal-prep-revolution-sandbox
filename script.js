@@ -7,48 +7,56 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
+const aiImageStyle =
+  "luxury editorial food photograph, full-plate framing, matte black ceramic plate, subtle reflections, premium cutlery-free styling, clean dark tabletop, Porsche-level premium color grading, ultra realistic, high resolution, appetizing, full meal detail, not macro, no text, cinematic";
+
+function plateImage(subject, seed, width = 1280, height = 960) {
+  const prompt = `${subject}, ${aiImageStyle}`;
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux&seed=${seed}&width=${width}&height=${height}&nologo=true`;
+}
+
 const mealImages = {
-  chicken: "assets/images/ai-builder-bright/chicken.png",
-  steak: "assets/images/ai-builder-bright/steak.png",
-  salmon: "assets/images/ai-builder-bright/salmon.webp",
-  salad: "assets/images/ai-builder-bright/salad.webp",
-  breakfast: "assets/images/ai-builder-bright/breakfast.webp",
-  pack: "assets/images/ai-builder-bright/pack.webp",
+  chicken: plateImage("grilled chicken breast with rice, broccoli, and peppers on black plate", 2101),
+  steak: plateImage("garlic butter steak with potatoes, asparagus, and green beans on black plate", 2102),
+  salmon: plateImage("pan-seared salmon with quinoa and asparagus on black plate", 2103),
+  salad: plateImage("high-protein grilled chicken salad with mixed greens on black plate", 2104),
+  breakfast: plateImage("high-protein breakfast plate with eggs, potatoes, and turkey sausage on black plate", 2105),
+  pack: plateImage("premium meal prep pack arranged on black plates with proteins, carbs, vegetables, and sauces", 2106),
 };
 
 const builderItemImages = {
-  chicken: "assets/images/ai-builder-bright/protein-chicken.webp",
-  steak: "assets/images/ai-builder-bright/protein-steak.png",
-  salmon: "assets/images/ai-builder-bright/protein-salmon.webp",
-  turkey: "assets/images/ai-builder-bright/protein-turkey.webp",
-  shrimp: "assets/images/ai-builder-bright/protein-shrimp.webp",
-  tofu: "assets/images/ai-builder-bright/protein-tofu.webp",
-  eggs: "assets/images/ai-builder-bright/protein-eggs.webp",
-  meatballs: "assets/images/ai-builder-bright/protein-meatballs.webp",
-  "jasmine-rice": "assets/images/ai-builder-bright/grain-jasmine-rice.webp",
-  "sweet-potato": "assets/images/ai-builder-bright/grain-sweet-potato.webp",
-  quinoa: "assets/images/ai-builder-bright/grain-quinoa.webp",
-  "brown-rice": "assets/images/ai-builder-bright/grain-brown-rice.webp",
-  potatoes: "assets/images/ai-builder-bright/grain-potatoes.webp",
-  "cauli-rice": "assets/images/ai-builder-bright/grain-cauli-rice.webp",
-  noodles: "assets/images/ai-builder-bright/grain-noodles.webp",
-  "black-beans": "assets/images/ai-builder-bright/grain-black-beans.webp",
-  broccoli: "assets/images/ai-builder-bright/veg-broccoli.webp",
-  asparagus: "assets/images/ai-builder-bright/veg-asparagus.webp",
-  peppers: "assets/images/ai-builder-bright/veg-peppers.webp",
-  "green-beans": "assets/images/ai-builder-bright/veg-green-beans.webp",
-  spinach: "assets/images/ai-builder-bright/veg-spinach.webp",
-  carrots: "assets/images/ai-builder-bright/veg-carrots.webp",
-  zucchini: "assets/images/ai-builder-bright/veg-zucchini.webp",
-  sprouts: "assets/images/ai-builder-bright/veg-sprouts.webp",
-  "lemon-herb": "assets/images/ai-builder-bright/sauce-lemon-herb.webp",
-  chimichurri: "assets/images/ai-builder-bright/sauce-chimichurri.webp",
-  teriyaki: "assets/images/ai-builder-bright/sauce-teriyaki.webp",
-  buffalo: "assets/images/ai-builder-bright/sauce-buffalo.webp",
-  "garlic-aioli": "assets/images/ai-builder-bright/sauce-garlic-aioli.webp",
-  "salsa-verde": "assets/images/ai-builder-bright/sauce-salsa-verde.webp",
-  tahini: "assets/images/ai-builder-bright/sauce-tahini.webp",
-  none: "assets/images/ai-builder-bright/sauce-none.webp",
+  chicken: plateImage("grilled chicken breast and rice plated on sleek black ceramic plate", 2201),
+  steak: plateImage("garlic-charred steak with roasted potatoes and green beans on black plate", 2202),
+  salmon: plateImage("honey-glazed salmon with jasmine rice and asparagus on black plate", 2203),
+  turkey: plateImage("ground turkey medallions and vegetables on black plate", 2204),
+  shrimp: plateImage("garlic butter shrimp with lemon herbs on black plate", 2205),
+  tofu: plateImage("seared tofu with roasted vegetables on black plate", 2206),
+  eggs: plateImage("perfectly boiled eggs with herbs on black plate", 2207),
+  meatballs: plateImage("turkey meatballs with roasted vegetables on black plate", 2208),
+  "jasmine-rice": plateImage("steaming jasmine rice side dish on black plate with garnish", 2209),
+  "sweet-potato": plateImage("roasted sweet potatoes and vegetables on black plate", 2210),
+  quinoa: plateImage("lightly fluffed quinoa with herbs on black plate", 2211),
+  "brown-rice": plateImage("steamed brown rice with crisp vegetables on black plate", 2212),
+  potatoes: plateImage("golden roasted potatoes on black plate", 2213),
+  "cauli-rice": plateImage("garlic roasted cauliflower rice and herbs on black plate", 2214),
+  noodles: plateImage("cooked noodles with sesame oil and vegetables on black plate", 2215),
+  "black-beans": plateImage("black beans with fresh herbs on black plate", 2216),
+  broccoli: plateImage("roasted broccoli florets on black plate", 2217),
+  asparagus: plateImage("charred asparagus spears on black plate", 2218),
+  peppers: plateImage("roasted red pepper strips on black plate", 2219),
+  "green-beans": plateImage("roasted green beans on black plate", 2220),
+  spinach: plateImage("creamy wilted spinach with olive oil finish on black plate", 2221),
+  carrots: plateImage("glazed carrots on black plate", 2222),
+  zucchini: plateImage("sautéed zucchini rounds on black plate", 2223),
+  sprouts: plateImage("roasted Brussels sprouts and crispy crumbs on black plate", 2224),
+  "lemon-herb": plateImage("lemon herb sauce in a small ramekin with herbs on black plate", 2225),
+  chimichurri: plateImage("chimichurri sauce with olive oil on black plate", 2226),
+  teriyaki: plateImage("teriyaki glaze in a small bowl on black plate", 2227),
+  buffalo: plateImage("fiery buffalo sauce in a dipping bowl on black plate", 2228),
+  "garlic-aioli": plateImage("garlic aioli creamy dip on black plate", 2229),
+  "salsa-verde": plateImage("fresh salsa verde sauce in ramekin on black plate", 2230),
+  tahini: plateImage("rich tahini sauce on black plate", 2231),
+  none: plateImage("clean side dish selection with no sauce on black plate", 2232),
 };
 
 const menus = {
@@ -104,7 +112,7 @@ const builderSteps = [
     label: "Protein",
     prompt: "Tap a protein.",
     icon: "icon-protein",
-    rail: "assets/images/ai-builder-bright/protein-chicken.webp",
+    rail: builderItemImages.chicken,
     options: [
       { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: builderItemImages.chicken },
       { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: builderItemImages.steak },
@@ -121,7 +129,7 @@ const builderSteps = [
     label: "Grain",
     prompt: "Tap a grain or carb.",
     icon: "icon-carb",
-    rail: "assets/images/ai-builder-bright/grain-jasmine-rice.webp",
+    rail: builderItemImages["jasmine-rice"],
     options: [
       { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, image: builderItemImages["jasmine-rice"] },
       { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, image: builderItemImages["sweet-potato"] },
@@ -138,7 +146,7 @@ const builderSteps = [
     label: "Vegetables",
     prompt: "Tap vegetables.",
     icon: "icon-leaf",
-    rail: "assets/images/ai-builder-bright/veg-broccoli.webp",
+    rail: builderItemImages.broccoli,
     multi: true,
     options: [
       { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", image: builderItemImages.broccoli },
@@ -156,7 +164,7 @@ const builderSteps = [
     label: "Sauce",
     prompt: "Tap a sauce.",
     icon: "icon-drop",
-    rail: "assets/images/ai-builder-bright/sauce-lemon-herb.webp",
+    rail: builderItemImages["lemon-herb"],
     options: [
       { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", image: builderItemImages["lemon-herb"] },
       { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", image: builderItemImages.chimichurri },
@@ -267,7 +275,7 @@ function currentBuild() {
     title,
     description,
     price,
-    image: builderState.aiRendered ? protein?.image || mealImages.pack : "assets/images/ai-builder-bright/chicken.png",
+    image: builderState.aiRendered ? protein?.image || mealImages.pack : mealImages.chicken,
     selections: {
       protein: protein?.name || "",
       carb: carb?.name || "",
