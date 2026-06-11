@@ -67,54 +67,70 @@ const builderSteps = [
   {
     id: "protein",
     label: "Protein",
-    prompt: "Choose your protein.",
+    prompt: "Tap a protein.",
     icon: "icon-protein",
+    rail: "assets/images/ingredient-proteins.png",
     options: [
-      { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: mealImages.chicken },
-      { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: mealImages.steak },
-      { id: "salmon", name: "Honey Garlic Salmon", detail: "Clean fats and coastal flavor.", price: 14.49, image: mealImages.salmon },
-      { id: "turkey", name: "Ground Turkey", detail: "Light, flexible, athlete friendly.", price: 12.99, image: mealImages.chicken },
+      { id: "chicken", name: "Grilled Chicken", detail: "Lean, simple, repeatable.", price: 12.49, image: mealImages.chicken, glyph: "C" },
+      { id: "steak", name: "Garlic Steak", detail: "Premium and high protein.", price: 14.49, image: mealImages.steak, glyph: "S" },
+      { id: "salmon", name: "Honey Garlic Salmon", detail: "Clean fats and coastal flavor.", price: 14.49, image: mealImages.salmon, glyph: "F" },
+      { id: "turkey", name: "Ground Turkey", detail: "Light, flexible, athlete friendly.", price: 12.99, image: mealImages.chicken, glyph: "T" },
+      { id: "shrimp", name: "Grilled Shrimp", detail: "Light coastal protein.", price: 14.49, image: mealImages.salmon, glyph: "SH" },
+      { id: "tofu", name: "Tofu", detail: "Plant-powered option.", price: 12.49, image: mealImages.salad, glyph: "TO" },
+      { id: "eggs", name: "Boiled Eggs", detail: "Simple breakfast protein.", price: 10.49, image: mealImages.breakfast, glyph: "E" },
+      { id: "meatballs", name: "Turkey Meatballs", detail: "Comfort meal energy.", price: 13.49, image: mealImages.steak, glyph: "M" },
     ],
   },
   {
     id: "carb",
     label: "Grain",
-    prompt: "Pick your carb.",
+    prompt: "Tap a grain or carb.",
     icon: "icon-carb",
+    rail: "assets/images/ingredient-grains.png",
     options: [
-      { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0 },
-      { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, easy to repeat.", price: 0 },
-      { id: "quinoa", name: "Quinoa", detail: "Higher fiber and lighter feel.", price: 1 },
-      { id: "greens", name: "Extra Greens", detail: "Lower-carb plate.", price: 0 },
+      { id: "jasmine-rice", name: "Jasmine Rice", detail: "Classic training fuel.", price: 0, glyph: "JR" },
+      { id: "sweet-potato", name: "Sweet Potato", detail: "Clean, filling, repeatable.", price: 0, glyph: "SP" },
+      { id: "quinoa", name: "Quinoa", detail: "Higher fiber and lighter feel.", price: 1, glyph: "Q" },
+      { id: "brown-rice", name: "Brown Rice", detail: "Steady everyday carb.", price: 0, glyph: "BR" },
+      { id: "potatoes", name: "Roasted Potatoes", detail: "Simple and filling.", price: 0, glyph: "P" },
+      { id: "cauli-rice", name: "Cauli Rice", detail: "Lower-carb plate.", price: 1, glyph: "CR" },
+      { id: "noodles", name: "Noodles", detail: "Comfort carb day.", price: 1, glyph: "N" },
+      { id: "black-beans", name: "Black Beans", detail: "Fiber and volume.", price: 0, glyph: "BB" },
     ],
   },
   {
     id: "veg",
     label: "Vegetables",
-    prompt: "Add vegetables.",
+    prompt: "Tap vegetables.",
     icon: "icon-leaf",
+    rail: "assets/images/ingredient-vegetables.png",
     multi: true,
     options: [
-      { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable." },
-      { id: "asparagus", name: "Asparagus", detail: "Premium green finish." },
-      { id: "peppers", name: "Red Peppers", detail: "Color, crunch, flavor." },
-      { id: "green-beans", name: "Green Beans", detail: "Simple performance side." },
-      { id: "spinach", name: "Spinach", detail: "Fresh and light." },
-      { id: "carrots", name: "Carrots", detail: "Slightly sweet crunch." },
+      { id: "broccoli", name: "Roasted Broccoli", detail: "Clean and reliable.", glyph: "B" },
+      { id: "asparagus", name: "Asparagus", detail: "Premium green finish.", glyph: "A" },
+      { id: "peppers", name: "Red Peppers", detail: "Color, crunch, flavor.", glyph: "RP" },
+      { id: "green-beans", name: "Green Beans", detail: "Simple performance side.", glyph: "GB" },
+      { id: "spinach", name: "Spinach", detail: "Fresh and light.", glyph: "S" },
+      { id: "carrots", name: "Carrots", detail: "Slightly sweet crunch.", glyph: "C" },
+      { id: "zucchini", name: "Zucchini", detail: "Light and clean.", glyph: "Z" },
+      { id: "sprouts", name: "Brussels Sprouts", detail: "Roasted premium side.", glyph: "BS" },
     ],
   },
   {
     id: "sauce",
     label: "Sauce",
-    prompt: "Finish with sauce.",
+    prompt: "Tap a sauce.",
     icon: "icon-drop",
+    rail: "assets/images/ingredient-sauces.png",
     options: [
-      { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright." },
-      { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly." },
-      { id: "teriyaki", name: "Teriyaki", detail: "Sweet-savory classic." },
-      { id: "buffalo", name: "Buffalo", detail: "Heat without overthinking." },
-      { id: "side", name: "Sauce On Side", detail: "Maximum control." },
-      { id: "none", name: "No Sauce", detail: "Keep it clean." },
+      { id: "lemon-herb", name: "Lemon Herb", detail: "Clean and bright.", glyph: "LH" },
+      { id: "chimichurri", name: "Chimichurri", detail: "Green, sharp, steak-friendly.", glyph: "CH" },
+      { id: "teriyaki", name: "Teriyaki", detail: "Sweet-savory classic.", glyph: "TK" },
+      { id: "buffalo", name: "Buffalo", detail: "Heat without overthinking.", glyph: "BF" },
+      { id: "garlic-aioli", name: "Garlic Aioli", detail: "Creamy comfort finish.", glyph: "GA" },
+      { id: "salsa-verde", name: "Salsa Verde", detail: "Fresh green punch.", glyph: "SV" },
+      { id: "tahini", name: "Tahini", detail: "Rich, clean, savory.", glyph: "TH" },
+      { id: "none", name: "No Sauce", detail: "Keep it clean.", glyph: "NO" },
     ],
   },
 ];
@@ -123,6 +139,7 @@ const builderState = {
   stepIndex: 0,
   quantity: 12,
   reviewReady: false,
+  aiRendered: false,
   selections: {
     protein: "chicken",
     carb: "jasmine-rice",
@@ -141,6 +158,8 @@ const builderMealCount = document.querySelector("#builderMealCount");
 const builderPlateTitle = document.querySelector("#builderPlateTitle");
 const builderPlateDesc = document.querySelector("#builderPlateDesc");
 const builderImage = document.querySelector("#builderImage");
+const ingredientRail = document.querySelector("#ingredientRail");
+const selectionStack = document.querySelector("#selectionStack");
 const mealQuantity = document.querySelector("#mealQuantity");
 const cartItems = document.querySelector("#cartItems");
 const cartMealTotal = document.querySelector("#cartMealTotal");
@@ -199,7 +218,7 @@ function currentBuild() {
     title,
     description,
     price,
-    image: protein?.image || mealImages.pack,
+    image: builderState.aiRendered ? protein?.image || mealImages.pack : "assets/images/hero-single-black-container.png",
     selections: {
       protein: protein?.name || "",
       carb: carb?.name || "",
@@ -241,9 +260,28 @@ function renderBuilder() {
   builderMealCount.textContent = builderState.quantity;
   mealQuantity.value = builderState.quantity;
   builderPlateTitle.textContent = build.title;
-  builderPlateDesc.textContent = build.description;
+  builderPlateDesc.textContent = builderState.aiRendered
+    ? `AI preview generated: ${build.description}`
+    : `Select components, then generate a visual preview: ${build.description}`;
   builderImage.src = build.image;
   builderImage.alt = `${build.title} preview`;
+  builderImage.classList.toggle("generated", builderState.aiRendered);
+  ingredientRail.src = step.rail;
+  ingredientRail.alt = `AI generated ${step.label.toLowerCase()} ingredient rail`;
+  document.querySelector("#renderMeal").textContent = builderState.aiRendered ? "Re-render Meal" : "Generate Meal";
+  selectionStack.innerHTML = [
+    ["Protein", build.selections.protein],
+    ["Grain", build.selections.carb],
+    ["Vegetables", build.selections.veg.join(" + ")],
+    ["Sauce", build.selections.sauce],
+  ]
+    .map(([label, value]) => `
+      <span>
+        <small>${label}</small>
+        <strong>${escapeHtml(value || "Choose")}</strong>
+      </span>
+    `)
+    .join("");
 
   builderOptions.innerHTML = step.options
     .map((option) => {
@@ -253,7 +291,7 @@ function renderBuilder() {
 
       return `
         <button class="option-card${selected ? " selected" : ""}" type="button" data-option="${option.id}" aria-pressed="${selected}">
-          <span class="icon ${step.icon}" aria-hidden="true"></span>
+          <span class="food-glyph" aria-hidden="true">${escapeHtml(option.glyph || option.name.slice(0, 2))}</span>
           <span>
             <strong>${escapeHtml(option.name)}</strong>
             <small>${escapeHtml(option.detail)}</small>
@@ -306,6 +344,11 @@ function moveStep(direction) {
 }
 
 function addCurrentBuildToCart() {
+  if (!builderState.aiRendered) {
+    builderState.aiRendered = true;
+    renderBuilder();
+  }
+
   const build = currentBuild();
   const existing = builderState.cart.find((item) => item.key === build.key);
   builderState.reviewReady = false;
@@ -335,6 +378,14 @@ function prepareStoreOrder() {
 
   renderCart();
   orderNote.innerHTML = `<strong>${dollars(totalPrice)} for ${totalMeals} meals.</strong> ${escapeHtml(lines)}`;
+}
+
+function renderAiMeal() {
+  builderState.aiRendered = true;
+  builderState.reviewReady = false;
+  orderNote.textContent = "AI meal preview generated. Add it to the week stack or keep customizing.";
+  renderBuilder();
+  renderCart();
 }
 
 renderMenu("build");
@@ -383,6 +434,7 @@ builderOptions.addEventListener("click", (event) => {
   }
 
   builderState.reviewReady = false;
+  builderState.aiRendered = false;
   renderBuilder();
   renderCart();
 });
@@ -393,6 +445,7 @@ document.querySelector("#qtyMinus").addEventListener("click", () => setQuantity(
 document.querySelector("#qtyPlus").addEventListener("click", () => setQuantity(builderState.quantity + 1));
 mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
 document.querySelector("#addMeal").addEventListener("click", addCurrentBuildToCart);
+document.querySelector("#renderMeal").addEventListener("click", renderAiMeal);
 document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
 
 cartItems.addEventListener("click", (event) => {

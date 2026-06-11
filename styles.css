@@ -266,6 +266,50 @@ h1 span {
   margin-top: 34px;
 }
 
+.hero-promise-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 660px;
+  margin-top: 28px;
+}
+
+.hero-promise-list span {
+  position: relative;
+  min-height: 68px;
+  padding: 13px 14px 13px 48px;
+  color: #dbe6d8;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 13px;
+  line-height: 1.32;
+}
+
+.hero-promise-list span::before {
+  position: absolute;
+  left: 14px;
+  top: 17px;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  color: var(--green);
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  box-shadow: inset 0 0 0 4px rgba(22, 209, 0, 0.1);
+}
+
+.hero-promise-list strong {
+  display: block;
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .signal-row {
   display: flex;
   flex-wrap: wrap;
@@ -838,6 +882,178 @@ h2 {
 
 .order-note strong {
   color: var(--green-soft);
+}
+
+.meal-calculator {
+  grid-template-columns: minmax(560px, 1.45fr) minmax(300px, 0.8fr) minmax(300px, 0.82fr);
+  gap: 18px;
+}
+
+.meal-calculator .calculator-main {
+  min-width: 0;
+}
+
+.meal-calculator .builder-rail {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+
+.meal-calculator .builder-step {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  min-height: 104px;
+  padding: 15px 10px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025));
+}
+
+.meal-calculator .builder-step.active {
+  color: #071107;
+  background: var(--green);
+  border-color: var(--green-soft);
+  box-shadow: 0 0 0 1px rgba(140, 255, 120, 0.42), 0 20px 56px rgba(22, 209, 0, 0.22);
+}
+
+.meal-calculator .builder-step.active .icon {
+  color: #071107;
+}
+
+.ingredient-slider {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: 14px;
+  background: #010201;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius);
+  box-shadow: inset 0 0 42px rgba(22, 209, 0, 0.08);
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) rgba(255, 255, 255, 0.08);
+}
+
+.ingredient-slider img {
+  width: max(100%, 980px);
+  max-width: none;
+  aspect-ratio: 3.05 / 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.meal-calculator .builder-panel {
+  background:
+    linear-gradient(180deg, rgba(22, 209, 0, 0.08), transparent 34%),
+    rgba(3, 4, 3, 0.74);
+}
+
+.meal-calculator .builder-options {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.meal-calculator .option-card {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  min-height: 132px;
+  padding: 14px 10px;
+  text-align: center;
+  transform-origin: top center;
+  animation: padIn 180ms ease both;
+}
+
+.meal-calculator .option-card.selected {
+  color: #071107;
+  background: var(--green);
+  border-color: var(--green-soft);
+  box-shadow: 0 16px 34px rgba(22, 209, 0, 0.18);
+}
+
+.meal-calculator .option-card.selected small {
+  color: rgba(7, 17, 7, 0.72);
+}
+
+.food-glyph {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  color: var(--green-soft);
+  background: rgba(22, 209, 0, 0.08);
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 950;
+  letter-spacing: 0.03em;
+}
+
+.option-card.selected .food-glyph {
+  color: #071107;
+  background: rgba(7, 17, 7, 0.1);
+}
+
+.meal-calculator .builder-preview {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100%;
+  padding: 20px;
+  background:
+    linear-gradient(180deg, rgba(22, 209, 0, 0.12), rgba(255, 255, 255, 0.035)),
+    rgba(3, 4, 3, 0.68);
+}
+
+.meal-calculator .builder-preview img {
+  width: 100%;
+  aspect-ratio: 1.12 / 1;
+  margin-top: 16px;
+  filter: saturate(0.82) contrast(0.88) brightness(0.72);
+  transition: filter 220ms ease, transform 220ms ease, border-color 220ms ease;
+}
+
+.meal-calculator .builder-preview img.generated {
+  border-color: var(--green);
+  filter: saturate(1.12) contrast(1.06) brightness(1);
+  transform: translateY(-2px);
+}
+
+.selection-stack {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.selection-stack span {
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.selection-stack small {
+  color: var(--green-soft);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.selection-stack strong {
+  color: var(--white);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+@keyframes padIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .recommendation {
@@ -1437,6 +1653,10 @@ cite {
     padding: 42px 20px 56px;
   }
 
+  .hero-promise-list {
+    grid-template-columns: 1fr;
+  }
+
   h1 {
     font-size: clamp(44px, 13vw, 62px);
   }
@@ -1497,6 +1717,38 @@ cite {
   .builder-actions,
   .builder-actions .button {
     width: 100%;
+  }
+
+  .meal-calculator .builder-rail {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .meal-calculator .builder-step {
+    grid-template-columns: 1fr;
+    min-height: 84px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .meal-calculator .builder-step strong {
+    font-size: 10px;
+  }
+
+  .meal-calculator .builder-step .icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .meal-calculator .builder-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .meal-calculator .option-card {
+    min-height: 112px;
+  }
+
+  .ingredient-slider img {
+    width: 860px;
   }
 
   .macro-glass {

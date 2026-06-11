@@ -60,6 +60,12 @@
             fresh vegetables, sauces, pickup, or delivery. No contracts. No subscriptions.
             No set menus. Just meals built the way you actually eat.
           </p>
+          <div class="hero-promise-list" aria-label="Meal Prep Revolution ordering promises">
+            <span><strong>Custom meals</strong> You choose. We cook.</span>
+            <span><strong>No subscriptions</strong> Order when you want.</span>
+            <span><strong>Pickup or delivery</strong> On your schedule.</span>
+            <span><strong>Coastal OC</strong> Local, fresh, reliable.</span>
+          </div>
           <div class="hero-actions">
             <a class="button button-primary" href="#wizard">Build Meals</a>
             <a class="button button-ghost" href="#menu">View Menu</a>
@@ -108,53 +114,36 @@
           <span>Repeat weekly optional</span>
         </div>
 
-        <div class="builder-shell">
-          <aside class="builder-rail" aria-label="Meal builder steps">
-            <button class="builder-step active" type="button" data-builder-step="protein">
-              <span class="icon icon-protein"></span>
-              <span>
+        <div class="builder-shell meal-calculator">
+          <div class="calculator-main">
+            <div class="builder-rail" aria-label="Meal builder steps">
+              <button class="builder-step active" type="button" data-builder-step="protein">
+                <span class="icon icon-protein"></span>
                 <strong>Protein</strong>
-                <small>Chicken, steak, salmon</small>
-              </span>
-            </button>
-            <button class="builder-step" type="button" data-builder-step="carb">
-              <span class="icon icon-carb"></span>
-              <span>
+              </button>
+              <button class="builder-step" type="button" data-builder-step="carb">
+                <span class="icon icon-carb"></span>
                 <strong>Grain</strong>
-                <small>Rice, potato, quinoa</small>
-              </span>
-            </button>
-            <button class="builder-step" type="button" data-builder-step="veg">
-              <span class="icon icon-leaf"></span>
-              <span>
+              </button>
+              <button class="builder-step" type="button" data-builder-step="veg">
+                <span class="icon icon-leaf"></span>
                 <strong>Vegetables</strong>
-                <small>Pick two or more</small>
-              </span>
-            </button>
-            <button class="builder-step" type="button" data-builder-step="sauce">
-              <span class="icon icon-drop"></span>
-              <span>
+              </button>
+              <button class="builder-step" type="button" data-builder-step="sauce">
+                <span class="icon icon-drop"></span>
                 <strong>Sauce</strong>
-                <small>On the side</small>
-              </span>
-            </button>
-          </aside>
+              </button>
+            </div>
 
-          <div class="builder-workspace">
-            <div class="builder-preview">
-              <div>
-                <span class="builder-label">Current build</span>
-                <h3 id="builderPlateTitle">Performance Chicken Plate</h3>
-                <p id="builderPlateDesc">Grilled chicken with jasmine rice, broccoli, asparagus, and lemon herb sauce.</p>
-              </div>
-              <img id="builderImage" src="assets/images/chicken-black-container.png" alt="Current meal build preview">
+            <div class="ingredient-slider" aria-label="AI ingredient rail">
+              <img id="ingredientRail" src="assets/images/ingredient-proteins.png" alt="AI generated protein ingredient rail">
             </div>
 
             <div class="builder-panel">
               <div class="builder-panel-head">
                 <div>
                   <span class="builder-label" id="builderStepCount">Step 1 of 4</span>
-                  <h3 id="builderPrompt">Choose your protein.</h3>
+                  <h3 id="builderPrompt">Tap a protein.</h3>
                 </div>
                 <div class="builder-target">
                   <strong id="builderMealCount">12</strong>
@@ -173,9 +162,22 @@
                 <div class="builder-actions">
                   <button class="button button-ghost" type="button" id="builderBack">Back</button>
                   <button class="button button-outline" type="button" id="builderNext">Next</button>
-                  <button class="button button-primary" type="button" id="addMeal">Stack This Meal</button>
+                  <button class="button button-primary" type="button" id="renderMeal">Generate Meal</button>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="builder-workspace">
+            <div class="builder-preview">
+              <div>
+                <span class="builder-label">AI meal render</span>
+                <h3 id="builderPlateTitle">Performance Chicken Plate</h3>
+                <p id="builderPlateDesc">Grilled chicken with jasmine rice, broccoli, asparagus, and lemon herb sauce.</p>
+              </div>
+              <img id="builderImage" src="assets/images/chicken-black-container.png" alt="Current meal build preview">
+              <div class="selection-stack" id="selectionStack" aria-live="polite"></div>
+              <button class="button button-primary" type="button" id="addMeal">Add Generated Meal</button>
             </div>
           </div>
 
