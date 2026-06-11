@@ -63,6 +63,15 @@ const recommendations = {
   bulk: "Bulk Items and Flavor Station let you stock proteins, carbs, and sauces for flexible meals all week.",
 };
 
+const wizardCopy = {
+  goal: "Start with the outcome: performance, lean, balanced, family, or lifestyle.",
+  protein: "Choose the protein base for each meal: chicken, steak, salmon, turkey, or rotating favorites.",
+  carb: "Add the carb that fits the week: rice, potatoes, quinoa, or keep it lighter.",
+  veg: "Select fresh vegetables and keep them crisp, colorful, and easy to repeat.",
+  sauce: "Finish with flavor control: sauce on the side, clean classics, or extra heat.",
+  quantity: "Batch the build into a full week, including a 12-meal order ready for payment.",
+};
+
 const menuGrid = document.querySelector("#mealGrid");
 const categoryLink = document.querySelector("#categoryLink");
 
@@ -100,6 +109,14 @@ document.querySelectorAll(".goal-card").forEach((card) => {
     document.querySelectorAll(".goal-card").forEach((item) => item.classList.remove("active"));
     card.classList.add("active");
     document.querySelector("#goalRecommendation").textContent = recommendations[card.dataset.goal];
+  });
+});
+
+document.querySelectorAll(".wizard-step").forEach((step) => {
+  step.addEventListener("click", () => {
+    document.querySelectorAll(".wizard-step").forEach((item) => item.classList.remove("active"));
+    step.classList.add("active");
+    document.querySelector("#wizardOutput").textContent = wizardCopy[step.dataset.step];
   });
 });
 
