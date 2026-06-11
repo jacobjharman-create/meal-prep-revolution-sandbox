@@ -94,10 +94,17 @@
             <h2 id="wizard-title">Pick the plate. Batch the week.</h2>
             <p>
               Protein first, then carb, vegetables, sauce, and quantity. A clean athlete ordering flow
-              for people who just want their meals handled.
+              grounded in MPR's current Build a Meal, Stacks & Packs, Bulk, and Checkout path, but easier to finish.
             </p>
           </div>
           <a class="button button-outline" href="https://ordermealpreprevolution.square.site/">Current Ordering</a>
+        </div>
+
+        <div class="builder-hooks" aria-label="Ordering confidence">
+          <span>Fresh. Easy. Delicious.</span>
+          <span>Customize first</span>
+          <span>Pickup or delivery</span>
+          <span>Repeat weekly optional</span>
         </div>
 
         <div class="builder-shell">
@@ -165,7 +172,7 @@
                 <div class="builder-actions">
                   <button class="button button-ghost" type="button" id="builderBack">Back</button>
                   <button class="button button-outline" type="button" id="builderNext">Next</button>
-                  <button class="button button-primary" type="button" id="addMeal">Add to List</button>
+                  <button class="button button-primary" type="button" id="addMeal">Stack This Meal</button>
                 </div>
               </div>
             </div>
@@ -173,8 +180,8 @@
 
           <aside class="builder-cart" aria-labelledby="cart-title">
             <div class="cart-head">
-              <span class="builder-label">Live demo cart</span>
-              <h3 id="cart-title">Master list</h3>
+              <span class="builder-label">Review & buy</span>
+              <h3 id="cart-title">Week stack</h3>
             </div>
             <div class="cart-items" id="cartItems" aria-live="polite"></div>
             <div class="cart-summary">
@@ -184,11 +191,16 @@
               </div>
               <div>
                 <span>Estimated order</span>
-                <strong id="cartPriceTotal">$0</strong>
+                <strong id="cartPriceTotal">Review</strong>
               </div>
             </div>
-            <button class="button button-primary cart-submit" type="button" id="submitOrder">Prepare Store Order</button>
-            <p class="order-note" id="orderNote">Add a meal build to generate a store-ready summary for demo.</p>
+            <button class="button button-primary cart-submit" type="button" id="submitOrder">Review Week</button>
+            <div class="purchase-actions" id="purchaseActions" hidden>
+              <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Buy This Week</a>
+              <a class="button button-outline" href="https://ordermealpreprevolution.square.site/">Add to Cart</a>
+              <a class="button button-ghost" href="https://ordermealpreprevolution.square.site/shop/stacks-packs/14">Repeat Weekly</a>
+            </div>
+            <p class="order-note" id="orderNote">Build the meals first. Total unlocks at review, right next to checkout.</p>
           </aside>
         </div>
       </section>

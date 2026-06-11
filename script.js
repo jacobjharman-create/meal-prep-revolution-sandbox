@@ -122,6 +122,7 @@ const builderSteps = [
 const builderState = {
   stepIndex: 0,
   quantity: 12,
+  reviewReady: false,
   selections: {
     protein: "chicken",
     carb: "jasmine-rice",
@@ -145,6 +146,7 @@ const cartItems = document.querySelector("#cartItems");
 const cartMealTotal = document.querySelector("#cartMealTotal");
 const cartPriceTotal = document.querySelector("#cartPriceTotal");
 const orderNote = document.querySelector("#orderNote");
+const purchaseActions = document.querySelector("#purchaseActions");
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -264,7 +266,7 @@ function renderBuilder() {
 
 function renderCart() {
   if (!builderState.cart.length) {
-    cartItems.innerHTML = `<div class="cart-empty">Your master list is empty. Build a clean plate, set the quantity, then add it here.</div>`;
+    cartItems.innerHTML = `<div class="cart-empty">Build a clean plate and stack the week. Pricing stays out of the way until review.</div>`;
   } else {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
@@ -274,7 +276,7 @@ function renderCart() {
             <p>${escapeHtml(item.description)}</p>
           </div>
           <div class="cart-row">
-            <strong>${dollars(item.price * item.quantity)}</strong>
+            <strong>${builderState.reviewReady ? dollars(item.price * item.quantity) : "Review to reveal"}</strong>
             <div class="cart-qty" aria-label="${escapeHtml(item.title)} quantity">
               <button type="button" data-cart-action="decrease" data-cart-key="${item.key}" aria-label="Decrease ${escapeHtml(item.title)}">-</button>
               <span>${item.quantity}</span>
@@ -289,7 +291,8 @@ function renderCart() {
   const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   cartMealTotal.textContent = totalMeals;
-  cartPriceTotal.textContent = dollars(totalPrice);
+  cartPriceTotal.textContent = builderState.reviewReady ? dollars(totalPrice) : "Review";
+  purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
 }
 
 function setQuantity(value) {
@@ -305,6 +308,7 @@ function moveStep(direction) {
 function addCurrentBuildToCart() {
   const build = currentBuild();
   const existing = builderState.cart.find((item) => item.key === build.key);
+  builderState.reviewReady = false;
 
   if (existing) {
     existing.quantity += builderState.quantity;
@@ -312,22 +316,25 @@ function addCurrentBuildToCart() {
     builderState.cart.push({ ...build, quantity: builderState.quantity });
   }
 
-  orderNote.textContent = `${builderState.quantity} ${build.title.toLowerCase()} meals added to the master list.`;
+  orderNote.textContent = `${builderState.quantity} ${build.title.toLowerCase()} meals stacked. Keep customizing, then review when the week feels right.`;
   renderCart();
 }
 
 function prepareStoreOrder() {
   if (!builderState.cart.length) {
-    orderNote.textContent = "Add at least one meal build before preparing the store order.";
+    orderNote.textContent = "Stack at least one meal build before reviewing checkout.";
     return;
   }
 
+  builderState.reviewReady = true;
   const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const lines = builderState.cart
     .map((item) => `${item.quantity}x ${item.title}: ${item.description}`)
     .join(" / ");
 
-  orderNote.innerHTML = `<strong>Demo order ready:</strong> ${totalMeals} meals. ${escapeHtml(lines)}`;
+  renderCart();
+  orderNote.innerHTML = `<strong>${dollars(totalPrice)} for ${totalMeals} meals.</strong> ${escapeHtml(lines)}`;
 }
 
 renderMenu("build");
@@ -375,7 +382,9 @@ builderOptions.addEventListener("click", (event) => {
     builderState.selections[step.id] = optionId;
   }
 
+  builderState.reviewReady = false;
   renderBuilder();
+  renderCart();
 });
 
 document.querySelector("#builderBack").addEventListener("click", () => moveStep(-1));
@@ -394,6 +403,7 @@ cartItems.addEventListener("click", (event) => {
   if (!item) return;
 
   item.quantity += button.dataset.cartAction === "increase" ? 1 : -1;
+  builderState.reviewReady = false;
   builderState.cart = builderState.cart.filter((cartItem) => cartItem.quantity > 0);
   renderCart();
 });
