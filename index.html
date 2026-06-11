@@ -13,7 +13,7 @@
       property="og:description"
       content="Custom clean meals, no subscriptions, no contracts, pickup or delivery across coastal Orange County."
     >
-    <meta property="og:image" content="assets/images/hero-black-meal-prep.png">
+    <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -60,7 +60,7 @@
             No set menus. Just meals built the way you actually eat.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#wizard">Preview Builder</a>
+            <a class="button button-primary" href="#wizard">Build Meals</a>
             <a class="button button-ghost" href="#menu">View Menu</a>
           </div>
           <div class="signal-row" aria-label="Meal Prep Revolution highlights">
@@ -71,10 +71,12 @@
         </div>
 
         <div class="hero-product" aria-label="Meal Prep Revolution prepared meals">
-          <div class="tray-stage">
-            <img class="tray tray-main" src="assets/images/hero-black-meal-prep.png" alt="Premium black meal prep containers with clean meals">
-            <img class="tray tray-left" src="assets/images/chicken-black-container.png" alt="Black meal prep container with chicken, rice, and vegetables">
-            <img class="tray tray-bottom" src="assets/images/batch-black-containers.png" alt="Batch of black meal prep containers ready for the week">
+          <div class="hero-frame">
+            <img
+              class="hero-meal"
+              src="assets/images/hero-single-black-container.png"
+              alt="Premium black meal prep container with grilled steak, chicken, rice, sweet potato, asparagus, broccoli, peppers, and sauce"
+            >
             <div class="macro-glass">
               <strong>Build Profile</strong>
               <span>Protein first</span>
@@ -85,54 +87,109 @@
         </div>
       </section>
 
-      <section class="wizard-preview" id="wizard" aria-labelledby="wizard-title">
-        <div class="section-kicker">Next generation ordering</div>
+      <section class="builder-section" id="wizard" aria-labelledby="wizard-title">
+        <div class="section-kicker">Build the week</div>
         <div class="section-heading split">
           <div>
-            <h2 id="wizard-title">Build twelve meals without the back-and-forth.</h2>
+            <h2 id="wizard-title">Pick the plate. Batch the week.</h2>
             <p>
-              The next phase is a guided food ordering wizard: choose a goal, build plates,
-              repeat quantities, pay, and send the order directly to the store.
+              Protein first, then carb, vegetables, sauce, and quantity. A clean athlete ordering flow
+              for people who just want their meals handled.
             </p>
           </div>
           <a class="button button-outline" href="https://ordermealpreprevolution.square.site/">Current Ordering</a>
         </div>
-        <div class="wizard-card">
-          <div class="wizard-line" aria-hidden="true"></div>
-          <button class="wizard-step active" type="button" data-step="goal">
-            <span class="icon icon-target"></span>
-            <strong>Goal</strong>
-            <small>Pick the outcome</small>
-          </button>
-          <button class="wizard-step" type="button" data-step="protein">
-            <span class="icon icon-protein"></span>
-            <strong>Protein</strong>
-            <small>Chicken, steak, salmon</small>
-          </button>
-          <button class="wizard-step" type="button" data-step="carb">
-            <span class="icon icon-carb"></span>
-            <strong>Carb</strong>
-            <small>Rice, potato, quinoa</small>
-          </button>
-          <button class="wizard-step" type="button" data-step="veg">
-            <span class="icon icon-leaf"></span>
-            <strong>Vegetables</strong>
-            <small>Fresh and flexible</small>
-          </button>
-          <button class="wizard-step" type="button" data-step="sauce">
-            <span class="icon icon-drop"></span>
-            <strong>Sauce</strong>
-            <small>Flavor control</small>
-          </button>
-          <button class="wizard-step" type="button" data-step="quantity">
-            <span class="icon icon-stack"></span>
-            <strong>Quantity</strong>
-            <small>Batch your week</small>
-          </button>
-        </div>
-        <div class="wizard-output" aria-live="polite">
-          <span>Builder preview</span>
-          <strong id="wizardOutput">Start with the outcome: performance, lean, balanced, family, or lifestyle.</strong>
+
+        <div class="builder-shell">
+          <aside class="builder-rail" aria-label="Meal builder steps">
+            <button class="builder-step active" type="button" data-builder-step="protein">
+              <span class="icon icon-protein"></span>
+              <span>
+                <strong>Protein</strong>
+                <small>Chicken, steak, salmon</small>
+              </span>
+            </button>
+            <button class="builder-step" type="button" data-builder-step="carb">
+              <span class="icon icon-carb"></span>
+              <span>
+                <strong>Grain</strong>
+                <small>Rice, potato, quinoa</small>
+              </span>
+            </button>
+            <button class="builder-step" type="button" data-builder-step="veg">
+              <span class="icon icon-leaf"></span>
+              <span>
+                <strong>Vegetables</strong>
+                <small>Pick two or more</small>
+              </span>
+            </button>
+            <button class="builder-step" type="button" data-builder-step="sauce">
+              <span class="icon icon-drop"></span>
+              <span>
+                <strong>Sauce</strong>
+                <small>On the side</small>
+              </span>
+            </button>
+          </aside>
+
+          <div class="builder-workspace">
+            <div class="builder-preview">
+              <div>
+                <span class="builder-label">Current build</span>
+                <h3 id="builderPlateTitle">Performance Chicken Plate</h3>
+                <p id="builderPlateDesc">Grilled chicken with jasmine rice, broccoli, asparagus, and lemon herb sauce.</p>
+              </div>
+              <img id="builderImage" src="assets/images/chicken-black-container.png" alt="Current meal build preview">
+            </div>
+
+            <div class="builder-panel">
+              <div class="builder-panel-head">
+                <div>
+                  <span class="builder-label" id="builderStepCount">Step 1 of 4</span>
+                  <h3 id="builderPrompt">Choose your protein.</h3>
+                </div>
+                <div class="builder-target">
+                  <strong id="builderMealCount">12</strong>
+                  <span>meals</span>
+                </div>
+              </div>
+
+              <div class="builder-options" id="builderOptions" aria-live="polite"></div>
+
+              <div class="builder-controls">
+                <div class="stepper" aria-label="Number of meals">
+                  <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
+                  <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
+                  <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
+                </div>
+                <div class="builder-actions">
+                  <button class="button button-ghost" type="button" id="builderBack">Back</button>
+                  <button class="button button-outline" type="button" id="builderNext">Next</button>
+                  <button class="button button-primary" type="button" id="addMeal">Add to List</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside class="builder-cart" aria-labelledby="cart-title">
+            <div class="cart-head">
+              <span class="builder-label">Live demo cart</span>
+              <h3 id="cart-title">Master list</h3>
+            </div>
+            <div class="cart-items" id="cartItems" aria-live="polite"></div>
+            <div class="cart-summary">
+              <div>
+                <span>Total meals</span>
+                <strong id="cartMealTotal">0</strong>
+              </div>
+              <div>
+                <span>Estimated order</span>
+                <strong id="cartPriceTotal">$0</strong>
+              </div>
+            </div>
+            <button class="button button-primary cart-submit" type="button" id="submitOrder">Prepare Store Order</button>
+            <p class="order-note" id="orderNote">Add a meal build to generate a store-ready summary for demo.</p>
+          </aside>
         </div>
       </section>
 
