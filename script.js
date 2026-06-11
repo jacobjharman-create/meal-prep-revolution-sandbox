@@ -217,6 +217,18 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function getBuiltMealTotal() {
+  return builderState.cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+}
+
+function refreshMealTotals() {
+  const totalMeals = getBuiltMealTotal();
+  if (builtMealCount) {
+    builtMealCount.textContent = String(totalMeals);
+  }
+  cartMealTotal.textContent = String(totalMeals);
+}
+
 function getStep(id) {
   return builderSteps.find((step) => step.id === id);
 }
@@ -289,6 +301,7 @@ function renderBuilder() {
   const build = currentBuild();
   const selectedForStep = getSelectedOptions(step.id).at(-1) || step.options[0];
   const featuredIngredient = selectedForStep?.image || step.rail;
+  refreshMealTotals();
 
   document.querySelectorAll(".builder-step").forEach((button) => {
     button.classList.toggle("active", button.dataset.builderStep === step.id);
@@ -375,10 +388,8 @@ function renderCart() {
       .join("");
   }
 
-  const totalMeals = builderState.cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = builderState.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  cartMealTotal.textContent = totalMeals;
-  builtMealCount.textContent = totalMeals;
+  refreshMealTotals();
   cartPriceTotal.textContent = builderState.reviewReady ? dollars(totalPrice) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
 }
