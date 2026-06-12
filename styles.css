@@ -292,10 +292,24 @@ button {
 
 .hero-heading {
   position: relative;
-  z-index: 2;
+  z-index: 30;
   box-sizing: border-box;
   width: 100%;
   padding: clamp(150px, 20vh, 220px) clamp(22px, 4vw, 58px) 0;
+}
+
+.hero-heading-logo {
+  position: relative;
+  z-index: 35;
+  display: block;
+  width: clamp(142px, 15vw, 228px);
+  max-height: clamp(44px, 5.2vw, 72px);
+  margin: 0 0 clamp(18px, 2vw, 28px);
+  object-fit: contain;
+  object-position: left center;
+  filter:
+    drop-shadow(0 8px 20px rgba(0, 0, 0, 0.72))
+    drop-shadow(0 0 18px rgba(22, 209, 0, 0.22));
 }
 
 h1,
@@ -2293,8 +2307,14 @@ cite {
   .hero-heading {
     box-sizing: border-box;
     width: 100vw;
-    padding: 96px 20px 0;
+    padding: 78px 20px 0;
     overflow: hidden;
+  }
+
+  .hero-heading-logo {
+    width: 118px;
+    max-height: 38px;
+    margin-bottom: 14px;
   }
 
   .hero-promise-list {
