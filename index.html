@@ -15,7 +15,7 @@
     >
     <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="styles.css?v=header-stack-20260612">
+    <link rel="stylesheet" href="styles.css?v=order-os-20260612">
   </head>
   <body>
     <header class="site-header" id="top">
@@ -232,7 +232,7 @@
 
           <aside class="builder-cart woo-order-panel" aria-labelledby="cart-title">
             <div class="cart-head">
-              <span class="builder-label">WooCommerce draft</span>
+              <span class="builder-label">Order OS draft</span>
               <h3 id="cart-title">Order stack</h3>
             </div>
             <div class="cart-items" id="cartItems" aria-live="polite"></div>
@@ -246,14 +246,92 @@
                 <strong id="cartPriceTotal">Review</strong>
               </div>
             </div>
-            <button class="button button-primary cart-submit" type="button" id="submitOrder">Prepare Woo Checkout</button>
+
+            <form class="order-intake" id="orderIntake" aria-label="Order handoff details">
+              <div class="intake-grid">
+                <label>
+                  <span>Name</span>
+                  <input id="customerName" name="name" type="text" autocomplete="name" placeholder="Customer name">
+                </label>
+                <label>
+                  <span>Phone</span>
+                  <input id="customerPhone" name="phone" type="tel" autocomplete="tel" placeholder="Text number">
+                </label>
+                <label>
+                  <span>Email</span>
+                  <input id="customerEmail" name="email" type="email" autocomplete="email" placeholder="Receipt email">
+                </label>
+                <label>
+                  <span>Handoff</span>
+                  <select id="fulfillmentType" name="fulfillment">
+                    <option value="pickup">Pickup</option>
+                    <option value="delivery">Delivery</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Date</span>
+                  <input id="fulfillmentDate" name="date" type="date">
+                </label>
+                <label>
+                  <span>Window</span>
+                  <select id="fulfillmentWindow" name="window">
+                    <option value="morning">Morning</option>
+                    <option value="midday">Midday</option>
+                    <option value="evening">Evening</option>
+                  </select>
+                </label>
+              </div>
+              <label class="intake-notes">
+                <span>Notes / allergies</span>
+                <textarea id="orderNotes" name="notes" rows="3" placeholder="Sauce on side, allergy notes, gate code, delivery details"></textarea>
+              </label>
+              <label class="intake-check">
+                <input id="saveCustomerProfile" type="checkbox" checked>
+                <span>Save this customer profile for reorder demos</span>
+              </label>
+            </form>
+
+            <button class="button button-primary cart-submit" type="button" id="submitOrder">Create Order Ticket</button>
             <div class="purchase-actions" id="purchaseActions" hidden>
-              <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Temporary Checkout Link</a>
-              <button class="button button-outline" type="button" id="copyWooPayload">Copy Order Payload</button>
+              <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Open Temporary Checkout</a>
+              <button class="button button-outline" type="button" id="copyWooPayload">Copy Order OS Payload</button>
             </div>
             <pre class="woo-payload" id="wooPayload" aria-live="polite"></pre>
-            <p class="order-note" id="orderNote">Build a meal, add it to the stack, then prepare the WooCommerce-ready order draft.</p>
+            <p class="order-note" id="orderNote">Build a meal, add customer details, then create a kitchen-ready order ticket.</p>
           </aside>
+        </div>
+
+        <div class="order-os-board" aria-label="Meal Prep Revolution Order OS">
+          <article class="order-os-panel customer-memory">
+            <div>
+              <span class="builder-label">Customer memory</span>
+              <h3>Saved reorder path</h3>
+            </div>
+            <p id="customerMemoryStatus">No saved customer profile yet. Create an order ticket to unlock reorder demos.</p>
+            <div class="order-os-actions">
+              <button class="button button-outline" type="button" id="loadLastOrder">Load Last Order</button>
+              <button class="button button-outline" type="button" id="clearOrderOs">Clear Demo Data</button>
+            </div>
+          </article>
+
+          <article class="order-os-panel kitchen-queue">
+            <div class="cart-head">
+              <div>
+                <span class="builder-label">Kitchen queue</span>
+                <h3>Production tickets</h3>
+              </div>
+              <strong id="queueCount">0</strong>
+            </div>
+            <div class="queue-list" id="kitchenQueue" aria-live="polite"></div>
+          </article>
+
+          <article class="order-os-panel prep-summary">
+            <div>
+              <span class="builder-label">Prep totals</span>
+              <h3>Batch board</h3>
+            </div>
+            <div class="prep-total-grid" id="prepTotals" aria-live="polite"></div>
+          </article>
         </div>
       </section>
 

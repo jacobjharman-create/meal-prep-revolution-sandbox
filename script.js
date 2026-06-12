@@ -166,7 +166,7 @@ const builderCatalog = {
         ],
       },
       {
-        id: "base",
+        id: "carbs",
         label: "Carbs",
         icon: "icon-carb",
         multi: false,
@@ -178,23 +178,23 @@ const builderCatalog = {
           { id: "beans", name: "Beans", image: builderItemImages["black-beans"] },
           { id: "cauli-rice", name: "Cauli Rice", image: builderItemImages["cauli-rice"] },
           { id: "noodles", name: "Noodles", image: builderItemImages.noodles },
-          { id: "no-base", name: "No Carbs", image: builderItemImages.none },
+          { id: "no-carbs", name: "No Carbs", image: builderItemImages.none },
         ],
       },
       {
-        id: "fruit",
+        id: "vegetables",
         label: "Vegetables",
         icon: "icon-leaf",
         multi: true,
         options: [
-          { id: "berries", name: "Berries", image: builderItemImages.peppers },
-          { id: "avocado", name: "Avocado", image: builderItemImages.asparagus },
-          { id: "banana", name: "Banana", image: builderItemImages["sweet-potato"] },
-          { id: "apple", name: "Apple", image: builderItemImages.carrots },
-          { id: "pineapple", name: "Pineapple", image: builderItemImages.potatoes },
-          { id: "spinach", name: "Spinach", image: builderItemImages.spinach },
+          { id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli },
+          { id: "asparagus", name: "Asparagus", image: builderItemImages.asparagus },
           { id: "peppers", name: "Peppers", image: builderItemImages.peppers },
-          { id: "no-fruit", name: "No Fruit", image: builderItemImages.none },
+          { id: "green-beans", name: "Green Beans", image: builderItemImages["green-beans"] },
+          { id: "spinach", name: "Spinach", image: builderItemImages.spinach },
+          { id: "carrots", name: "Carrots", image: builderItemImages.carrots },
+          { id: "zucchini", name: "Zucchini", image: builderItemImages.zucchini },
+          { id: "no-vegetables", name: "No Vegetables", image: builderItemImages.none },
         ],
       },
       {
@@ -216,8 +216,8 @@ const builderCatalog = {
     ],
     defaults: {
       protein: "eggs",
-      base: "potatoes",
-      fruit: ["berries"],
+      carbs: "potatoes",
+      vegetables: ["peppers"],
       sauce: "salsa-verde",
     },
   },
@@ -316,6 +316,30 @@ const heroByProtein = {
   },
 };
 
+const orderOsStorage = {
+  queue: "mprOrderOsQueue",
+  customer: "mprCustomerProfile",
+  draft: "mprOrderOsDraft",
+};
+
+function readStoredJson(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key)) || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeStoredJson(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function fulfillmentDateDefault() {
+  const date = new Date();
+  date.setDate(date.getDate() + 2);
+  return date.toISOString().slice(0, 10);
+}
+
 const builderState = {
   mode: "breakfast",
   portion: "medium",
@@ -339,6 +363,7 @@ const builderState = {
   },
   forceHeroSlide: false,
   cart: [],
+  orderQueue: readStoredJson(orderOsStorage.queue, []),
   reviewReady: false,
 };
 
@@ -363,6 +388,21 @@ const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
 const wooPayload = document.querySelector("#wooPayload");
 const copyWooPayload = document.querySelector("#copyWooPayload");
+const orderIntake = document.querySelector("#orderIntake");
+const customerName = document.querySelector("#customerName");
+const customerPhone = document.querySelector("#customerPhone");
+const customerEmail = document.querySelector("#customerEmail");
+const fulfillmentType = document.querySelector("#fulfillmentType");
+const fulfillmentDate = document.querySelector("#fulfillmentDate");
+const fulfillmentWindow = document.querySelector("#fulfillmentWindow");
+const orderNotes = document.querySelector("#orderNotes");
+const saveCustomerProfile = document.querySelector("#saveCustomerProfile");
+const loadLastOrder = document.querySelector("#loadLastOrder");
+const clearOrderOs = document.querySelector("#clearOrderOs");
+const customerMemoryStatus = document.querySelector("#customerMemoryStatus");
+const kitchenQueue = document.querySelector("#kitchenQueue");
+const queueCount = document.querySelector("#queueCount");
+const prepTotals = document.querySelector("#prepTotals");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
 
@@ -409,6 +449,44 @@ function selectedOptions(groupId, mode = builderState.mode) {
     return (value || []).map((id) => getOption(groupId, id, mode)).filter(Boolean);
   }
   return [getOption(groupId, value, mode)].filter(Boolean);
+}
+
+function getCustomerDraft() {
+  return {
+    name: customerName?.value.trim() || "",
+    phone: customerPhone?.value.trim() || "",
+    email: customerEmail?.value.trim() || "",
+    fulfillment: fulfillmentType?.value || "pickup",
+    date: fulfillmentDate?.value || fulfillmentDateDefault(),
+    window: fulfillmentWindow?.value || "morning",
+    notes: orderNotes?.value.trim() || "",
+  };
+}
+
+function hydrateCustomerDraft() {
+  if (!fulfillmentDate?.value) fulfillmentDate.value = fulfillmentDateDefault();
+  const draft = readStoredJson(orderOsStorage.draft, {});
+  const saved = readStoredJson(orderOsStorage.customer, {});
+  const source = { ...saved, ...draft };
+
+  if (customerName && source.name) customerName.value = source.name;
+  if (customerPhone && source.phone) customerPhone.value = source.phone;
+  if (customerEmail && source.email) customerEmail.value = source.email;
+  if (fulfillmentType && source.fulfillment) fulfillmentType.value = source.fulfillment;
+  if (fulfillmentDate && source.date) fulfillmentDate.value = source.date;
+  if (fulfillmentWindow && source.window) fulfillmentWindow.value = source.window;
+  if (orderNotes && source.notes) orderNotes.value = source.notes;
+}
+
+function customerDisplayName(customer) {
+  return customer.name || customer.phone || customer.email || "Walk-in customer";
+}
+
+function validateOrderTicket(customer) {
+  if (!builderState.cart.length) return "Add at least one meal build before creating an order ticket.";
+  if (!customer.name) return "Add a customer name so the kitchen ticket has an owner.";
+  if (!customer.phone && !customer.email) return "Add a phone or email so the order can be confirmed.";
+  return "";
 }
 
 function setFeaturedHero(option) {
@@ -592,17 +670,26 @@ function renderCurrentBuild() {
 }
 
 function buildWooPayload() {
+  const customer = getCustomerDraft();
   const lines = builderState.cart.map((item) => ({
     sku: `mpr-${item.mode}-${item.portion}-custom-meal`,
     name: item.title,
     quantity: item.quantity,
     unit_price: item.unitPrice,
     line_total: item.total,
+    reorder_key: item.key,
+    builder_groups: item.groups.map((group) => ({
+      id: group.id,
+      label: group.label,
+      selected: group.selected.map((selection) => selection.name),
+    })),
     meta_data: [
       { key: "Meal Type", value: item.mealType },
       { key: "Portion", value: item.portion },
       { key: "Average Meal Price", value: dollars(item.avg) },
       { key: "Selections", value: item.description },
+      { key: "Fulfillment", value: `${customer.fulfillment} / ${customer.date} / ${customer.window}` },
+      { key: "Customer Notes", value: customer.notes || "None" },
     ],
   }));
   const totalMeals = lines.reduce((sum, line) => sum + line.quantity, 0);
@@ -610,12 +697,143 @@ function buildWooPayload() {
 
   return {
     source: "meal-prep-revolution-sandbox-builder",
-    version: "2026-06-11",
+    version: "2026-06-12-order-os",
     currency: "USD",
+    customer,
+    fulfillment: {
+      type: customer.fulfillment,
+      date: customer.date,
+      window: customer.window,
+      notes: customer.notes,
+    },
     total_meals: totalMeals,
     estimated_total: Number(totalPrice.toFixed(2)),
     line_items: lines,
   };
+}
+
+function ticketId() {
+  const stamp = new Date().toISOString().replace(/\D/g, "").slice(4, 12);
+  const suffix = Math.random().toString(36).slice(2, 5).toUpperCase();
+  return `MPR-${stamp}-${suffix}`;
+}
+
+function buildOrderTicket(payload) {
+  return {
+    id: ticketId(),
+    status: "New",
+    created_at: new Date().toISOString(),
+    customer: payload.customer,
+    fulfillment: payload.fulfillment,
+    total_meals: payload.total_meals,
+    estimated_total: payload.estimated_total,
+    line_items: payload.line_items,
+    cart: cloneData(builderState.cart),
+    next_actions: ["Confirm payment", "Batch ingredients", "Assign pickup or delivery window"],
+  };
+}
+
+function saveOrderOs(ticket) {
+  builderState.orderQueue = [ticket, ...builderState.orderQueue].slice(0, 8);
+  writeStoredJson(orderOsStorage.queue, builderState.orderQueue);
+  writeStoredJson(orderOsStorage.draft, ticket.customer);
+
+  if (saveCustomerProfile?.checked) {
+    writeStoredJson(orderOsStorage.customer, {
+      ...ticket.customer,
+      last_order_id: ticket.id,
+      last_order_at: ticket.created_at,
+      last_cart: ticket.cart,
+      last_total_meals: ticket.total_meals,
+      last_estimated_total: ticket.estimated_total,
+    });
+  }
+}
+
+function orderStatusNext(status) {
+  return {
+    New: "In prep",
+    "In prep": "Ready",
+    Ready: "Fulfilled",
+    Fulfilled: "New",
+  }[status] || "New";
+}
+
+function prepBuckets(orders) {
+  const buckets = {
+    Protein: {},
+    Carbs: {},
+    Vegetables: {},
+    Sauce: {},
+  };
+
+  orders
+    .filter((order) => order.status !== "Fulfilled")
+    .flatMap((order) => order.cart || [])
+    .forEach((item) => {
+      (item.groups || []).forEach((group) => {
+        const label = group.label === "Grain" ? "Carbs" : group.label;
+        const bucket = buckets[label] || buckets[label.replace("Fruit", "Vegetables")];
+        if (!bucket) return;
+        group.selected.forEach((selection) => {
+          bucket[selection.name] = (bucket[selection.name] || 0) + item.quantity;
+        });
+      });
+    });
+
+  return buckets;
+}
+
+function renderOrderOs() {
+  const saved = readStoredJson(orderOsStorage.customer, null);
+
+  if (customerMemoryStatus) {
+    customerMemoryStatus.textContent = saved
+      ? `${customerDisplayName(saved)} saved. Last order: ${saved.last_total_meals || 0} meals at ${dollars(saved.last_estimated_total || 0)}.`
+      : "No saved customer profile yet. Create an order ticket to unlock reorder demos.";
+  }
+
+  if (queueCount) queueCount.textContent = String(builderState.orderQueue.length);
+
+  if (kitchenQueue) {
+    kitchenQueue.innerHTML = builderState.orderQueue.length
+      ? builderState.orderQueue
+          .map((ticket) => `
+            <article class="queue-ticket">
+              <div>
+                <span>${escapeHtml(ticket.id)}</span>
+                <h4>${escapeHtml(customerDisplayName(ticket.customer))}</h4>
+                <p>${escapeHtml(ticket.fulfillment.type)} / ${escapeHtml(ticket.fulfillment.date)} / ${escapeHtml(ticket.fulfillment.window)}</p>
+              </div>
+              <div class="queue-ticket-meta">
+                <strong>${ticket.total_meals} meals</strong>
+                <span>${dollars(ticket.estimated_total)}</span>
+              </div>
+              <button type="button" data-ticket-status="${escapeHtml(ticket.id)}">${escapeHtml(ticket.status)}</button>
+            </article>
+          `)
+          .join("")
+      : `<div class="cart-empty">Kitchen tickets will appear here when an order stack is converted.</div>`;
+  }
+
+  if (prepTotals) {
+    const buckets = prepBuckets(builderState.orderQueue);
+    prepTotals.innerHTML = Object.entries(buckets)
+      .map(([label, items]) => {
+        const rows = Object.entries(items)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([name, count]) => `<li><span>${escapeHtml(name)}</span><strong>${count}</strong></li>`)
+          .join("");
+        return `
+          <div class="prep-bucket">
+            <h4>${escapeHtml(label)}</h4>
+            <ul>${rows || `<li><span>No active tickets</span><strong>0</strong></li>`}</ul>
+          </div>
+        `;
+      })
+      .join("");
+  }
 }
 
 function renderCart() {
@@ -649,6 +867,7 @@ function renderCart() {
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
   wooPayload.textContent = builderState.reviewReady ? JSON.stringify(payload, null, 2) : "";
   localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
+  renderOrderOs();
 }
 
 function renderBuilder() {
@@ -682,17 +901,23 @@ function addCurrentBuildToCart() {
 }
 
 function prepareStoreOrder() {
-  if (!builderState.cart.length) {
-    orderNote.textContent = "Add at least one meal build before preparing the WooCommerce order.";
+  const customer = getCustomerDraft();
+  const validationMessage = validateOrderTicket(customer);
+
+  if (validationMessage) {
+    orderNote.textContent = validationMessage;
     return;
   }
 
   builderState.reviewReady = true;
   const payload = buildWooPayload();
+  const ticket = buildOrderTicket(payload);
+  saveOrderOs(ticket);
   renderCart();
-  orderNote.innerHTML = `<strong>${dollars(payload.estimated_total)} for ${payload.total_meals} meals.</strong> WooCommerce order payload is ready for the backend handoff.`;
+  orderNote.innerHTML = `<strong>${ticket.id}</strong> created for ${escapeHtml(customerDisplayName(customer))}. ${payload.total_meals} meals are now in the kitchen queue.`;
 }
 
+hydrateCustomerDraft();
 renderMenu("build");
 renderBuilder();
 
@@ -811,6 +1036,60 @@ copyWooPayload.addEventListener("click", async () => {
   } catch {
     orderNote.textContent = "Payload is visible below and ready to copy.";
   }
+});
+
+orderIntake?.addEventListener("input", () => {
+  writeStoredJson(orderOsStorage.draft, getCustomerDraft());
+  builderState.reviewReady = false;
+  renderCart();
+});
+
+orderIntake?.addEventListener("change", () => {
+  writeStoredJson(orderOsStorage.draft, getCustomerDraft());
+  builderState.reviewReady = false;
+  renderCart();
+});
+
+loadLastOrder?.addEventListener("click", () => {
+  const saved = readStoredJson(orderOsStorage.customer, null);
+  if (!saved?.last_cart?.length) {
+    orderNote.textContent = "No saved reorder profile yet. Create an order ticket first.";
+    return;
+  }
+
+  builderState.cart = cloneData(saved.last_cart);
+  builderState.reviewReady = false;
+  if (customerName) customerName.value = saved.name || "";
+  if (customerPhone) customerPhone.value = saved.phone || "";
+  if (customerEmail) customerEmail.value = saved.email || "";
+  if (fulfillmentType) fulfillmentType.value = saved.fulfillment || "pickup";
+  if (fulfillmentDate) fulfillmentDate.value = fulfillmentDateDefault();
+  if (fulfillmentWindow) fulfillmentWindow.value = saved.window || "morning";
+  if (orderNotes) orderNotes.value = saved.notes || "";
+  orderNote.textContent = `${customerDisplayName(saved)}'s last stack is loaded for reorder.`;
+  renderCart();
+});
+
+clearOrderOs?.addEventListener("click", () => {
+  localStorage.removeItem(orderOsStorage.queue);
+  localStorage.removeItem(orderOsStorage.customer);
+  localStorage.removeItem(orderOsStorage.draft);
+  builderState.orderQueue = [];
+  builderState.reviewReady = false;
+  if (orderIntake) orderIntake.reset();
+  if (fulfillmentDate) fulfillmentDate.value = fulfillmentDateDefault();
+  orderNote.textContent = "Order OS demo data cleared.";
+  renderCart();
+});
+
+kitchenQueue?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-ticket-status]");
+  if (!button) return;
+  const ticket = builderState.orderQueue.find((item) => item.id === button.dataset.ticketStatus);
+  if (!ticket) return;
+  ticket.status = orderStatusNext(ticket.status);
+  writeStoredJson(orderOsStorage.queue, builderState.orderQueue);
+  renderOrderOs();
 });
 
 cartItems.addEventListener("click", (event) => {
