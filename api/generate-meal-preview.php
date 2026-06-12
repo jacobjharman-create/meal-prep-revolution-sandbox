@@ -86,6 +86,9 @@ function config_diagnostics(string $key): array {
     'configured' => env_value($key) !== '',
     'environment_variable' => is_string($envValue) && trim($envValue) !== '',
     'server_variable' => trim((string) $serverValue) !== '',
+    'script_dir' => __DIR__,
+    'site_root_dir' => dirname(__DIR__),
+    'parent_dir' => dirname(__DIR__, 2),
     'files' => $files,
   ];
 }
