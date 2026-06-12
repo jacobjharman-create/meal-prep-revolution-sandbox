@@ -137,7 +137,7 @@ const builderCatalog = {
       },
       {
         id: "base",
-        label: "Base",
+        label: "Carbs",
         icon: "icon-carb",
         multi: false,
         options: [
@@ -148,7 +148,7 @@ const builderCatalog = {
           { id: "beans", name: "Beans", image: builderItemImages["black-beans"] },
           { id: "cauli-rice", name: "Cauli Rice", image: builderItemImages["cauli-rice"] },
           { id: "noodles", name: "Noodles", image: builderItemImages.noodles },
-          { id: "no-base", name: "No Base", image: builderItemImages.none },
+          { id: "no-base", name: "No Carbs", image: builderItemImages.none },
         ],
       },
       {
@@ -303,6 +303,11 @@ const builderState = {
     breakfast: cloneData(builderCatalog.breakfast.defaults),
     lunch: cloneData(builderCatalog.lunch.defaults),
   },
+  featuredHeroByMode: {
+    breakfast: null,
+    lunch: null,
+  },
+  forceHeroSlide: false,
   cart: [],
   reviewReady: false,
 };
@@ -329,6 +334,7 @@ const purchaseActions = document.querySelector("#purchaseActions");
 const wooPayload = document.querySelector("#wooPayload");
 const copyWooPayload = document.querySelector("#copyWooPayload");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
+let heroSlideToken = 0;
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -375,6 +381,21 @@ function selectedOptions(groupId, mode = builderState.mode) {
   return [getOption(groupId, value, mode)].filter(Boolean);
 }
 
+function setFeaturedHero(option) {
+  if (!option?.image) return;
+  builderState.featuredHeroByMode[builderState.mode] = {
+    image: option.image,
+    label: option.name,
+  };
+  builderState.forceHeroSlide = true;
+}
+
+function setFeaturedHeroFromGroup(groupId) {
+  const selected = selectedOptions(groupId);
+  const group = builderCatalog[builderState.mode].groups.find((item) => item.id === groupId);
+  setFeaturedHero(selected[0] || group?.options[0]);
+}
+
 function currentBuild() {
   const mode = getCurrentMode();
   const groups = mode.groups.map((group) => ({
@@ -395,8 +416,10 @@ function currentBuild() {
     builderState.portion,
     ...groups.map((group) => `${group.id}:${group.selected.map((item) => item.id).sort().join("+") || "none"}`),
   ].join("|");
-  const hero = heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
+  const featuredHero = builderState.featuredHeroByMode[builderState.mode];
+  const hero = featuredHero?.image || heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
   const title = `${builderState.portion} ${mode.mealLabel} build`;
+  const heroAlt = featuredHero?.label ? `${featuredHero.label} full-screen picker preview` : `${title} preview`;
   const description = groups
     .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)
     .join(" / ");
@@ -414,17 +437,29 @@ function currentBuild() {
     description,
     summary,
     hero,
+    heroAlt,
     groups,
     selections: Object.fromEntries(groups.map((group) => [group.id, group.selected.map((item) => item.name)])),
   };
 }
 
-function setImageWithSlide(image, src) {
-  if (!image || !src || lastHeroImage === src) return;
+function setImageWithSlide(image, src, force = false) {
+  if (!image || !src) return;
+  const token = ++heroSlideToken;
+
+  if (lastHeroImage === src) {
+    if (!force) return;
+    image.classList.remove("slide-out", "slide-in");
+    void image.offsetWidth;
+    image.classList.add("slide-in");
+    return;
+  }
+
   lastHeroImage = src;
   image.classList.remove("slide-in");
   image.classList.add("slide-out");
   window.setTimeout(() => {
+    if (token !== heroSlideToken) return;
     image.src = src;
     image.classList.remove("slide-out");
     void image.offsetWidth;
@@ -501,8 +536,9 @@ function renderOptions() {
 function renderCurrentBuild() {
   const build = currentBuild();
   const mealLabel = `${build.quantity} ${build.portion} ${build.mealType} meals`;
-  setImageWithSlide(builderHeroImage, build.hero);
-  builderHeroImage.alt = `${build.title} preview`;
+  setImageWithSlide(builderHeroImage, build.hero, builderState.forceHeroSlide);
+  builderState.forceHeroSlide = false;
+  builderHeroImage.alt = build.heroAlt;
   heroTotal.textContent = moneyCompact(build.total);
   currentTotal.textContent = moneyCompact(build.total);
   currentMealLabel.textContent = `${build.quantity} meals`;
@@ -655,6 +691,7 @@ modeButtons.forEach((button) => {
     builderState.mode = nextMode;
     builderState.portion = builderState.portionByMode[nextMode] || builderCatalog[nextMode].defaultPortion;
     builderState.activeGroup = builderState.activeGroupByMode[nextMode] || builderCatalog[nextMode].defaultGroup;
+    setFeaturedHeroFromGroup(builderState.activeGroup);
     builderState.reviewReady = false;
     renderBuilder();
   });
@@ -674,6 +711,7 @@ builderGroups.addEventListener("click", (event) => {
   if (!button) return;
   builderState.activeGroup = button.dataset.builderStep;
   builderState.activeGroupByMode[builderState.mode] = builderState.activeGroup;
+  setFeaturedHeroFromGroup(builderState.activeGroup);
   renderBuilder();
 });
 
@@ -683,7 +721,9 @@ builderOptions.addEventListener("click", (event) => {
 
   const group = getCurrentGroup();
   const optionId = optionButton.dataset.option;
+  const option = getOption(group.id, optionId);
   const current = builderState.selections[builderState.mode][group.id];
+  setFeaturedHero(option);
 
   if (group.multi) {
     const selected = Array.isArray(current) ? current : [];
@@ -714,6 +754,7 @@ selectionStack.addEventListener("click", (event) => {
   if (!group) return;
 
   const current = builderState.selections[builderState.mode][group.id];
+  setFeaturedHero(getOption(group.id, chip.dataset.selectionOption));
   if (group.multi) {
     builderState.selections[builderState.mode][group.id] = (Array.isArray(current) ? current : []).filter(
       (id) => id !== chip.dataset.selectionOption,
