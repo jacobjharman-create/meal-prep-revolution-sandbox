@@ -54,34 +54,37 @@ const builderItemImages = {
 const builderGroupIcons = {
   "icon-protein": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M8 37C4 27 12 16 25 11c14-6 29 0 34 12 4 10-4 22-18 27-14 6-29-1-33-13Z" fill="none" stroke="currentColor" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="43" cy="25" r="5.2" fill="none" stroke="currentColor" stroke-width="3.8"/>
-      <path d="M17 38c7 6 20 8 31 1" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
+      <path d="M9 39c-4-10 5-20 17-25 15-6 30 0 34 12 4 11-6 23-21 28-14 5-27-2-30-15Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 40c-2-7 5-15 15-19 11-4 22 0 25 8 3 8-4 17-15 21-11 4-22-1-25-10Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 41c5-9 12-12 21-8 7 3 14 2 21-4" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <ellipse cx="43" cy="26" rx="7.2" ry="5.4" fill="none" stroke="currentColor" stroke-width="3.4"/>
     </svg>
   `,
   "icon-carb": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="17" cy="18" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(-38 17 18)"/>
-      <ellipse cx="32" cy="15" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(8 32 15)"/>
-      <ellipse cx="47" cy="20" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(38 47 20)"/>
-      <ellipse cx="19" cy="38" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(36 19 38)"/>
-      <ellipse cx="34" cy="36" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(-10 34 36)"/>
-      <ellipse cx="48" cy="42" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(-34 48 42)"/>
+      <ellipse cx="18" cy="21" rx="4.4" ry="11" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-34 18 21)"/>
+      <ellipse cx="34" cy="15" rx="4.4" ry="11" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(55 34 15)"/>
+      <ellipse cx="45" cy="28" rx="4.4" ry="11" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(48 45 28)"/>
+      <ellipse cx="17" cy="43" rx="4.4" ry="11" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-58 17 43)"/>
+      <ellipse cx="33" cy="43" rx="4.4" ry="11" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-14 33 43)"/>
+      <ellipse cx="48" cy="47" rx="4.4" ry="11" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-28 48 47)"/>
     </svg>
   `,
   "icon-leaf": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M20 9c5 2 9 6 10 12-7-1-13-4-16-9" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M32 7c4 4 6 9 5 15-5-2-9-7-10-13" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M45 9c-5 2-9 6-10 12 7-1 13-4 16-9" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M15 25c5-3 12-1 15 5l-9 26c-1 4-7 4-8 0L8 40c-2-6 1-12 7-15Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/>
-      <path d="M35 30c3-6 10-8 15-5 6 3 9 9 7 15l-6 16c-1 4-7 4-8 0L35 30Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/>
+      <path d="M21 10c4 3 6 7 6 13-6-2-10-5-12-10" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M36 8c4 4 5 9 3 15-5-3-8-7-8-13" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M50 14c-5 1-9 4-11 9 6 0 10-2 14-6" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 26c5-3 12-1 15 5L21 56c-2 4-8 3-8-2L9 39c-2-6 1-11 7-13Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M34 27c5-4 12-3 15 3l-4 24c-1 5-7 6-9 2L27 32c1-2 3-4 7-5Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M45 33c4-2 9-1 11 4l-6 18c-2 4-7 4-8 0l-5-16c1-3 4-5 8-6Z" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17 38h8M36 38h7M45 43h5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
     </svg>
   `,
   "icon-drop": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M33 6c8 10 17 22 17 34 0 11-8 18-18 18s-18-7-18-18C14 28 25 16 33 6Z" fill="none" stroke="currentColor" stroke-width="4.8" stroke-linejoin="round"/>
-      <path d="M24 41c0 5 4 9 9 9" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
+      <path d="M33 5c9 12 18 24 18 36 0 11-8 18-18 18s-18-7-18-18C15 29 25 17 33 5Z" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linejoin="round"/>
+      <path d="M24 41c0 6 4 10 10 11" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
     </svg>
   `,
 };
