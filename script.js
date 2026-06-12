@@ -856,7 +856,7 @@ function addCurrentBuildToCart() {
     builderState.cart.push({ ...build });
   }
 
-  orderNote.textContent = `${build.quantity} ${build.title} meals added. Keep building or continue to checkout.`;
+  orderNote.textContent = `${build.quantity} ${build.title} ${build.quantity === 1 ? "meal" : "meals"} added. Keep building or continue to checkout.`;
   renderCart();
 }
 
