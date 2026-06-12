@@ -342,11 +342,11 @@ function fulfillmentDateDefault() {
 
 const builderState = {
   mode: "lunch",
-  portion: "large",
+  portion: "medium",
   activeGroup: "protein",
   portionByMode: {
     breakfast: "medium",
-    lunch: "large",
+    lunch: "medium",
   },
   activeGroupByMode: {
     breakfast: "protein",
