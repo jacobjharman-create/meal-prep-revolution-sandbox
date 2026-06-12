@@ -41,14 +41,14 @@ const builderItemImages = {
   carrots: "assets/images/black-plate-builder/veg-carrots.png",
   zucchini: "assets/images/black-plate-builder/veg-zucchini.png",
   sprouts: "assets/images/black-plate-builder/veg-sprouts.png",
-  "lemon-herb": "assets/images/black-plate-builder/sauce-lemon-herb.png",
-  chimichurri: "assets/images/black-plate-builder/sauce-chimichurri.png",
-  teriyaki: "assets/images/black-plate-builder/sauce-teriyaki.png",
-  buffalo: "assets/images/black-plate-builder/sauce-buffalo.png",
-  "garlic-aioli": "assets/images/black-plate-builder/sauce-garlic-aioli.png",
-  "salsa-verde": "assets/images/black-plate-builder/sauce-salsa-verde.png",
-  tahini: "assets/images/black-plate-builder/sauce-tahini.png",
-  none: "assets/images/black-plate-builder/sauce-none.png",
+  "lemon-herb": "assets/images/black-plate-builder/sauce-lemon-herb.png?v=sauce-refresh-20260612",
+  chimichurri: "assets/images/black-plate-builder/sauce-chimichurri.png?v=sauce-refresh-20260612",
+  teriyaki: "assets/images/black-plate-builder/sauce-teriyaki.png?v=sauce-refresh-20260612",
+  buffalo: "assets/images/black-plate-builder/sauce-buffalo.png?v=sauce-refresh-20260612",
+  "garlic-aioli": "assets/images/black-plate-builder/sauce-garlic-aioli.png?v=sauce-refresh-20260612",
+  "salsa-verde": "assets/images/black-plate-builder/sauce-salsa-verde.png?v=sauce-refresh-20260612",
+  tahini: "assets/images/black-plate-builder/sauce-tahini.png?v=sauce-refresh-20260612",
+  none: "assets/images/black-plate-builder/sauce-none.png?v=sauce-refresh-20260612",
 };
 
 const builderGroupIcons = {
