@@ -518,15 +518,21 @@ h1 .hero-h1-accent {
 
 .hero-cta-band p {
   color: var(--white);
-  font-size: clamp(16px, 1.7vw, 22px);
+  font-size: clamp(14px, 1.18vw, 18px);
   font-weight: 850;
-  line-height: 1.18;
+  line-height: 1.08;
   text-transform: uppercase;
 }
 
 .hero-cta-band strong {
   display: block;
   color: var(--green);
+  white-space: nowrap;
+}
+
+.hero-cta-line {
+  display: block;
+  white-space: nowrap;
 }
 
 .hero-cta-icon {
