@@ -153,7 +153,7 @@ const builderCatalog = {
       },
       {
         id: "fruit",
-        label: "Fruit",
+        label: "Vegetables",
         icon: "icon-leaf",
         multi: true,
         options: [
