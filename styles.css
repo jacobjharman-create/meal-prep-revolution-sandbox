@@ -224,11 +224,18 @@ button {
   position: relative;
   z-index: 2;
   width: min(48vw, 700px);
-  min-height: calc(100svh - 82px);
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: clamp(32px, 4vw, 54px) clamp(22px, 4vw, 58px);
+  justify-content: flex-start;
+  padding: 22px clamp(22px, 4vw, 58px) clamp(32px, 4vw, 54px);
+}
+
+.hero-heading {
+  position: relative;
+  z-index: 2;
+  width: min(54vw, 820px);
+  padding: clamp(150px, 20vh, 220px) clamp(22px, 4vw, 58px) 0;
 }
 
 h1,
@@ -263,9 +270,8 @@ h1 span {
   color: var(--green);
 }
 
-.hero-copy > p:not(.brand-line) {
+.hero-copy > p {
   max-width: 610px;
-  margin-top: 22px;
   color: #dbe6d8;
   font-size: clamp(17px, 1.7vw, 20px);
   line-height: 1.45;
@@ -1204,15 +1210,15 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.12);
-  filter: brightness(1.05) saturate(1.2) contrast(1.08);
+  transform: scale(1);
+  filter: none;
   transition: transform 180ms ease, filter 180ms ease;
 }
 
 .option-card:hover .food-thumb img,
 .option-card.selected .food-thumb img {
-  filter: brightness(1.12) saturate(1.28) contrast(1.1);
-  transform: scale(1.18);
+  filter: none;
+  transform: scale(1);
 }
 
 .meal-calculator .option-card > span:last-child {
@@ -1339,6 +1345,7 @@ h2 {
 .icon::before,
 .icon::after {
   position: absolute;
+  box-sizing: border-box;
   content: "";
 }
 
@@ -1356,7 +1363,27 @@ h2 {
   border-radius: 50%;
 }
 
-.icon-protein::before,
+.icon-protein::before {
+  top: 3px;
+  left: 10px;
+  width: 16px;
+  height: 17px;
+  border: 2px solid currentColor;
+  border-radius: 60% 50% 60% 42%;
+  transform: rotate(-28deg);
+}
+
+.icon-protein::after {
+  top: 15px;
+  left: 3px;
+  width: 15px;
+  height: 5px;
+  background: currentColor;
+  border-radius: 10px;
+  box-shadow: -3px -3px 0 -1px currentColor, -3px 3px 0 -1px currentColor;
+  transform: rotate(-28deg);
+}
+
 .icon-dumbbell::before {
   width: 26px;
   height: 8px;
@@ -1367,26 +1394,62 @@ h2 {
 }
 
 .icon-carb::before {
-  width: 25px;
-  height: 16px;
+  bottom: 10px;
+  width: 26px;
+  height: 12px;
   border: 2px solid currentColor;
-  border-radius: 50% 50% 44% 44%;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+}
+
+.icon-carb::after {
+  bottom: 5px;
+  width: 25px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
 }
 
 .icon-leaf::before {
-  width: 22px;
-  height: 30px;
+  top: 13px;
+  left: 18px;
+  width: 10px;
+  height: 22px;
   border: 2px solid currentColor;
-  border-radius: 100% 0 100% 0;
-  transform: rotate(35deg);
+  border-radius: 8px 8px 10px 10px;
+  transform: translate(-50%, -50%) rotate(35deg);
+}
+
+.icon-leaf::after {
+  top: 6px;
+  left: 17px;
+  width: 18px;
+  height: 11px;
+  border-top: 2px solid currentColor;
+  border-left: 2px solid currentColor;
+  border-radius: 100% 0 0;
+  box-shadow: -6px 3px 0 -3px currentColor;
+  transform: translate(-50%, -50%) rotate(12deg);
 }
 
 .icon-drop::before {
-  width: 22px;
-  height: 30px;
+  width: 15px;
+  height: 26px;
   border: 2px solid currentColor;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
+  border-radius: 5px 5px 10px 10px;
+  transform: rotate(-14deg);
+}
+
+.icon-drop::after {
+  top: 5px;
+  left: 19px;
+  width: 8px;
+  height: 5px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  transform: translate(-50%, -50%) rotate(-14deg);
 }
 
 .icon-stack::before {
@@ -1906,8 +1969,14 @@ cite {
 
   .hero-copy {
     width: min(100%, 640px);
-    min-height: calc(100svh - 74px);
-    padding: 42px 20px 56px;
+    min-height: 0;
+    padding: 18px 20px 56px;
+    overflow: hidden;
+  }
+
+  .hero-heading {
+    width: min(100%, 640px);
+    padding: 96px 20px 0;
     overflow: hidden;
   }
 
@@ -1937,7 +2006,7 @@ cite {
     max-width: 7.4ch;
   }
 
-  .hero-copy > p:not(.brand-line) {
+  .hero-copy > p {
     width: calc(100vw - 92px);
     max-width: 298px;
     font-size: 16px;
@@ -2426,6 +2495,8 @@ cite {
 .meal-system .builder-step .icon {
   width: 24px;
   height: 24px;
+  border: 0;
+  border-radius: 0;
 }
 
 .meal-system .builder-step strong {
@@ -2454,8 +2525,9 @@ cite {
 
 .meal-system .option-card {
   position: relative;
-  display: block;
-  min-height: 102px;
+  display: grid;
+  grid-template-rows: minmax(86px, 1fr) auto;
+  min-height: 124px;
   overflow: hidden;
   padding: 0;
   color: var(--white);
@@ -2467,11 +2539,7 @@ cite {
 }
 
 .meal-system .option-card::after {
-  position: absolute;
-  inset: 42% 0 0;
-  pointer-events: none;
-  content: "";
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
+  display: none;
 }
 
 .meal-system .option-card.selected {
@@ -2482,40 +2550,37 @@ cite {
 }
 
 .meal-system .food-thumb {
-  position: absolute;
-  inset: 0;
+  position: relative;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
 }
 
 .meal-system .food-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(1.18) contrast(1.05) brightness(1.08);
-  transform: scale(1.04);
+  filter: none;
+  transform: scale(1);
 }
 
 .meal-system .option-card:hover .food-thumb img,
 .meal-system .option-card.selected .food-thumb img {
-  filter: saturate(1.22) contrast(1.06) brightness(1.14);
-  transform: scale(1.08);
+  filter: none;
+  transform: scale(1);
 }
 
 .meal-system .option-card strong {
-  position: absolute;
-  right: 6px;
-  bottom: 8px;
-  left: 6px;
-  z-index: 1;
+  position: relative;
   max-width: 100%;
   overflow: hidden;
+  padding: 7px 6px 8px;
   color: var(--white);
   font-size: 11px;
   font-weight: 950;
   line-height: 1.1;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.82);
+  text-shadow: none;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
