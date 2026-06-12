@@ -290,6 +290,14 @@ const builderState = {
   mode: "breakfast",
   portion: "medium",
   activeGroup: "protein",
+  portionByMode: {
+    breakfast: "medium",
+    lunch: "large",
+  },
+  activeGroupByMode: {
+    breakfast: "protein",
+    lunch: "protein",
+  },
   quantity: 12,
   selections: {
     breakfast: cloneData(builderCatalog.breakfast.defaults),
@@ -385,7 +393,6 @@ function currentBuild() {
   const key = [
     builderState.mode,
     builderState.portion,
-    builderState.quantity,
     ...groups.map((group) => `${group.id}:${group.selected.map((item) => item.id).sort().join("+") || "none"}`),
   ].join("|");
   const hero = heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
@@ -639,9 +646,11 @@ modeButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const nextMode = button.dataset.mode;
     if (nextMode === builderState.mode) return;
+    builderState.portionByMode[builderState.mode] = builderState.portion;
+    builderState.activeGroupByMode[builderState.mode] = builderState.activeGroup;
     builderState.mode = nextMode;
-    builderState.portion = builderCatalog[nextMode].defaultPortion;
-    builderState.activeGroup = builderCatalog[nextMode].defaultGroup;
+    builderState.portion = builderState.portionByMode[nextMode] || builderCatalog[nextMode].defaultPortion;
+    builderState.activeGroup = builderState.activeGroupByMode[nextMode] || builderCatalog[nextMode].defaultGroup;
     builderState.reviewReady = false;
     renderBuilder();
   });
@@ -650,6 +659,7 @@ modeButtons.forEach((button) => {
 portionButtons.forEach((button) => {
   button.addEventListener("click", () => {
     builderState.portion = button.dataset.portion;
+    builderState.portionByMode[builderState.mode] = builderState.portion;
     builderState.reviewReady = false;
     renderBuilder();
   });
@@ -659,6 +669,7 @@ builderGroups.addEventListener("click", (event) => {
   const button = event.target.closest("[data-builder-step]");
   if (!button) return;
   builderState.activeGroup = button.dataset.builderStep;
+  builderState.activeGroupByMode[builderState.mode] = builderState.activeGroup;
   renderBuilder();
 });
 
@@ -671,9 +682,18 @@ builderOptions.addEventListener("click", (event) => {
   const current = builderState.selections[builderState.mode][group.id];
 
   if (group.multi) {
-    builderState.selections[builderState.mode][group.id] = current.includes(optionId)
-      ? current.filter((id) => id !== optionId)
-      : [...current, optionId];
+    const selected = Array.isArray(current) ? current : [];
+    const optionIsNone = optionId === "none" || optionId.startsWith("no-");
+    if (selected.includes(optionId)) {
+      builderState.selections[builderState.mode][group.id] = selected.filter((id) => id !== optionId);
+    } else if (optionIsNone) {
+      builderState.selections[builderState.mode][group.id] = [optionId];
+    } else {
+      builderState.selections[builderState.mode][group.id] = [
+        ...selected.filter((id) => id !== "none" && !id.startsWith("no-")),
+        optionId,
+      ];
+    }
   } else {
     builderState.selections[builderState.mode][group.id] = current === optionId ? null : optionId;
   }
@@ -690,8 +710,12 @@ document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrd
 
 copyWooPayload.addEventListener("click", async () => {
   const payload = JSON.stringify(buildWooPayload(), null, 2);
-  await navigator.clipboard.writeText(payload);
-  orderNote.textContent = "WooCommerce payload copied.";
+  try {
+    await navigator.clipboard.writeText(payload);
+    orderNote.textContent = "WooCommerce payload copied.";
+  } catch {
+    orderNote.textContent = "Payload is visible below and ready to copy.";
+  }
 });
 
 cartItems.addEventListener("click", (event) => {
