@@ -2761,8 +2761,8 @@ cite {
   }
 
   .meal-builder-phone {
-    gap: 13px;
-    padding: 0 18px 14px;
+    gap: 8px;
+    padding: 0 18px 8px;
     overflow: visible;
     background: #010201;
     border: 0;
@@ -2771,16 +2771,16 @@ cite {
   }
 
   .builder-toggle-row {
-    min-height: 56px;
-    margin-top: -2px;
+    min-height: 45px;
+    margin-top: -1px;
   }
 
   .builder-size-row {
-    min-height: 46px;
+    min-height: 37px;
   }
 
   .segmented-pill {
-    min-height: 48px;
+    min-height: 38px;
     gap: 5px;
     padding-inline: 6px;
   }
@@ -2792,12 +2792,12 @@ cite {
   }
 
   .portion-pill span {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .segmented-pill .icon {
-    width: 19px;
-    height: 19px;
+    width: 17px;
+    height: 17px;
   }
 
   .builder-hero-card {
@@ -2814,8 +2814,8 @@ cite {
 
   .hero-quantity-chip,
   .hero-price-chip {
-    bottom: 14px;
-    min-height: 40px;
+    bottom: 11px;
+    min-height: 32px;
   }
 
   .hero-quantity-chip {
@@ -2825,7 +2825,7 @@ cite {
   .hero-quantity-chip button,
   .hero-quantity-chip input {
     width: 35px;
-    height: 40px;
+    height: 32px;
     font-size: 18px;
   }
 
@@ -2836,7 +2836,7 @@ cite {
 
   .hero-quantity-chip span {
     padding-right: 11px;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .hero-price-chip {
@@ -2845,7 +2845,7 @@ cite {
   }
 
   .hero-price-chip strong {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .hero-price-chip span {
@@ -2853,29 +2853,29 @@ cite {
   }
 
   .meal-system .builder-step {
-    min-height: 69px;
-    padding: 8px 3px;
+    min-height: 55px;
+    padding: 5px 3px;
     border-radius: 12px;
   }
 
   .meal-system .builder-step .icon {
-    width: 29px;
-    height: 29px;
+    width: 25px;
+    height: 25px;
   }
 
   .meal-system .builder-step strong {
-    margin-top: 6px;
+    margin-top: 4px;
     font-size: 9px;
     letter-spacing: 0.04em;
   }
 
   .meal-system .calculator-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
   }
 
   .meal-system .option-card {
-    min-height: clamp(94px, 23vw, 110px);
+    min-height: clamp(75px, 18vw, 88px);
     border-radius: 10px;
   }
 
@@ -2885,40 +2885,40 @@ cite {
 
   .meal-system .option-card strong {
     right: 4px;
-    bottom: 7px;
+    bottom: 6px;
     left: 4px;
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .builder-bottom-row {
     grid-template-columns: 0.74fr 0.74fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .add-build-button {
     grid-column: auto;
     grid-row: auto;
     min-width: 0;
-    min-height: 50px;
+    min-height: 40px;
     border-radius: 11px;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.08em;
   }
 
   .builder-price-block {
     grid-column: auto;
     text-align: left;
-    padding-left: 13px;
+    padding-left: 10px;
     border-left: 1px solid rgba(255, 255, 255, 0.32);
   }
 
   .builder-summary-tray {
     position: sticky;
-    top: calc(100svh - 142px);
+    top: calc(100svh - 116px);
     z-index: 12;
-    gap: 11px;
-    margin: 6px 10px 0;
-    padding: 10px 10px 12px;
+    gap: 7px;
+    margin: 4px 10px 0;
+    padding: 8px 10px 9px;
     background:
       linear-gradient(135deg, rgba(22, 209, 0, 0.08), rgba(255, 255, 255, 0.035)),
       rgba(5, 7, 5, 0.82);
@@ -2928,11 +2928,11 @@ cite {
   }
 
   .compact-stack {
-    min-height: 38px;
+    min-height: 30px;
   }
 
   .selection-chip {
-    min-height: 38px;
+    min-height: 30px;
   }
 
   .selection-chip strong {
@@ -2940,19 +2940,19 @@ cite {
   }
 
   .selection-chip img {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
   }
 
   .builder-bottom-row > div:first-child strong {
-    font-size: 18px;
+    font-size: 16px;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .builder-bottom-row > div:first-child span,
   .builder-price-block span {
-    font-size: 9px;
+    font-size: 8px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -2962,7 +2962,7 @@ cite {
   }
 
   .builder-price-block strong {
-    font-size: 27px;
+    font-size: 24px;
   }
 
   .woo-order-panel {
