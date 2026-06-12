@@ -302,8 +302,8 @@ button {
   position: relative;
   z-index: 35;
   display: block;
-  width: clamp(142px, 15vw, 228px);
-  max-height: clamp(44px, 5.2vw, 72px);
+  width: clamp(213px, 22.5vw, 342px);
+  max-height: clamp(66px, 7.8vw, 108px);
   margin: 0 0 clamp(18px, 2vw, 28px);
   object-fit: contain;
   object-position: left center;
@@ -2312,8 +2312,8 @@ cite {
   }
 
   .hero-heading-logo {
-    width: 118px;
-    max-height: 38px;
+    width: 177px;
+    max-height: 57px;
     margin-bottom: 14px;
   }
 
