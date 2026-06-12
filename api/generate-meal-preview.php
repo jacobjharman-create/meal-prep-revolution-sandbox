@@ -34,17 +34,24 @@ function env_value(string $key): string {
   if (is_string($value) && trim($value) !== '') return trim($value);
   if (isset($_SERVER[$key]) && trim((string) $_SERVER[$key]) !== '') return trim((string) $_SERVER[$key]);
 
-  $envPath = dirname(__DIR__) . '/.env';
-  if (!is_readable($envPath)) return '';
+  $envPaths = [
+    dirname(__DIR__) . '/.env',
+    dirname(__DIR__, 2) . '/.env',
+  ];
 
-  $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
-  foreach ($lines as $line) {
-    $line = trim($line);
-    if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) continue;
-    [$name, $raw] = explode('=', $line, 2);
-    if (trim($name) !== $key) continue;
-    return trim(trim($raw), "\"'");
+  foreach ($envPaths as $envPath) {
+    if (!is_readable($envPath)) continue;
+
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+    foreach ($lines as $line) {
+      $line = trim($line);
+      if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) continue;
+      [$name, $raw] = explode('=', $line, 2);
+      if (trim($name) !== $key) continue;
+      return trim(trim($raw), "\"'");
+    }
   }
+
   return '';
 }
 
