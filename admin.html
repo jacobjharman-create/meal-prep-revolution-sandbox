@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meal Prep Revolution | CRM Admin</title>
+    <meta
+      name="description"
+      content="Meal Prep Revolution internal CRM admin for kitchen production and owner operations."
+    >
+    <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
+    <link rel="stylesheet" href="admin.css?v=admin-crm-20260612">
+  </head>
+  <body class="admin-locked">
+    <section class="admin-gate" id="adminGate" aria-labelledby="adminGateTitle">
+      <form class="admin-gate-card" id="adminGateForm">
+        <img src="assets/brief/mpr-logo.png" alt="Meal Prep Revolution">
+        <span class="section-label">Internal CRM</span>
+        <h1 id="adminGateTitle">Admin access</h1>
+        <p>Enter the internal operations passcode to open the kitchen and owner dashboards.</p>
+        <label>
+          <span>Passcode</span>
+          <input id="adminPasscode" type="password" autocomplete="current-password" inputmode="text" required>
+        </label>
+        <button class="button button-primary" type="submit">Unlock CRM</button>
+        <div class="gate-error" id="adminGateError" role="alert" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <div class="admin-app" id="adminApp" aria-hidden="true" inert>
+    <header class="admin-topbar">
+      <a class="admin-brand" href="admin.html" aria-label="Meal Prep Revolution CRM admin">
+        <img src="assets/brief/mpr-logo.png" alt="Meal Prep Revolution">
+        <span>CRM Admin</span>
+      </a>
+      <nav class="admin-nav" aria-label="Admin navigation">
+        <a href="#kitchenPanel">Kitchen</a>
+        <a href="#ownerPanel">Owner</a>
+      </nav>
+      <div class="admin-actions">
+        <button class="icon-button" type="button" id="refreshAdmin" aria-label="Refresh dashboard">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-13.6 5.7"></path><path d="M4 12A8 8 0 0 1 17.6 6.3"></path><path d="M17 2v5h5"></path><path d="M7 22v-5H2"></path></svg>
+        </button>
+        <button class="button button-outline" type="button" id="lockAdmin">Lock</button>
+        <button class="button button-primary" type="button" id="seedDemoDay">Load Demo Day</button>
+      </div>
+    </header>
+
+    <main class="admin-shell">
+      <section class="admin-intro" aria-labelledby="admin-title">
+        <div>
+          <h1 id="admin-title">MPR operations command center</h1>
+          <p>Two live panels: kitchen production for chefs and cooks, plus owner visibility across orders, meals, revenue, capacity, and fulfillment.</p>
+        </div>
+        <div class="admin-clock" aria-label="Current admin time">
+          <span id="adminDate">Today</span>
+          <strong id="adminTime">--:--</strong>
+        </div>
+      </section>
+
+      <section class="dashboard-grid" aria-label="Meal Prep Revolution CRM dashboards">
+        <article class="dashboard-panel kitchen-dashboard" id="kitchenPanel" aria-labelledby="kitchen-title">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Chefs and cooks</span>
+              <h2 id="kitchen-title">Kitchen production</h2>
+            </div>
+            <div class="panel-tools">
+              <button class="icon-button" type="button" id="printKitchen" aria-label="Print kitchen board">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9V3h12v6"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 14h12v7H6z"></path></svg>
+              </button>
+              <button class="button button-outline" type="button" id="clearFulfilled">Clear Fulfilled</button>
+            </div>
+          </div>
+
+          <div class="kpi-row" id="kitchenKpis" aria-live="polite"></div>
+
+          <div class="ops-toolbar" aria-label="Kitchen filters">
+            <label>
+              <span>Status</span>
+              <select id="statusFilter">
+                <option value="all">All active</option>
+                <option value="New">New</option>
+                <option value="In prep">In prep</option>
+                <option value="Ready">Ready</option>
+                <option value="Fulfilled">Fulfilled</option>
+              </select>
+            </label>
+            <label>
+              <span>Handoff</span>
+              <select id="fulfillmentFilter">
+                <option value="all">All handoffs</option>
+                <option value="pickup">Pickup</option>
+                <option value="delivery">Delivery</option>
+              </select>
+            </label>
+            <label class="search-field">
+              <span>Find ticket</span>
+              <input id="ticketSearch" type="search" placeholder="Name, ticket, meal, note">
+            </label>
+          </div>
+
+          <div class="production-layout">
+            <section class="ticket-stack" aria-labelledby="tickets-title">
+              <div class="subhead">
+                <h3 id="tickets-title">Production tickets</h3>
+                <span id="ticketCount">0 tickets</span>
+              </div>
+              <div class="ticket-list" id="kitchenTickets" aria-live="polite"></div>
+            </section>
+
+            <section class="prep-board" aria-labelledby="prep-title">
+              <div class="subhead">
+                <h3 id="prep-title">Batch prep board</h3>
+                <span>Active orders only</span>
+              </div>
+              <div class="prep-grid" id="prepBoard" aria-live="polite"></div>
+            </section>
+          </div>
+        </article>
+
+        <article class="dashboard-panel owner-dashboard" id="ownerPanel" aria-labelledby="owner-title">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Owner view</span>
+              <h2 id="owner-title">Business at a glance</h2>
+            </div>
+            <div class="panel-tools">
+              <button class="button button-outline" type="button" id="exportDay">Export Day</button>
+            </div>
+          </div>
+
+          <div class="owner-metrics" id="ownerMetrics" aria-live="polite"></div>
+
+          <div class="owner-grid">
+            <section class="owner-card pipeline-card" aria-labelledby="pipeline-title">
+              <div class="subhead">
+                <h3 id="pipeline-title">Order pipeline</h3>
+                <span id="pipelineSignal">Live</span>
+              </div>
+              <div class="pipeline-bars" id="pipelineBars"></div>
+            </section>
+
+            <section class="owner-card" aria-labelledby="schedule-title">
+              <div class="subhead">
+                <h3 id="schedule-title">Today handoffs</h3>
+                <span id="handoffSignal">Pickup + delivery</span>
+              </div>
+              <div class="handoff-list" id="handoffList"></div>
+            </section>
+
+            <section class="owner-card" aria-labelledby="capacity-title">
+              <div class="subhead">
+                <h3 id="capacity-title">Capacity signal</h3>
+                <span>Kitchen load</span>
+              </div>
+              <div class="capacity-meter">
+                <div class="capacity-track"><span id="capacityFill"></span></div>
+                <p id="capacityText">No active load yet.</p>
+              </div>
+              <div class="mini-grid" id="fulfillmentMix"></div>
+            </section>
+
+            <section class="owner-card" aria-labelledby="activity-title">
+              <div class="subhead">
+                <h3 id="activity-title">Operations feed</h3>
+                <span>Latest moves</span>
+              </div>
+              <div class="activity-feed" id="activityFeed"></div>
+            </section>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <template id="emptyStateTemplate">
+      <div class="empty-state">
+        <strong>No orders on the board.</strong>
+        <span>Load a demo day or wait for new submitted orders to appear.</span>
+      </div>
+    </template>
+    </div>
+
+    <script src="admin.js?v=admin-crm-20260612"></script>
+  </body>
+</html>

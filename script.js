@@ -319,6 +319,7 @@ const heroByProtein = {
 const orderStorage = {
   customer: "mprCustomerProfile",
   draft: "mprOrderDraft",
+  queue: "mprOrderOsQueue",
 };
 
 function readStoredJson(key, fallback) {
@@ -475,9 +476,9 @@ function customerDisplayName(customer) {
 }
 
 function validateOrderRequest(customer) {
-  if (!builderState.cart.length) return "Add at least one meal build before submitting an order request.";
-  if (!customer.name) return "Add a customer name for this order.";
-  if (!customer.phone && !customer.email) return "Add a phone or email so the order can be confirmed.";
+  if (!builderState.cart.length) return "Add at least one meal build before checkout.";
+  if (!customer.name) return "Add your name so your order can be confirmed.";
+  if (!customer.phone && !customer.email) return "Add a phone or email so your order can be confirmed.";
   return "";
 }
 
@@ -725,6 +726,24 @@ function saveOrderRequest(payload) {
   }
 }
 
+function saveInternalOrder(payload) {
+  const queue = readStoredJson(orderStorage.queue, []);
+  const ticket = {
+    id: payload.request_id,
+    status: "New",
+    created_at: payload.created_at,
+    customer: payload.customer,
+    fulfillment: payload.fulfillment,
+    total_meals: payload.total_meals,
+    estimated_total: payload.estimated_total,
+    line_items: payload.line_items,
+    cart: cloneData(builderState.cart),
+    next_actions: ["Confirm payment", "Batch ingredients", "Assign pickup or delivery window"],
+  };
+  const withoutDuplicate = queue.filter((item) => item.id !== ticket.id);
+  writeStoredJson(orderStorage.queue, [ticket, ...withoutDuplicate].slice(0, 24));
+}
+
 function resetCheckoutFlow() {
   if (recurringChoice) recurringChoice.hidden = true;
   document.querySelectorAll("[data-recurring]").forEach((button) => {
@@ -735,7 +754,7 @@ function resetCheckoutFlow() {
 
 function renderCart() {
   if (!builderState.cart.length) {
-    cartItems.innerHTML = `<div class="cart-empty">Your meal order stack will appear here after you add a build.</div>`;
+    cartItems.innerHTML = `<div class="cart-empty">Your selected meals will appear here after you add a build.</div>`;
   } else {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
@@ -796,7 +815,7 @@ function addCurrentBuildToCart() {
     builderState.cart.push({ ...build });
   }
 
-  orderNote.textContent = `${build.quantity} ${build.title} meals added. Prepare checkout when the stack is ready.`;
+  orderNote.textContent = `${build.quantity} ${build.title} meals added. Review checkout when you are ready.`;
   renderCart();
 }
 
@@ -814,6 +833,7 @@ function prepareStoreOrder() {
   payload.request_id = requestId();
   payload.created_at = new Date().toISOString();
   saveOrderRequest(payload);
+  saveInternalOrder(payload);
   renderCart();
   localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
   orderNote.innerHTML = `<strong>${payload.total_meals} meals</strong> are ready for secure checkout. Choose Apple Pay, Amazon Pay, or card to finish payment.`;
