@@ -12,7 +12,7 @@ const mealImages = {
   steak: "assets/images/black-plate-builder/protein-steak.png",
   salmon: "assets/images/black-plate-builder/protein-salmon.png",
   salad: "assets/images/black-plate-builder/veg-asparagus.png",
-  breakfast: "assets/images/breakfast-black-container.png",
+  breakfast: "assets/images/black-plate-builder/protein-eggs.png",
   pack: "assets/images/black-plate-builder/protein-chicken.png",
 };
 
@@ -150,7 +150,7 @@ const builderCatalog = {
   breakfast: {
     label: "Breakfast",
     mealLabel: "breakfast",
-    hero: "assets/images/breakfast-black-container.png",
+    hero: "assets/images/black-plate-builder/protein-eggs.png",
     defaultPortion: "medium",
     defaultGroup: "protein",
     groups: [
@@ -229,7 +229,7 @@ const builderCatalog = {
   lunch: {
     label: "Lunch / Dinner",
     mealLabel: "lunch/dinner",
-    hero: "assets/images/steak-black-container.png",
+    hero: "assets/images/black-plate-builder/protein-steak.png",
     defaultPortion: "large",
     defaultGroup: "protein",
     groups: [
@@ -309,15 +309,15 @@ const builderCatalog = {
 
 const heroByProtein = {
   breakfast: {
-    eggs: "assets/images/breakfast-black-container.png",
-    turkey: "assets/images/breakfast-black-container.png",
-    steak: "assets/images/steak-black-container.png",
-    tofu: "assets/images/breakfast-black-container.png",
+    eggs: "assets/images/black-plate-builder/protein-eggs.png",
+    turkey: "assets/images/black-plate-builder/protein-turkey.png",
+    steak: "assets/images/black-plate-builder/protein-steak.png",
+    tofu: "assets/images/black-plate-builder/protein-tofu.png",
   },
   lunch: {
-    chicken: "assets/images/chicken-black-container.png",
-    steak: "assets/images/steak-black-container.png",
-    salmon: "assets/images/salmon-black-container.png",
+    chicken: "assets/images/black-plate-builder/protein-chicken.png",
+    steak: "assets/images/black-plate-builder/protein-steak.png",
+    salmon: "assets/images/black-plate-builder/protein-salmon.png",
   },
 };
 
