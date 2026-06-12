@@ -67,7 +67,8 @@ button {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 20;
+  isolation: isolate;
+  z-index: 100;
   display: grid;
   grid-template-columns: 230px 1fr auto auto;
   align-items: center;
@@ -2188,7 +2189,7 @@ cite {
     position: fixed;
     top: 92px;
     right: clamp(16px, 5vw, 64px);
-    z-index: 19;
+    z-index: 99;
     display: grid;
     width: min(330px, calc(100vw - 32px));
     gap: 4px;
