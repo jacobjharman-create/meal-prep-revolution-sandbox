@@ -257,7 +257,8 @@ button {
 .hero-heading {
   position: relative;
   z-index: 2;
-  width: min(54vw, 820px);
+  box-sizing: border-box;
+  width: 100%;
   padding: clamp(150px, 20vh, 220px) clamp(22px, 4vw, 58px) 0;
 }
 
@@ -294,10 +295,16 @@ h1 {
 
 h1 span {
   display: block;
+}
+
+h1 .hero-h1-accent {
   color: var(--green);
 }
 
 .hero-heading h1 {
+  width: min(100%, 1180px);
+  max-width: none;
+  font-size: clamp(54px, 7.1vw, 104px);
   text-shadow:
     0 3px 0 rgba(0, 0, 0, 0.9),
     0 12px 22px rgba(0, 0, 0, 0.92),
@@ -1997,7 +2004,8 @@ cite {
   }
 
   .hero-heading {
-    width: min(100%, 640px);
+    box-sizing: border-box;
+    width: 100vw;
     padding: 96px 20px 0;
     overflow: hidden;
   }
@@ -2020,12 +2028,17 @@ cite {
   }
 
   h1 {
-    max-width: 8.8ch;
     font-size: clamp(38px, 10vw, 44px);
   }
 
-  h1 span {
-    max-width: 7.4ch;
+  .hero-heading h1 {
+    width: 100%;
+    max-width: none;
+    font-size: clamp(38px, 10.2vw, 42px);
+  }
+
+  .hero-heading h1 span {
+    max-width: none;
   }
 
   .hero-copy > p {
