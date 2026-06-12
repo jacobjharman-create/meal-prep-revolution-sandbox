@@ -543,7 +543,7 @@ function renderGroups() {
   builderGroups.innerHTML = mode.groups
     .map((group) => `
       <button class="builder-step${group.id === builderState.activeGroup ? " active" : ""}" type="button" data-builder-step="${group.id}" aria-pressed="${group.id === builderState.activeGroup}">
-        <span class="icon icon-svg ${group.icon}">${builderGroupIcons[group.icon] || ""}</span>
+        <span class="icon icon-svg ${group.icon}" style="width: 30px; height: 30px;">${builderGroupIcons[group.icon] || ""}</span>
         <strong>${escapeHtml(group.label)}</strong>
       </button>
     `)
