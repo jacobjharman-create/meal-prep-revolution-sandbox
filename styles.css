@@ -2172,9 +2172,9 @@ cite {
 
 .meal-builder-phone {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
-  padding: 18px;
+  padding: 14px;
   scroll-margin-top: 104px;
   overflow: hidden;
   background:
@@ -2188,8 +2188,8 @@ cite {
 .builder-toggle-row,
 .builder-size-row {
   display: grid;
-  gap: 5px;
-  padding: 4px;
+  gap: 4px;
+  padding: 3px;
   background: rgba(3, 4, 3, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
@@ -2198,12 +2198,12 @@ cite {
 
 .builder-toggle-row {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  min-height: 42px;
+  min-height: 34px;
 }
 
 .builder-size-row {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  min-height: 36px;
+  min-height: 29px;
 }
 
 .segmented-pill,
@@ -2222,20 +2222,20 @@ cite {
 }
 
 .segmented-pill {
-  min-height: 34px;
-  padding: 0 10px;
+  min-height: 27px;
+  padding: 0 8px;
 }
 
 .portion-pill {
   display: grid;
-  min-height: 28px;
+  min-height: 22px;
   gap: 0;
-  padding: 2px 8px;
+  padding: 2px 6px;
 }
 
 .segmented-pill .icon {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border: 0;
 }
 
@@ -2264,7 +2264,7 @@ cite {
 .segmented-pill strong,
 .portion-pill strong {
   overflow: hidden;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 950;
   letter-spacing: 0.02em;
   text-overflow: ellipsis;
@@ -2274,7 +2274,7 @@ cite {
 
 .portion-pill span {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 800;
   line-height: 1;
 }
@@ -2333,10 +2333,10 @@ cite {
 .hero-price-chip {
   position: absolute;
   z-index: 2;
-  bottom: 14px;
+  bottom: 11px;
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 32px;
   color: var(--white);
   background: rgba(5, 7, 5, 0.66);
   border: 1px solid rgba(255, 255, 255, 0.34);
@@ -2346,19 +2346,19 @@ cite {
 }
 
 .hero-quantity-chip {
-  left: 14px;
+  left: 11px;
   overflow: hidden;
 }
 
 .hero-quantity-chip button,
 .hero-quantity-chip input {
-  width: 38px;
-  height: 40px;
+  width: 30px;
+  height: 32px;
   color: var(--white);
   background: transparent;
   border: 0;
   text-align: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 900;
 }
 
@@ -2368,7 +2368,7 @@ cite {
 }
 
 .hero-quantity-chip input {
-  width: 44px;
+  width: 35px;
   appearance: textfield;
 }
 
@@ -2379,34 +2379,34 @@ cite {
 }
 
 .hero-quantity-chip span {
-  padding-right: 12px;
+  padding-right: 10px;
   color: #eaf8e7;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 850;
 }
 
 .hero-price-chip {
-  right: 14px;
-  gap: 6px;
-  padding: 0 14px;
+  right: 11px;
+  gap: 5px;
+  padding: 0 11px;
 }
 
 .hero-price-chip strong {
   color: var(--green-soft);
-  font-size: 23px;
+  font-size: 18px;
   font-weight: 950;
 }
 
 .hero-price-chip span {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
 }
 
 .meal-system .compact-rail {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
   margin: 2px 0 0;
 }
 
@@ -2414,23 +2414,23 @@ cite {
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
-  min-height: 74px;
-  padding: 8px 4px;
+  min-height: 59px;
+  padding: 6px 3px;
   text-align: center;
   background: rgba(255, 255, 255, 0.035);
   border-color: rgba(255, 255, 255, 0.16);
-  border-radius: 15px;
+  border-radius: 12px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .meal-system .builder-step .icon {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
 }
 
 .meal-system .builder-step strong {
-  margin-top: 4px;
-  font-size: 10px;
+  margin-top: 3px;
+  font-size: 8px;
   line-height: 1.1;
 }
 
@@ -2448,21 +2448,21 @@ cite {
 .meal-system .calculator-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
   margin-top: 0;
 }
 
 .meal-system .option-card {
   position: relative;
   display: block;
-  min-height: 128px;
+  min-height: 102px;
   overflow: hidden;
   padding: 0;
   color: var(--white);
   text-align: center;
   background: #040604;
   border-color: rgba(255, 255, 255, 0.2);
-  border-radius: 13px;
+  border-radius: 10px;
   animation: optionRise 180ms ease both;
 }
 
@@ -2505,14 +2505,14 @@ cite {
 
 .meal-system .option-card strong {
   position: absolute;
-  right: 8px;
-  bottom: 10px;
-  left: 8px;
+  right: 6px;
+  bottom: 8px;
+  left: 6px;
   z-index: 1;
   max-width: 100%;
   overflow: hidden;
   color: var(--white);
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 950;
   line-height: 1.1;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.82);
@@ -2523,19 +2523,19 @@ cite {
 
 .builder-summary-tray {
   display: grid;
-  gap: 12px;
-  padding: 15px;
+  gap: 10px;
+  padding: 12px;
   background: rgba(4, 6, 4, 0.78);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 24px;
+  border-radius: 19px;
   box-shadow: 0 -18px 58px rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(22px) saturate(1.18);
 }
 
 .compact-stack {
   display: flex;
-  gap: 8px;
-  min-height: 42px;
+  gap: 6px;
+  min-height: 34px;
   margin: 0;
   overflow-x: auto;
   scrollbar-width: none;
@@ -2548,10 +2548,10 @@ cite {
 .selection-chip {
   display: inline-flex;
   flex: 0 0 auto;
-  gap: 9px;
+  gap: 7px;
   align-items: center;
-  min-height: 46px;
-  padding: 4px 11px 4px 5px;
+  min-height: 37px;
+  padding: 3px 9px 3px 4px;
   color: var(--white);
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -2560,19 +2560,19 @@ cite {
 }
 
 .selection-chip img {
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
   border-radius: 999px;
 }
 
 .selection-chip span {
   display: grid;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   place-items: center;
   color: rgba(255, 255, 255, 0.82);
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1;
 }
 
@@ -2582,7 +2582,7 @@ cite {
 
 .compact-stack strong,
 .selection-chip strong {
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 950;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -2592,7 +2592,7 @@ cite {
 .builder-bottom-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
 }
 
@@ -2605,7 +2605,7 @@ cite {
 
 .builder-bottom-row > div:first-child strong {
   color: var(--white);
-  font-size: 13px;
+  font-size: 10px;
   line-height: 1.2;
 }
 
@@ -2613,25 +2613,25 @@ cite {
 .builder-price-block span {
   margin-top: 3px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 780;
 }
 
 .builder-price-block {
-  min-width: 86px;
+  min-width: 69px;
   text-align: right;
 }
 
 .builder-price-block strong {
   color: var(--green-soft);
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 950;
   line-height: 1;
 }
 
 .add-build-button {
-  min-width: 108px;
-  min-height: 48px;
+  min-width: 86px;
+  min-height: 38px;
 }
 
 .woo-order-panel {
@@ -2761,7 +2761,7 @@ cite {
   }
 
   .meal-builder-phone {
-    gap: 16px;
+    gap: 13px;
     padding: 0 18px 14px;
     overflow: visible;
     background: #010201;
@@ -2771,33 +2771,33 @@ cite {
   }
 
   .builder-toggle-row {
-    min-height: 70px;
+    min-height: 56px;
     margin-top: -2px;
   }
 
   .builder-size-row {
-    min-height: 58px;
+    min-height: 46px;
   }
 
   .segmented-pill {
-    min-height: 60px;
-    gap: 6px;
-    padding-inline: 8px;
+    min-height: 48px;
+    gap: 5px;
+    padding-inline: 6px;
   }
 
   .segmented-pill strong,
   .portion-pill strong {
-    font-size: 12px;
+    font-size: 10px;
     letter-spacing: 0.06em;
   }
 
   .portion-pill span {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .segmented-pill .icon {
-    width: 24px;
-    height: 24px;
+    width: 19px;
+    height: 19px;
   }
 
   .builder-hero-card {
@@ -2814,69 +2814,69 @@ cite {
 
   .hero-quantity-chip,
   .hero-price-chip {
-    bottom: 18px;
-    min-height: 50px;
+    bottom: 14px;
+    min-height: 40px;
   }
 
   .hero-quantity-chip {
-    left: 22px;
+    left: 18px;
   }
 
   .hero-quantity-chip button,
   .hero-quantity-chip input {
-    width: 44px;
-    height: 50px;
-    font-size: 22px;
+    width: 35px;
+    height: 40px;
+    font-size: 18px;
   }
 
   .hero-quantity-chip input {
-    width: 48px;
-    font-size: 24px;
+    width: 38px;
+    font-size: 19px;
   }
 
   .hero-quantity-chip span {
-    padding-right: 14px;
-    font-size: 16px;
+    padding-right: 11px;
+    font-size: 13px;
   }
 
   .hero-price-chip {
-    right: 22px;
-    padding-inline: 18px;
+    right: 18px;
+    padding-inline: 14px;
   }
 
   .hero-price-chip strong {
-    font-size: 30px;
+    font-size: 24px;
   }
 
   .hero-price-chip span {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .meal-system .builder-step {
-    min-height: 86px;
-    padding: 10px 4px;
-    border-radius: 15px;
+    min-height: 69px;
+    padding: 8px 3px;
+    border-radius: 12px;
   }
 
   .meal-system .builder-step .icon {
-    width: 36px;
-    height: 36px;
+    width: 29px;
+    height: 29px;
   }
 
   .meal-system .builder-step strong {
-    margin-top: 8px;
-    font-size: 11px;
+    margin-top: 6px;
+    font-size: 9px;
     letter-spacing: 0.04em;
   }
 
   .meal-system .calculator-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
+    gap: 8px;
   }
 
   .meal-system .option-card {
-    min-height: clamp(118px, 29vw, 138px);
-    border-radius: 12px;
+    min-height: clamp(94px, 23vw, 110px);
+    border-radius: 10px;
   }
 
   .meal-system .food-thumb {
@@ -2884,75 +2884,75 @@ cite {
   }
 
   .meal-system .option-card strong {
-    right: 5px;
-    bottom: 9px;
-    left: 5px;
-    font-size: 13px;
+    right: 4px;
+    bottom: 7px;
+    left: 4px;
+    font-size: 10px;
   }
 
   .builder-bottom-row {
     grid-template-columns: 0.74fr 0.74fr 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   .add-build-button {
     grid-column: auto;
     grid-row: auto;
     min-width: 0;
-    min-height: 62px;
-    border-radius: 14px;
-    font-size: 15px;
+    min-height: 50px;
+    border-radius: 11px;
+    font-size: 12px;
     letter-spacing: 0.08em;
   }
 
   .builder-price-block {
     grid-column: auto;
     text-align: left;
-    padding-left: 16px;
+    padding-left: 13px;
     border-left: 1px solid rgba(255, 255, 255, 0.32);
   }
 
   .builder-summary-tray {
     position: sticky;
-    top: calc(100svh - 176px);
+    top: calc(100svh - 142px);
     z-index: 12;
-    gap: 14px;
-    margin: 8px 10px 0;
-    padding: 13px 13px 15px;
+    gap: 11px;
+    margin: 6px 10px 0;
+    padding: 10px 10px 12px;
     background:
       linear-gradient(135deg, rgba(22, 209, 0, 0.08), rgba(255, 255, 255, 0.035)),
       rgba(5, 7, 5, 0.82);
     border-color: rgba(255, 255, 255, 0.22);
-    border-radius: 24px;
+    border-radius: 19px;
     box-shadow: 0 -18px 58px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(22, 209, 0, 0.12);
   }
 
   .compact-stack {
-    min-height: 48px;
+    min-height: 38px;
   }
 
   .selection-chip {
-    min-height: 48px;
+    min-height: 38px;
   }
 
   .selection-chip strong {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .selection-chip img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
 
   .builder-bottom-row > div:first-child strong {
-    font-size: 22px;
+    font-size: 18px;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .builder-bottom-row > div:first-child span,
   .builder-price-block span {
-    font-size: 11px;
+    font-size: 9px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -2962,7 +2962,7 @@ cite {
   }
 
   .builder-price-block strong {
-    font-size: 34px;
+    font-size: 27px;
   }
 
   .woo-order-panel {
