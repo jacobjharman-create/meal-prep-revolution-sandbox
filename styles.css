@@ -1090,6 +1090,22 @@ h2 {
   text-transform: uppercase;
 }
 
+.order-header-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.order-header-logo {
+  flex: 0 0 auto;
+  width: 74px;
+  max-height: 42px;
+  object-fit: contain;
+  object-position: left center;
+  filter: drop-shadow(0 0 14px rgba(22, 209, 0, 0.18));
+}
+
 .builder-panel h3,
 .builder-cart h3 {
   margin-top: 6px;
@@ -1267,24 +1283,30 @@ h2 {
 .cart-empty,
 .cart-item {
   padding: 14px;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid var(--line);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.02)),
+    rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: var(--radius);
 }
 
 .woo-order-panel .cart-empty {
-  background: rgba(255, 255, 255, 0.035);
+  background:
+    linear-gradient(145deg, rgba(22, 209, 0, 0.075), rgba(255, 255, 255, 0.018)),
+    rgba(255, 255, 255, 0.035);
   border: 0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.055);
+  box-shadow: inset 0 0 0 1px rgba(140, 255, 120, 0.1);
 }
 
 .woo-order-panel .cart-item {
   border-color: transparent;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
 .cart-empty {
-  color: var(--muted);
+  color: #d7e7d4;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -1305,7 +1327,7 @@ h2 {
 
 .cart-item p {
   margin-top: 4px;
-  color: var(--muted);
+  color: #c9d9c6;
   font-size: 12px;
   line-height: 1.35;
 }
@@ -1503,18 +1525,46 @@ h2 {
   grid-template-columns: minmax(220px, 0.72fr) minmax(320px, 1.1fr) minmax(280px, 0.92fr);
   gap: 16px;
   max-width: 1120px;
-  margin: 18px auto 0;
+  margin: 20px auto 0;
 }
 
 .order-os-panel {
+  position: relative;
   min-width: 0;
   padding: 18px;
+  overflow: hidden;
   background:
-    linear-gradient(145deg, rgba(22, 209, 0, 0.08), rgba(255, 255, 255, 0.025)),
-    rgba(3, 4, 3, 0.74);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 18px;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+    linear-gradient(145deg, rgba(22, 209, 0, 0.105), rgba(255, 255, 255, 0.024) 46%, rgba(0, 0, 0, 0.18)),
+    rgba(3, 4, 3, 0.82);
+  border: 1px solid rgba(140, 255, 120, 0.16);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 28px 80px rgba(0, 0, 0, 0.34);
+}
+
+.order-os-panel::before {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  left: 16px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(22, 209, 0, 0.72), transparent);
+  opacity: 0.72;
+}
+
+.order-os-panel::after {
+  position: absolute;
+  right: -22px;
+  bottom: -12px;
+  width: 190px;
+  height: 96px;
+  pointer-events: none;
+  content: "";
+  background: url("assets/brief/mpr-logo.png") center / contain no-repeat;
+  opacity: 0.045;
+  filter: grayscale(1) brightness(1.7);
 }
 
 .order-os-panel h3 {
@@ -1528,7 +1578,7 @@ h2 {
 
 .order-os-panel p {
   margin-top: 12px;
-  color: #d7e4d4;
+  color: #d7e7d4;
   font-size: 13px;
   line-height: 1.38;
 }
@@ -1551,14 +1601,27 @@ h2 {
 }
 
 .queue-ticket {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
   padding: 12px;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 13px;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018)),
+    rgba(1, 2, 1, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+}
+
+.queue-ticket::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  content: "";
+  background: var(--green);
+  opacity: 0.86;
 }
 
 .queue-ticket span,
@@ -1593,9 +1656,10 @@ h2 {
   grid-column: 1 / -1;
   min-height: 34px;
   color: #071107;
-  background: var(--green);
+  background: linear-gradient(180deg, var(--green-soft), var(--green));
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(140, 255, 120, 0.28), 0 12px 28px rgba(22, 209, 0, 0.16);
   cursor: pointer;
   font-size: 11px;
   font-weight: 950;
@@ -1609,8 +1673,9 @@ h2 {
   height: 44px;
   place-items: center;
   color: #071107;
-  background: var(--green);
+  background: linear-gradient(180deg, var(--green-soft), var(--green));
   border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(140, 255, 120, 0.42), 0 0 26px rgba(22, 209, 0, 0.2);
   font-size: 18px;
   font-weight: 950;
 }
@@ -1623,9 +1688,11 @@ h2 {
 
 .prep-bucket {
   padding: 12px;
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 13px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018)),
+    rgba(1, 2, 1, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
 }
 
 .prep-bucket h4 {
@@ -3547,11 +3614,44 @@ cite {
 }
 
 .woo-order-panel {
+  position: relative;
+  overflow: hidden;
   background:
-    linear-gradient(145deg, rgba(22, 209, 0, 0.06), rgba(255, 255, 255, 0.025)),
-    rgba(3, 4, 3, 0.72);
-  border: 0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 24px 72px rgba(0, 0, 0, 0.34);
+    linear-gradient(145deg, rgba(22, 209, 0, 0.12), rgba(255, 255, 255, 0.026) 42%, rgba(0, 0, 0, 0.16)),
+    rgba(3, 4, 3, 0.82);
+  border: 1px solid rgba(140, 255, 120, 0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 72px rgba(0, 0, 0, 0.34);
+}
+
+.woo-order-panel::before {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  left: 18px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(22, 209, 0, 0.76), transparent);
+  opacity: 0.8;
+}
+
+.woo-order-panel::after {
+  position: absolute;
+  right: -36px;
+  bottom: 18px;
+  width: 240px;
+  height: 122px;
+  pointer-events: none;
+  content: "";
+  background: url("assets/brief/mpr-logo.png") center / contain no-repeat;
+  opacity: 0.045;
+  filter: grayscale(1) brightness(1.65);
+}
+
+.woo-order-panel > * {
+  position: relative;
+  z-index: 1;
 }
 
 .woo-payload {
@@ -3664,7 +3764,7 @@ cite {
   .meal-system {
     width: 100vw;
     max-width: none;
-    margin: -72px calc(50% - 50vw) 0;
+    margin: 0 calc(50% - 50vw);
     padding: 0 0 max(22px, env(safe-area-inset-bottom));
     background: #010201;
     border: 0;

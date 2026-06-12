@@ -15,7 +15,7 @@
     >
     <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="styles.css?v=border-cleanup-20260612">
+    <link rel="stylesheet" href="styles.css?v=public-order-cleanup-20260612">
   </head>
   <body>
     <header class="site-header" id="top">
@@ -164,23 +164,6 @@
           <span>Pickup or delivery</span>
         </div>
 
-        <div class="crm-brand-strip" aria-label="Meal Prep Revolution CRM command center">
-          <div class="crm-brand-lockup">
-            <span class="crm-logo-tile" aria-hidden="true">
-              <img src="assets/brief/mpr-logo.png" alt="">
-            </span>
-            <div>
-              <span class="builder-label">MPR owner command center</span>
-              <h3>Branded meal prep CRM</h3>
-            </div>
-          </div>
-          <div class="crm-status-row" aria-label="CRM workflow status">
-            <span>Customer memory</span>
-            <span>Kitchen tickets</span>
-            <span>Batch totals</span>
-          </div>
-        </div>
-
         <div class="builder-shell meal-system" data-woo-system="meal-builder">
           <div class="meal-builder-phone" aria-label="Meal Prep Revolution meal builder">
             <div class="builder-hero-card">
@@ -248,13 +231,11 @@
           </div>
 
           <aside class="builder-cart woo-order-panel" aria-labelledby="cart-title">
-            <div class="cart-head crm-panel-head">
-              <div class="crm-brand-lockup compact">
-                <span class="crm-logo-tile small" aria-hidden="true">
-                  <img src="assets/brief/mpr-logo.png" alt="">
-                </span>
+            <div class="cart-head">
+              <div class="order-header-lockup">
+                <img class="order-header-logo" src="assets/brief/mpr-logo.png" alt="Meal Prep Revolution">
                 <div>
-                  <span class="builder-label">MPR CRM draft</span>
+                  <span class="builder-label">Meal order draft</span>
                   <h3 id="cart-title">Order stack</h3>
                 </div>
               </div>
@@ -318,54 +299,11 @@
             <button class="button button-primary cart-submit" type="button" id="submitOrder">Create Order Ticket</button>
             <div class="purchase-actions" id="purchaseActions" hidden>
               <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Open Temporary Checkout</a>
-              <button class="button button-outline" type="button" id="copyWooPayload">Copy MPR CRM Payload</button>
+              <button class="button button-outline" type="button" id="copyWooPayload">Copy Order Details</button>
             </div>
             <pre class="woo-payload" id="wooPayload" aria-live="polite"></pre>
             <p class="order-note" id="orderNote">Build a meal, add customer details, then create a kitchen-ready order ticket.</p>
           </aside>
-        </div>
-
-        <div class="order-os-board" aria-label="Meal Prep Revolution Order OS">
-          <article class="order-os-panel customer-memory">
-            <div class="crm-panel-head">
-              <div>
-                <span class="builder-label">Customer memory</span>
-                <h3>Saved reorder path</h3>
-              </div>
-              <span class="crm-panel-mark" aria-hidden="true">
-                <img src="assets/brief/mpr-logo.png" alt="">
-              </span>
-            </div>
-            <p id="customerMemoryStatus">No saved customer profile yet. Create an order ticket to unlock reorder demos.</p>
-            <div class="order-os-actions">
-              <button class="button button-outline" type="button" id="loadLastOrder">Load Last Order</button>
-              <button class="button button-outline" type="button" id="clearOrderOs">Clear Demo Data</button>
-            </div>
-          </article>
-
-          <article class="order-os-panel kitchen-queue">
-            <div class="cart-head crm-panel-head">
-              <div>
-                <span class="builder-label">MPR kitchen queue</span>
-                <h3>Production tickets</h3>
-              </div>
-              <strong id="queueCount">0</strong>
-            </div>
-            <div class="queue-list" id="kitchenQueue" aria-live="polite"></div>
-          </article>
-
-          <article class="order-os-panel prep-summary">
-            <div class="crm-panel-head">
-              <div>
-                <span class="builder-label">Prep totals</span>
-                <h3>Batch board</h3>
-              </div>
-              <span class="crm-panel-mark" aria-hidden="true">
-                <img src="assets/brief/mpr-logo.png" alt="">
-              </span>
-            </div>
-            <div class="prep-total-grid" id="prepTotals" aria-live="polite"></div>
-          </article>
         </div>
       </section>
 

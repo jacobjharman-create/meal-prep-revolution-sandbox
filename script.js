@@ -813,7 +813,7 @@ function renderOrderOs() {
             </article>
           `)
           .join("")
-      : `<div class="cart-empty">Kitchen tickets will appear here when an order stack is converted.</div>`;
+      : `<div class="cart-empty">MPR kitchen tickets will appear here when an order stack is converted.</div>`;
   }
 
   if (prepTotals) {
@@ -838,7 +838,7 @@ function renderOrderOs() {
 
 function renderCart() {
   if (!builderState.cart.length) {
-    cartItems.innerHTML = `<div class="cart-empty">Your WooCommerce order draft will appear here after you add a build.</div>`;
+    cartItems.innerHTML = `<div class="cart-empty">Your meal order stack will appear here after you add a build.</div>`;
   } else {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
@@ -1032,7 +1032,7 @@ copyWooPayload.addEventListener("click", async () => {
   const payload = JSON.stringify(buildWooPayload(), null, 2);
   try {
     await navigator.clipboard.writeText(payload);
-    orderNote.textContent = "WooCommerce payload copied.";
+    orderNote.textContent = "Order details copied.";
   } catch {
     orderNote.textContent = "Payload is visible below and ready to copy.";
   }
@@ -1078,7 +1078,7 @@ clearOrderOs?.addEventListener("click", () => {
   builderState.reviewReady = false;
   if (orderIntake) orderIntake.reset();
   if (fulfillmentDate) fulfillmentDate.value = fulfillmentDateDefault();
-  orderNote.textContent = "Order OS demo data cleared.";
+  orderNote.textContent = "Order demo data cleared.";
   renderCart();
 });
 
