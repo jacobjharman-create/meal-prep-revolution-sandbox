@@ -362,30 +362,52 @@ h1 .hero-h1-accent {
 }
 
 .hero-promise-list {
-  display: grid;
-  gap: 12px;
-  max-width: 620px;
-  margin-top: 24px;
+  display: flex;
+  gap: 10px;
+  max-width: min(100%, 690px);
+  margin-top: 18px;
+  padding: 2px 2px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-padding-inline: 2px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
+}
+
+.hero-promise-list::-webkit-scrollbar {
+  display: none;
 }
 
 .hero-promise-list > span {
   display: grid;
-  grid-template-columns: 34px 1fr;
-  column-gap: 14px;
+  flex: 0 0 clamp(190px, 34%, 232px);
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 10px;
   align-items: center;
-  min-height: 58px;
-  padding: 6px 8px;
+  min-height: 54px;
+  padding: 10px 12px;
   color: #dbe6d8;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.018)),
+    rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: 8px;
-  font-size: 15px;
-  line-height: 1.28;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(140, 255, 120, 0.045),
+    0 10px 28px rgba(0, 0, 0, 0.18);
+  font-size: 12.5px;
+  line-height: 1.16;
+  scroll-snap-align: start;
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
 }
 
 .hero-promise-list > span > svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   color: var(--green);
   stroke: currentColor;
   stroke-width: 1.9;
@@ -397,7 +419,7 @@ h1 .hero-h1-accent {
 .hero-promise-list strong {
   display: block;
   color: var(--white);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 950;
   letter-spacing: 0;
 }
@@ -405,6 +427,24 @@ h1 .hero-h1-accent {
 .promise-copy {
   display: block;
   min-width: 0;
+}
+
+@media (min-width: 681px) {
+  .hero-promise-list {
+    overflow: hidden;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .hero-promise-list > span {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 9px 10px;
+  }
+
+  .hero-promise-list strong {
+    font-size: 11.5px;
+  }
 }
 
 .hero-chip-row {
@@ -2068,7 +2108,15 @@ cite {
   }
 
   .hero-promise-list {
-    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 16px;
+    padding-bottom: 6px;
+  }
+
+  .hero-promise-list > span {
+    flex-basis: 218px;
+    min-height: 52px;
+    padding: 9px 10px;
   }
 
   .hero-chip-row {
