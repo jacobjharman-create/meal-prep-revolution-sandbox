@@ -15,8 +15,11 @@ const DEFAULT_JPEG_COMPRESSION = 82;
 function env_paths(): array {
   return [
     'api' => __DIR__ . '/.env',
+    'api_secret' => __DIR__ . '/mpr-secrets.env',
     'site_root' => dirname(__DIR__) . '/.env',
+    'site_root_secret' => dirname(__DIR__) . '/mpr-secrets.env',
     'parent' => dirname(__DIR__, 2) . '/.env',
+    'parent_secret' => dirname(__DIR__, 2) . '/mpr-secrets.env',
   ];
 }
 

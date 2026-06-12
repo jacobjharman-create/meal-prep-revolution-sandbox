@@ -1,8 +1,9 @@
-<FilesMatch "^(\.env|\.env\..*|.*\.key|.*\.pem)$">
+<FilesMatch "^(\.env|\.env\..*|mpr-secrets\.env|.*\.key|.*\.pem)$">
   Require all denied
 </FilesMatch>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteRule (^|/)\.env($|\.) - [F,L]
+  RewriteRule (^|/)mpr-secrets\.env$ - [F,L]
 </IfModule>
