@@ -7,6 +7,9 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
+const pickerImageVersion = "hires-20260612";
+const pickerImage = (src) => `${src}${src.includes("?") ? "&" : "?"}v=${pickerImageVersion}`;
+
 const mealImages = {
   chicken: "assets/images/black-plate-builder/protein-chicken.png",
   steak: "assets/images/black-plate-builder/protein-steak.png",
@@ -15,6 +18,10 @@ const mealImages = {
   breakfast: "assets/images/black-plate-builder/protein-eggs.png",
   pack: "assets/images/black-plate-builder/protein-chicken.png",
 };
+
+Object.keys(mealImages).forEach((key) => {
+  mealImages[key] = pickerImage(mealImages[key]);
+});
 
 const builderItemImages = {
   chicken: "assets/images/black-plate-builder/protein-chicken.png",
@@ -50,6 +57,10 @@ const builderItemImages = {
   tahini: "assets/images/black-plate-builder/sauce-tahini.png?v=sauce-refresh-20260612",
   none: "assets/images/black-plate-builder/sauce-none.png?v=sauce-refresh-20260612",
 };
+
+Object.keys(builderItemImages).forEach((key) => {
+  builderItemImages[key] = pickerImage(builderItemImages[key]);
+});
 
 const builderGroupIcons = {
   "icon-protein": {
@@ -134,7 +145,7 @@ const builderCatalog = {
   breakfast: {
     label: "Breakfast",
     mealLabel: "breakfast",
-    hero: "assets/images/black-plate-builder/protein-eggs.png",
+    hero: builderItemImages.eggs,
     defaultPortion: "medium",
     defaultGroup: "protein",
     groups: [
@@ -213,7 +224,7 @@ const builderCatalog = {
   lunch: {
     label: "Lunch / Dinner",
     mealLabel: "lunch/dinner",
-    hero: "assets/images/black-plate-builder/protein-steak.png",
+    hero: builderItemImages.steak,
     defaultPortion: "large",
     defaultGroup: "protein",
     groups: [
@@ -293,15 +304,15 @@ const builderCatalog = {
 
 const heroByProtein = {
   breakfast: {
-    eggs: "assets/images/black-plate-builder/protein-eggs.png",
-    turkey: "assets/images/black-plate-builder/protein-turkey.png",
-    steak: "assets/images/black-plate-builder/protein-steak.png",
-    tofu: "assets/images/black-plate-builder/protein-tofu.png",
+    eggs: builderItemImages.eggs,
+    turkey: builderItemImages.turkey,
+    steak: builderItemImages.steak,
+    tofu: builderItemImages.tofu,
   },
   lunch: {
-    chicken: "assets/images/black-plate-builder/protein-chicken.png",
-    steak: "assets/images/black-plate-builder/protein-steak.png",
-    salmon: "assets/images/black-plate-builder/protein-salmon.png",
+    chicken: builderItemImages.chicken,
+    steak: builderItemImages.steak,
+    salmon: builderItemImages.salmon,
   },
 };
 
@@ -491,7 +502,7 @@ function renderMenu(category) {
   menuGrid.innerHTML = menus[category]
     .map(([title, desc, price, image]) => `
       <article class="meal-card">
-        <img src="${image}" alt="${title}">
+        <img src="${image}" alt="${title}" loading="lazy" decoding="async">
         <div class="meal-card-body">
           <h3>${title}</h3>
           <p>${desc}</p>
@@ -543,7 +554,7 @@ function renderOptions() {
       return `
         <button class="option-card${selected ? " selected" : ""}" type="button" data-option="${option.id}" aria-pressed="${selected}">
           <span class="food-thumb" aria-hidden="true">
-            <img src="${option.image}" alt="">
+            <img src="${option.image}" alt="" loading="eager" decoding="async">
           </span>
           <strong>${escapeHtml(option.name)}</strong>
         </button>
@@ -570,7 +581,7 @@ function renderCurrentBuild() {
     .flatMap((group) =>
       group.selected.map((item) => `
         <button class="selection-chip" type="button" data-selection-group="${group.id}" data-selection-option="${item.id}" aria-label="Remove ${escapeHtml(item.name)}">
-          <img src="${item.image}" alt="">
+          <img src="${item.image}" alt="" loading="eager" decoding="async">
           <strong>${escapeHtml(item.name)}</strong>
           <span aria-hidden="true">&times;</span>
         </button>
