@@ -12,14 +12,16 @@ const DEFAULT_MEAL_GENERATION_SIZE = '1296x816';
 const DEFAULT_MEAL_PREVIEW_SIZE = '768x480';
 const DEFAULT_JPEG_COMPRESSION = 82;
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  http_response_code(204);
-  exit;
+function env_paths(): array {
+  return [
+    'api' => __DIR__ . '/.env',
+    'site_root' => dirname(__DIR__) . '/.env',
+    'parent' => dirname(__DIR__, 2) . '/.env',
+  ];
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  http_response_code(405);
-  echo json_encode(['error' => 'Use POST.']);
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  http_response_code(204);
   exit;
 }
 
@@ -34,12 +36,7 @@ function env_value(string $key): string {
   if (is_string($value) && trim($value) !== '') return trim($value);
   if (isset($_SERVER[$key]) && trim((string) $_SERVER[$key]) !== '') return trim((string) $_SERVER[$key]);
 
-  $envPaths = [
-    dirname(__DIR__) . '/.env',
-    dirname(__DIR__, 2) . '/.env',
-  ];
-
-  foreach ($envPaths as $envPath) {
+  foreach (env_paths() as $envPath) {
     if (!is_readable($envPath)) continue;
 
     $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
@@ -53,6 +50,51 @@ function env_value(string $key): string {
   }
 
   return '';
+}
+
+function config_diagnostics(string $key): array {
+  $envValue = getenv($key);
+  $serverValue = $_SERVER[$key] ?? '';
+  $files = [];
+
+  foreach (env_paths() as $label => $envPath) {
+    $hasKey = false;
+    if (is_readable($envPath)) {
+      $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+      foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) continue;
+        [$name] = explode('=', $line, 2);
+        if (trim($name) === $key) {
+          $hasKey = true;
+          break;
+        }
+      }
+    }
+
+    $files[] = [
+      'location' => $label,
+      'readable' => is_readable($envPath),
+      'has_openai_key' => $hasKey,
+    ];
+  }
+
+  return [
+    'configured' => env_value($key) !== '',
+    'environment_variable' => is_string($envValue) && trim($envValue) !== '',
+    'server_variable' => trim((string) $serverValue) !== '',
+    'files' => $files,
+  ];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['config_check'])) {
+  json_response(200, config_diagnostics('OPENAI_API_KEY'));
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  http_response_code(405);
+  echo json_encode(['error' => 'Use POST.']);
+  exit;
 }
 
 function openai_api_key(): string {
