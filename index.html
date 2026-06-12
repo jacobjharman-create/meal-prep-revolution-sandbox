@@ -15,7 +15,7 @@
     >
     <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="styles.css?v=public-order-cleanup-20260612">
+    <link rel="stylesheet" href="styles.css?v=customer-order-only-20260612">
   </head>
   <body>
     <header class="site-header" id="top">
@@ -292,17 +292,34 @@
               </label>
               <label class="intake-check">
                 <input id="saveCustomerProfile" type="checkbox" checked>
-                <span>Save this customer profile for reorder demos</span>
+                <span>Save these details for faster reorders</span>
               </label>
             </form>
 
-            <button class="button button-primary cart-submit" type="button" id="submitOrder">Create Order Ticket</button>
-            <div class="purchase-actions" id="purchaseActions" hidden>
-              <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Open Temporary Checkout</a>
-              <button class="button button-outline" type="button" id="copyWooPayload">Copy Order Details</button>
+            <button class="button button-primary cart-submit" type="button" id="submitOrder">Continue to Secure Checkout</button>
+            <div class="purchase-actions checkout-flow" id="purchaseActions" hidden>
+              <div class="checkout-ready">
+                <span class="checkout-eyebrow">Fast checkout</span>
+                <strong id="checkoutSummary">Your meals are ready for payment.</strong>
+                <p>Use a wallet checkout now. We will keep the order details clean and confirm pickup or delivery after payment.</p>
+              </div>
+              <div class="wallet-actions" aria-label="Payment options">
+                <a class="wallet-button wallet-apple" data-checkout-wallet="Apple Pay" href="https://ordermealpreprevolution.square.site/" target="_blank" rel="noopener">Apple Pay</a>
+                <a class="wallet-button wallet-amazon" data-checkout-wallet="Amazon Pay" href="https://ordermealpreprevolution.square.site/" target="_blank" rel="noopener">Amazon Pay</a>
+                <a class="button button-outline" data-checkout-wallet="Card checkout" href="https://ordermealpreprevolution.square.site/" target="_blank" rel="noopener">Pay another way</a>
+              </div>
+              <div class="recurring-choice" id="recurringChoice" hidden>
+                <span class="checkout-eyebrow">Make life easier</span>
+                <strong>Want this order repeated?</strong>
+                <div class="recurring-grid" role="group" aria-label="Recurring order frequency">
+                  <button type="button" data-recurring="weekly">Weekly</button>
+                  <button type="button" data-recurring="every 2 weeks">Every 2 weeks</button>
+                  <button type="button" data-recurring="monthly">Monthly</button>
+                  <button type="button" data-recurring="one time only">One time only</button>
+                </div>
+              </div>
             </div>
-            <pre class="woo-payload" id="wooPayload" aria-live="polite"></pre>
-            <p class="order-note" id="orderNote">Build a meal, add customer details, then create a kitchen-ready order ticket.</p>
+            <p class="order-note" id="orderNote">Build a meal, add your details, then continue to checkout.</p>
           </aside>
         </div>
       </section>
@@ -474,6 +491,6 @@
       <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Order Online</a>
     </footer>
 
-    <script src="script.js?v=order-os-20260612"></script>
+    <script src="script.js?v=customer-order-only-20260612"></script>
   </body>
 </html>

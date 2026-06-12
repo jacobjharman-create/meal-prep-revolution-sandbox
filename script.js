@@ -316,10 +316,9 @@ const heroByProtein = {
   },
 };
 
-const orderOsStorage = {
-  queue: "mprOrderOsQueue",
+const orderStorage = {
   customer: "mprCustomerProfile",
-  draft: "mprOrderOsDraft",
+  draft: "mprOrderDraft",
 };
 
 function readStoredJson(key, fallback) {
@@ -363,7 +362,6 @@ const builderState = {
   },
   forceHeroSlide: false,
   cart: [],
-  orderQueue: readStoredJson(orderOsStorage.queue, []),
   reviewReady: false,
 };
 
@@ -386,8 +384,8 @@ const cartMealTotal = document.querySelector("#cartMealTotal");
 const cartPriceTotal = document.querySelector("#cartPriceTotal");
 const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
-const wooPayload = document.querySelector("#wooPayload");
-const copyWooPayload = document.querySelector("#copyWooPayload");
+const checkoutSummary = document.querySelector("#checkoutSummary");
+const recurringChoice = document.querySelector("#recurringChoice");
 const orderIntake = document.querySelector("#orderIntake");
 const customerName = document.querySelector("#customerName");
 const customerPhone = document.querySelector("#customerPhone");
@@ -397,12 +395,6 @@ const fulfillmentDate = document.querySelector("#fulfillmentDate");
 const fulfillmentWindow = document.querySelector("#fulfillmentWindow");
 const orderNotes = document.querySelector("#orderNotes");
 const saveCustomerProfile = document.querySelector("#saveCustomerProfile");
-const loadLastOrder = document.querySelector("#loadLastOrder");
-const clearOrderOs = document.querySelector("#clearOrderOs");
-const customerMemoryStatus = document.querySelector("#customerMemoryStatus");
-const kitchenQueue = document.querySelector("#kitchenQueue");
-const queueCount = document.querySelector("#queueCount");
-const prepTotals = document.querySelector("#prepTotals");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
 
@@ -465,8 +457,8 @@ function getCustomerDraft() {
 
 function hydrateCustomerDraft() {
   if (!fulfillmentDate?.value) fulfillmentDate.value = fulfillmentDateDefault();
-  const draft = readStoredJson(orderOsStorage.draft, {});
-  const saved = readStoredJson(orderOsStorage.customer, {});
+  const draft = readStoredJson(orderStorage.draft, {});
+  const saved = readStoredJson(orderStorage.customer, {});
   const source = { ...saved, ...draft };
 
   if (customerName && source.name) customerName.value = source.name;
@@ -482,9 +474,9 @@ function customerDisplayName(customer) {
   return customer.name || customer.phone || customer.email || "Walk-in customer";
 }
 
-function validateOrderTicket(customer) {
-  if (!builderState.cart.length) return "Add at least one meal build before creating an order ticket.";
-  if (!customer.name) return "Add a customer name so the kitchen ticket has an owner.";
+function validateOrderRequest(customer) {
+  if (!builderState.cart.length) return "Add at least one meal build before submitting an order request.";
+  if (!customer.name) return "Add a customer name for this order.";
   if (!customer.phone && !customer.email) return "Add a phone or email so the order can be confirmed.";
   return "";
 }
@@ -697,7 +689,7 @@ function buildWooPayload() {
 
   return {
     source: "meal-prep-revolution-sandbox-builder",
-    version: "2026-06-12-order-os",
+    version: "2026-06-12-order-request",
     currency: "USD",
     customer,
     fulfillment: {
@@ -712,128 +704,33 @@ function buildWooPayload() {
   };
 }
 
-function ticketId() {
+function requestId() {
   const stamp = new Date().toISOString().replace(/\D/g, "").slice(4, 12);
   const suffix = Math.random().toString(36).slice(2, 5).toUpperCase();
   return `MPR-${stamp}-${suffix}`;
 }
 
-function buildOrderTicket(payload) {
-  return {
-    id: ticketId(),
-    status: "New",
-    created_at: new Date().toISOString(),
-    customer: payload.customer,
-    fulfillment: payload.fulfillment,
-    total_meals: payload.total_meals,
-    estimated_total: payload.estimated_total,
-    line_items: payload.line_items,
-    cart: cloneData(builderState.cart),
-    next_actions: ["Confirm payment", "Batch ingredients", "Assign pickup or delivery window"],
-  };
-}
-
-function saveOrderOs(ticket) {
-  builderState.orderQueue = [ticket, ...builderState.orderQueue].slice(0, 8);
-  writeStoredJson(orderOsStorage.queue, builderState.orderQueue);
-  writeStoredJson(orderOsStorage.draft, ticket.customer);
+function saveOrderRequest(payload) {
+  writeStoredJson(orderStorage.draft, payload.customer);
 
   if (saveCustomerProfile?.checked) {
-    writeStoredJson(orderOsStorage.customer, {
-      ...ticket.customer,
-      last_order_id: ticket.id,
-      last_order_at: ticket.created_at,
-      last_cart: ticket.cart,
-      last_total_meals: ticket.total_meals,
-      last_estimated_total: ticket.estimated_total,
+    writeStoredJson(orderStorage.customer, {
+      ...payload.customer,
+      last_order_id: payload.request_id,
+      last_order_at: payload.created_at,
+      last_cart: cloneData(builderState.cart),
+      last_total_meals: payload.total_meals,
+      last_estimated_total: payload.estimated_total,
     });
   }
 }
 
-function orderStatusNext(status) {
-  return {
-    New: "In prep",
-    "In prep": "Ready",
-    Ready: "Fulfilled",
-    Fulfilled: "New",
-  }[status] || "New";
-}
-
-function prepBuckets(orders) {
-  const buckets = {
-    Protein: {},
-    Carbs: {},
-    Vegetables: {},
-    Sauce: {},
-  };
-
-  orders
-    .filter((order) => order.status !== "Fulfilled")
-    .flatMap((order) => order.cart || [])
-    .forEach((item) => {
-      (item.groups || []).forEach((group) => {
-        const label = group.label === "Grain" ? "Carbs" : group.label;
-        const bucket = buckets[label] || buckets[label.replace("Fruit", "Vegetables")];
-        if (!bucket) return;
-        group.selected.forEach((selection) => {
-          bucket[selection.name] = (bucket[selection.name] || 0) + item.quantity;
-        });
-      });
-    });
-
-  return buckets;
-}
-
-function renderOrderOs() {
-  const saved = readStoredJson(orderOsStorage.customer, null);
-
-  if (customerMemoryStatus) {
-    customerMemoryStatus.textContent = saved
-      ? `${customerDisplayName(saved)} saved. Last order: ${saved.last_total_meals || 0} meals at ${dollars(saved.last_estimated_total || 0)}.`
-      : "No saved customer profile yet. Create an order ticket to unlock reorder demos.";
-  }
-
-  if (queueCount) queueCount.textContent = String(builderState.orderQueue.length);
-
-  if (kitchenQueue) {
-    kitchenQueue.innerHTML = builderState.orderQueue.length
-      ? builderState.orderQueue
-          .map((ticket) => `
-            <article class="queue-ticket">
-              <div>
-                <span>${escapeHtml(ticket.id)}</span>
-                <h4>${escapeHtml(customerDisplayName(ticket.customer))}</h4>
-                <p>${escapeHtml(ticket.fulfillment.type)} / ${escapeHtml(ticket.fulfillment.date)} / ${escapeHtml(ticket.fulfillment.window)}</p>
-              </div>
-              <div class="queue-ticket-meta">
-                <strong>${ticket.total_meals} meals</strong>
-                <span>${dollars(ticket.estimated_total)}</span>
-              </div>
-              <button type="button" data-ticket-status="${escapeHtml(ticket.id)}">${escapeHtml(ticket.status)}</button>
-            </article>
-          `)
-          .join("")
-      : `<div class="cart-empty">MPR kitchen tickets will appear here when an order stack is converted.</div>`;
-  }
-
-  if (prepTotals) {
-    const buckets = prepBuckets(builderState.orderQueue);
-    prepTotals.innerHTML = Object.entries(buckets)
-      .map(([label, items]) => {
-        const rows = Object.entries(items)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 5)
-          .map(([name, count]) => `<li><span>${escapeHtml(name)}</span><strong>${count}</strong></li>`)
-          .join("");
-        return `
-          <div class="prep-bucket">
-            <h4>${escapeHtml(label)}</h4>
-            <ul>${rows || `<li><span>No active tickets</span><strong>0</strong></li>`}</ul>
-          </div>
-        `;
-      })
-      .join("");
-  }
+function resetCheckoutFlow() {
+  if (recurringChoice) recurringChoice.hidden = true;
+  document.querySelectorAll("[data-recurring]").forEach((button) => {
+    button.classList.remove("is-selected");
+    button.setAttribute("aria-pressed", "false");
+  });
 }
 
 function renderCart() {
@@ -865,9 +762,10 @@ function renderCart() {
   cartMealTotal.textContent = payload.total_meals;
   cartPriceTotal.textContent = builderState.cart.length ? dollars(payload.estimated_total) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
-  wooPayload.textContent = builderState.reviewReady ? JSON.stringify(payload, null, 2) : "";
+  if (checkoutSummary && builderState.cart.length) {
+    checkoutSummary.textContent = `${payload.total_meals} meals · ${dollars(payload.estimated_total)} estimated`;
+  }
   localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
-  renderOrderOs();
 }
 
 function renderBuilder() {
@@ -881,6 +779,7 @@ function renderBuilder() {
 function setQuantity(value) {
   builderState.quantity = Math.min(48, Math.max(1, Number.parseInt(value, 10) || 1));
   builderState.reviewReady = false;
+  resetCheckoutFlow();
   renderBuilder();
 }
 
@@ -888,6 +787,7 @@ function addCurrentBuildToCart() {
   const build = currentBuild();
   const existing = builderState.cart.find((item) => item.key === build.key);
   builderState.reviewReady = false;
+  resetCheckoutFlow();
 
   if (existing) {
     existing.quantity += build.quantity;
@@ -902,7 +802,7 @@ function addCurrentBuildToCart() {
 
 function prepareStoreOrder() {
   const customer = getCustomerDraft();
-  const validationMessage = validateOrderTicket(customer);
+  const validationMessage = validateOrderRequest(customer);
 
   if (validationMessage) {
     orderNote.textContent = validationMessage;
@@ -911,10 +811,13 @@ function prepareStoreOrder() {
 
   builderState.reviewReady = true;
   const payload = buildWooPayload();
-  const ticket = buildOrderTicket(payload);
-  saveOrderOs(ticket);
+  payload.request_id = requestId();
+  payload.created_at = new Date().toISOString();
+  saveOrderRequest(payload);
   renderCart();
-  orderNote.innerHTML = `<strong>${ticket.id}</strong> created for ${escapeHtml(customerDisplayName(customer))}. ${payload.total_meals} meals are now in the kitchen queue.`;
+  localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
+  orderNote.innerHTML = `<strong>${payload.total_meals} meals</strong> are ready for secure checkout. Choose Apple Pay, Amazon Pay, or card to finish payment.`;
+  purchaseActions?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 hydrateCustomerDraft();
@@ -948,6 +851,7 @@ modeButtons.forEach((button) => {
     builderState.activeGroup = builderState.activeGroupByMode[nextMode] || builderCatalog[nextMode].defaultGroup;
     setFeaturedHeroFromGroup(builderState.activeGroup);
     builderState.reviewReady = false;
+    resetCheckoutFlow();
     renderBuilder();
   });
 });
@@ -957,6 +861,7 @@ portionButtons.forEach((button) => {
     builderState.portion = button.dataset.portion;
     builderState.portionByMode[builderState.mode] = builderState.portion;
     builderState.reviewReady = false;
+    resetCheckoutFlow();
     renderBuilder();
   });
 });
@@ -998,6 +903,7 @@ builderOptions.addEventListener("click", (event) => {
   }
 
   builderState.reviewReady = false;
+  resetCheckoutFlow();
   renderBuilder();
 });
 
@@ -1019,6 +925,7 @@ selectionStack.addEventListener("click", (event) => {
   }
 
   builderState.reviewReady = false;
+  resetCheckoutFlow();
   renderBuilder();
 });
 
@@ -1028,68 +935,53 @@ mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
 addMealButton.addEventListener("click", addCurrentBuildToCart);
 document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
 
-copyWooPayload.addEventListener("click", async () => {
-  const payload = JSON.stringify(buildWooPayload(), null, 2);
-  try {
-    await navigator.clipboard.writeText(payload);
-    orderNote.textContent = "Order details copied.";
-  } catch {
-    orderNote.textContent = "Payload is visible below and ready to copy.";
+purchaseActions?.addEventListener("click", (event) => {
+  const walletLink = event.target.closest("[data-checkout-wallet]");
+  const recurringButton = event.target.closest("[data-recurring]");
+
+  if (walletLink) {
+    const payload = buildWooPayload();
+    const wallet = walletLink.dataset.checkoutWallet;
+    writeStoredJson("mprCheckoutStarted", {
+      wallet,
+      started_at: new Date().toISOString(),
+      total_meals: payload.total_meals,
+      estimated_total: payload.estimated_total,
+    });
+    if (recurringChoice) recurringChoice.hidden = false;
+    orderNote.innerHTML = `<strong>${escapeHtml(wallet)}</strong> checkout opened. After payment, choose whether this should repeat.`;
+    return;
+  }
+
+  if (recurringButton) {
+    document.querySelectorAll("[data-recurring]").forEach((button) => {
+      const selected = button === recurringButton;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+    writeStoredJson("mprRecurringPreference", {
+      frequency: recurringButton.dataset.recurring,
+      selected_at: new Date().toISOString(),
+      order: buildWooPayload(),
+    });
+    orderNote.innerHTML = recurringButton.dataset.recurring === "one time only"
+      ? "Perfect. This order will stay one time only."
+      : `Perfect. We saved <strong>${escapeHtml(recurringButton.dataset.recurring)}</strong> as the preferred repeat schedule.`;
   }
 });
 
 orderIntake?.addEventListener("input", () => {
-  writeStoredJson(orderOsStorage.draft, getCustomerDraft());
+  writeStoredJson(orderStorage.draft, getCustomerDraft());
   builderState.reviewReady = false;
+  resetCheckoutFlow();
   renderCart();
 });
 
 orderIntake?.addEventListener("change", () => {
-  writeStoredJson(orderOsStorage.draft, getCustomerDraft());
+  writeStoredJson(orderStorage.draft, getCustomerDraft());
   builderState.reviewReady = false;
+  resetCheckoutFlow();
   renderCart();
-});
-
-loadLastOrder?.addEventListener("click", () => {
-  const saved = readStoredJson(orderOsStorage.customer, null);
-  if (!saved?.last_cart?.length) {
-    orderNote.textContent = "No saved reorder profile yet. Create an order ticket first.";
-    return;
-  }
-
-  builderState.cart = cloneData(saved.last_cart);
-  builderState.reviewReady = false;
-  if (customerName) customerName.value = saved.name || "";
-  if (customerPhone) customerPhone.value = saved.phone || "";
-  if (customerEmail) customerEmail.value = saved.email || "";
-  if (fulfillmentType) fulfillmentType.value = saved.fulfillment || "pickup";
-  if (fulfillmentDate) fulfillmentDate.value = fulfillmentDateDefault();
-  if (fulfillmentWindow) fulfillmentWindow.value = saved.window || "morning";
-  if (orderNotes) orderNotes.value = saved.notes || "";
-  orderNote.textContent = `${customerDisplayName(saved)}'s last stack is loaded for reorder.`;
-  renderCart();
-});
-
-clearOrderOs?.addEventListener("click", () => {
-  localStorage.removeItem(orderOsStorage.queue);
-  localStorage.removeItem(orderOsStorage.customer);
-  localStorage.removeItem(orderOsStorage.draft);
-  builderState.orderQueue = [];
-  builderState.reviewReady = false;
-  if (orderIntake) orderIntake.reset();
-  if (fulfillmentDate) fulfillmentDate.value = fulfillmentDateDefault();
-  orderNote.textContent = "Order demo data cleared.";
-  renderCart();
-});
-
-kitchenQueue?.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-ticket-status]");
-  if (!button) return;
-  const ticket = builderState.orderQueue.find((item) => item.id === button.dataset.ticketStatus);
-  if (!ticket) return;
-  ticket.status = orderStatusNext(ticket.status);
-  writeStoredJson(orderOsStorage.queue, builderState.orderQueue);
-  renderOrderOs();
 });
 
 cartItems.addEventListener("click", (event) => {
@@ -1102,6 +994,7 @@ cartItems.addEventListener("click", (event) => {
   item.quantity += button.dataset.cartAction === "increase" ? 1 : -1;
   item.total = item.quantity * item.unitPrice;
   builderState.reviewReady = false;
+  resetCheckoutFlow();
   builderState.cart = builderState.cart.filter((cartItem) => cartItem.quantity > 0);
   renderCart();
 });
