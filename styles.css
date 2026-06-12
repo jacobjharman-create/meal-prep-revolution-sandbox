@@ -739,27 +739,31 @@ h1 .hero-h1-accent {
   will-change: opacity, transform;
 }
 
-.hero-slide:nth-child(1) {
+.mobile-food-slide {
+  display: none;
+}
+
+.desktop-hero-slide-1 {
   animation-delay: 0s;
   object-position: 65% 60%;
 }
 
-.hero-slide:nth-child(2) {
+.desktop-hero-slide-2 {
   animation-delay: 9s;
   object-position: 60% 54%;
 }
 
-.hero-slide:nth-child(3) {
+.desktop-hero-slide-3 {
   animation-delay: 18s;
   object-position: 58% 54%;
 }
 
-.hero-slide:nth-child(4) {
+.desktop-hero-slide-4 {
   animation-delay: 27s;
   object-position: 62% 56%;
 }
 
-.hero-slide:nth-child(5) {
+.desktop-hero-slide-5 {
   animation-delay: 36s;
   object-position: 57% 52%;
 }
@@ -786,12 +790,35 @@ h1 .hero-h1-accent {
   }
 }
 
+@keyframes heroMobileFoodBurns {
+  0% {
+    opacity: 0;
+    transform: scale(1.18) translate3d(0, 0, 0);
+  }
+
+  5%,
+  28% {
+    opacity: 1;
+  }
+
+  34% {
+    opacity: 0;
+    transform: scale(1.34) translate3d(-2.5%, -1.8%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.34) translate3d(-2.5%, -1.8%, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-slide {
     animation: none;
   }
 
-  .hero-slide:first-child {
+  .desktop-hero-slide-1,
+  .mobile-food-slide-1 {
     opacity: 1;
   }
 }
@@ -2395,6 +2422,32 @@ cite {
     min-height: calc(100svh - 74px);
   }
 
+  .desktop-hero-slide {
+    display: none;
+  }
+
+  .mobile-food-slide {
+    display: block;
+    min-height: calc(100svh - 74px);
+    animation: heroMobileFoodBurns 24s infinite;
+    filter: saturate(1.18) contrast(1.1) brightness(0.92);
+  }
+
+  .mobile-food-slide-1 {
+    animation-delay: 0s;
+    object-position: 54% 45%;
+  }
+
+  .mobile-food-slide-2 {
+    animation-delay: 8s;
+    object-position: 50% 42%;
+  }
+
+  .mobile-food-slide-3 {
+    animation-delay: 16s;
+    object-position: 52% 45%;
+  }
+
   .hero-frame::before {
     background: none;
   }
@@ -3446,6 +3499,18 @@ cite {
     border-radius: 20px;
   }
 }
+
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .mobile-food-slide {
+    animation: none;
+    opacity: 0;
+  }
+
+  .mobile-food-slide-1 {
+    opacity: 1;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
