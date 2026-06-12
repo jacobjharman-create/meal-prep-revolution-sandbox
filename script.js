@@ -54,34 +54,34 @@ const builderItemImages = {
 const builderGroupIcons = {
   "icon-protein": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M8 37C4 26 13 14 27 10c13-4 27 2 31 13 4 10-4 22-17 27-14 6-29 0-33-13Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="44" cy="25" r="5.5" fill="none" stroke="currentColor" stroke-width="4"/>
-      <path d="M17 37c7 7 20 9 32 1" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <path d="M8 37C4 27 12 16 25 11c14-6 29 0 34 12 4 10-4 22-18 27-14 6-29-1-33-13Z" fill="none" stroke="currentColor" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="43" cy="25" r="5.2" fill="none" stroke="currentColor" stroke-width="3.8"/>
+      <path d="M17 38c7 6 20 8 31 1" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>
     </svg>
   `,
   "icon-carb": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <ellipse cx="17" cy="18" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-38 17 18)"/>
-      <ellipse cx="32" cy="15" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(8 32 15)"/>
-      <ellipse cx="47" cy="20" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(38 47 20)"/>
-      <ellipse cx="19" cy="38" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(36 19 38)"/>
-      <ellipse cx="34" cy="36" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-10 34 36)"/>
-      <ellipse cx="48" cy="42" rx="4" ry="10" fill="none" stroke="currentColor" stroke-width="4" transform="rotate(-34 48 42)"/>
+      <ellipse cx="17" cy="18" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(-38 17 18)"/>
+      <ellipse cx="32" cy="15" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(8 32 15)"/>
+      <ellipse cx="47" cy="20" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(38 47 20)"/>
+      <ellipse cx="19" cy="38" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(36 19 38)"/>
+      <ellipse cx="34" cy="36" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(-10 34 36)"/>
+      <ellipse cx="48" cy="42" rx="3.8" ry="9.5" fill="none" stroke="currentColor" stroke-width="3.8" transform="rotate(-34 48 42)"/>
     </svg>
   `,
   "icon-leaf": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M20 9c5 2 9 6 10 12-7-1-13-4-16-9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M32 7c4 4 6 9 5 15-5-2-9-7-10-13" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M45 9c-5 2-9 6-10 12 7-1 13-4 16-9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M15 25c5-3 12-1 15 5l-9 26c-1 4-7 4-8 0L8 40c-2-6 1-12 7-15Z" fill="currentColor"/>
-      <path d="M35 30c3-6 10-8 15-5 6 3 9 9 7 15l-6 16c-1 4-7 4-8 0L35 30Z" fill="currentColor"/>
+      <path d="M20 9c5 2 9 6 10 12-7-1-13-4-16-9" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 7c4 4 6 9 5 15-5-2-9-7-10-13" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M45 9c-5 2-9 6-10 12 7-1 13-4 16-9" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 25c5-3 12-1 15 5l-9 26c-1 4-7 4-8 0L8 40c-2-6 1-12 7-15Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/>
+      <path d="M35 30c3-6 10-8 15-5 6 3 9 9 7 15l-6 16c-1 4-7 4-8 0L35 30Z" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linejoin="round"/>
     </svg>
   `,
   "icon-drop": `
     <svg class="food-group-svg" viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M33 6c8 10 17 22 17 34 0 11-8 18-18 18s-18-7-18-18C14 28 25 16 33 6Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/>
-      <path d="M24 41c0 5 4 9 9 9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+      <path d="M33 6c8 10 17 22 17 34 0 11-8 18-18 18s-18-7-18-18C14 28 25 16 33 6Z" fill="none" stroke="currentColor" stroke-width="4.8" stroke-linejoin="round"/>
+      <path d="M24 41c0 5 4 9 9 9" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
     </svg>
   `,
 };
