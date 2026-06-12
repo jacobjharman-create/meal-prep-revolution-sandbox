@@ -1360,6 +1360,19 @@ h2 {
   content: "";
 }
 
+.icon-svg::before,
+.icon-svg::after {
+  display: none;
+}
+
+.icon-svg svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
 .icon-target::before {
   width: 18px;
   height: 18px;
