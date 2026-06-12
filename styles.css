@@ -2182,6 +2182,47 @@ cite {
     min-height: auto;
   }
 
+  .service-section {
+    padding-block: 44px;
+  }
+
+  .service-section .section-heading {
+    margin-bottom: 18px;
+  }
+
+  .service-grid {
+    gap: 10px;
+  }
+
+  .service-grid article {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    column-gap: 12px;
+    align-items: center;
+    padding: 13px 14px;
+    border-radius: 12px;
+  }
+
+  .service-grid article .icon {
+    grid-row: 1 / span 2;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .service-grid h3 {
+    align-self: end;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .service-grid p {
+    align-self: start;
+    margin-top: 5px;
+    font-size: 14px;
+    line-height: 1.32;
+  }
+
   .tabs {
     max-width: 360px;
   }
