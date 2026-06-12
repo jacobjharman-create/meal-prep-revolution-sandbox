@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+.DS_Store
+node_modules/
+tmp/
+generated/meal-previews/*.jpg
+generated/meal-previews/*.jpeg
+generated/meal-previews/*.png

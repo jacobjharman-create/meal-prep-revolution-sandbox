@@ -1316,6 +1316,40 @@ h2 {
   gap: 12px;
 }
 
+.cart-meal-preview {
+  position: relative;
+  min-height: 136px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(22, 209, 0, 0.22), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.28)),
+    #060806;
+  border: 1px solid rgba(140, 255, 120, 0.22);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 14px 28px rgba(0, 0, 0, 0.22);
+  aspect-ratio: 16 / 10;
+}
+
+.cart-meal-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-meal-preview.is-rendering {
+  display: grid;
+  place-items: center;
+  color: var(--green-soft);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cart-item-body {
+  min-width: 0;
+}
+
 .cart-item h4 {
   margin: 0;
   color: var(--white);
@@ -1535,14 +1569,6 @@ h2 {
   color: #061006;
   background: var(--green);
   border-color: var(--green);
-}
-
-@media (hover: hover) {
-  .recurring-grid button:hover {
-    color: #061006;
-    background: var(--green);
-    border-color: var(--green);
-  }
 }
 
 .order-note {

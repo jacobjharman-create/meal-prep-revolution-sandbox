@@ -525,7 +525,7 @@ function currentBuild() {
     .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)
     .join(" / ");
 
-  return {
+  const build = {
     key,
     mode: builderState.mode,
     mealType: mode.mealLabel,
@@ -542,6 +542,97 @@ function currentBuild() {
     groups,
     selections: Object.fromEntries(groups.map((group) => [group.id, group.selected.map((item) => item.name)])),
   };
+
+  build.renderRequest = createMealRenderRequest(build);
+  return build;
+}
+
+const mealRenderCache = new Map();
+const mealPreviewEndpoint = "api/generate-meal-preview.php";
+
+function buildRenderComponents(build) {
+  return build.groups
+    .flatMap((group) =>
+      group.selected
+        .filter((item) => item.id !== "none" && !item.id.startsWith("no-"))
+        .map((item) => ({
+          id: item.id,
+          label: item.name,
+          group: group.id,
+          groupLabel: group.label,
+          image: item.image,
+        })),
+    );
+}
+
+function createMealRenderRequest(build) {
+  const components = buildRenderComponents(build);
+  const componentList = components.map((item) => `${item.groupLabel}: ${item.label}`).join("; ");
+  const mealFormat = build.mealType === "breakfast" ? "breakfast meal" : "meal prep entree";
+
+  return {
+    renderer: "openai-image-generation",
+    style: "realistic premium food photography, no visible branding",
+    meal_type: build.mealType,
+    portion: build.portion,
+    quantity: build.quantity,
+    components,
+    prompt: [
+      `Create a realistic appetizing photo of one finished ${mealFormat}.`,
+      `Use these exact custom components: ${componentList}.`,
+      "Show the food plated beautifully or arranged inside a clean black plastic meal prep container.",
+      "Make it look fresh, delicious, artistic, and commercially photographed with natural food texture.",
+      "No logos, no labels, no text, no badges, no graphic design layout, no collage, no separated ingredient tiles.",
+      "Do not show packaging, menus, hands, utensils, or brand marks. Just the finished meal photo.",
+    ].join(" "),
+  };
+}
+
+function cartForStorage() {
+  return builderState.cart.map(({ previewImage, ...item }) => ({
+    ...item,
+    previewImage: undefined,
+  }));
+}
+
+async function generateMealPreview(build) {
+  const cached = mealRenderCache.get(build.key);
+  if (cached) return cached;
+
+  const renderRequest = createMealRenderRequest(build);
+
+  try {
+    const response = await fetch(mealPreviewEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(renderRequest),
+    });
+    const json = await response.json().catch(() => ({}));
+    if (!response.ok || !json.image_url) {
+      throw new Error(json.error || "AI preview generation failed.");
+    }
+
+    const preview = {
+      previewImage: json.image_url,
+      previewAlt: `${build.title} preview with ${renderRequest.components.map((item) => item.label).join(", ")}`,
+      previewStatus: "ready",
+      renderRequest: {
+        ...renderRequest,
+        image_url: json.image_url,
+        generated_at: json.generated_at,
+      },
+    };
+    mealRenderCache.set(build.key, preview);
+    return preview;
+  } catch {
+    const preview = {
+      previewImage: "",
+      previewAlt: `${build.title} AI meal preview pending`,
+      previewStatus: "pending",
+      renderRequest,
+    };
+    return preview;
+  }
 }
 
 function setImageWithSlide(image, src, force = false) {
@@ -676,11 +767,13 @@ function buildWooPayload() {
       label: group.label,
       selected: group.selected.map((selection) => selection.name),
     })),
+    meal_render: item.renderRequest,
     meta_data: [
       { key: "Meal Type", value: item.mealType },
       { key: "Portion", value: item.portion },
       { key: "Average Meal Price", value: dollars(item.avg) },
       { key: "Selections", value: item.description },
+      { key: "Preview Render", value: item.renderRequest?.prompt || "AI meal photo requested" },
       { key: "Fulfillment", value: `${customer.fulfillment} / ${customer.date} / ${customer.window}` },
       { key: "Customer Notes", value: customer.notes || "None" },
     ],
@@ -719,7 +812,7 @@ function saveOrderRequest(payload) {
       ...payload.customer,
       last_order_id: payload.request_id,
       last_order_at: payload.created_at,
-      last_cart: cloneData(builderState.cart),
+      last_cart: cloneData(cartForStorage()),
       last_total_meals: payload.total_meals,
       last_estimated_total: payload.estimated_total,
     });
@@ -737,7 +830,7 @@ function saveInternalOrder(payload) {
     total_meals: payload.total_meals,
     estimated_total: payload.estimated_total,
     line_items: payload.line_items,
-    cart: cloneData(builderState.cart),
+    cart: cloneData(cartForStorage()),
     next_actions: ["Confirm payment", "Batch ingredients", "Assign pickup or delivery window"],
   };
   const withoutDuplicate = queue.filter((item) => item.id !== ticket.id);
@@ -759,7 +852,14 @@ function renderCart() {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
         <article class="cart-item">
-          <div>
+          <div class="cart-meal-preview${item.previewImage ? "" : " is-rendering"}">
+            ${
+              item.previewImage
+                ? `<img src="${item.previewImage}" alt="${escapeHtml(item.previewAlt || `${item.title} preview`)}">`
+                : `<span>${item.previewStatus === "pending" ? "AI meal photo pending" : "Generating AI meal photo"}</span>`
+            }
+          </div>
+          <div class="cart-item-body">
             <h4>${escapeHtml(item.title)}</h4>
             <p>${escapeHtml(item.description)}</p>
             <small>${dollars(item.avg)}/meal</small>
@@ -802,21 +902,55 @@ function setQuantity(value) {
   renderBuilder();
 }
 
-function addCurrentBuildToCart() {
+async function addCurrentBuildToCart() {
   const build = currentBuild();
   const existing = builderState.cart.find((item) => item.key === build.key);
   builderState.reviewReady = false;
   resetCheckoutFlow();
+  const shouldGenerate = !existing?.previewImage;
+  const pendingPreview = {
+    previewImage: existing?.previewImage || "",
+    previewAlt: existing?.previewAlt || `${build.title} AI generated meal photo`,
+    previewStatus: existing?.previewImage ? "ready" : "generating",
+    renderRequest: existing?.renderRequest || build.renderRequest,
+  };
+  Object.assign(build, pendingPreview);
 
   if (existing) {
     existing.quantity += build.quantity;
     existing.total = existing.quantity * existing.unitPrice;
+    existing.previewImage = build.previewImage;
+    existing.previewAlt = build.previewAlt;
+    existing.previewStatus = build.previewStatus;
+    existing.renderRequest = build.renderRequest;
   } else {
     builderState.cart.push({ ...build });
   }
 
-  orderNote.textContent = `${build.quantity} ${build.title} meals added. Review checkout when you are ready.`;
+  orderNote.textContent = shouldGenerate
+    ? `${build.quantity} ${build.title} meals added. Generating the AI meal photo now.`
+    : `${build.quantity} ${build.title} meals added. Review checkout when you are ready.`;
   renderCart();
+
+  if (!shouldGenerate) return;
+
+  try {
+    const preview = await generateMealPreview(build);
+    const target = builderState.cart.find((item) => item.key === build.key);
+    if (!target) return;
+    Object.assign(target, preview);
+    orderNote.textContent = preview.previewStatus === "ready"
+      ? "AI meal photo generated and added to the cart."
+      : "The meal is in your cart. AI meal photo generation is pending.";
+    renderCart();
+  } catch {
+    const target = builderState.cart.find((item) => item.key === build.key);
+    if (target) {
+      target.previewStatus = "pending";
+      renderCart();
+    }
+    orderNote.textContent = "The meal is in your cart. AI meal photo generation is pending.";
+  }
 }
 
 function prepareStoreOrder() {
@@ -952,7 +1086,12 @@ selectionStack.addEventListener("click", (event) => {
 document.querySelector("#qtyMinus").addEventListener("click", () => setQuantity(builderState.quantity - 1));
 document.querySelector("#qtyPlus").addEventListener("click", () => setQuantity(builderState.quantity + 1));
 mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
-addMealButton.addEventListener("click", addCurrentBuildToCart);
+addMealButton.addEventListener("click", () => {
+  addCurrentBuildToCart().catch(() => {
+    addMealButton.disabled = false;
+    orderNote.textContent = "The meal preview could not render yet. The selected meal details are still saved in the cart.";
+  });
+});
 document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
 
 purchaseActions?.addEventListener("click", (event) => {
