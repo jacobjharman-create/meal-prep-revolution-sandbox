@@ -15,7 +15,7 @@
     >
     <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="styles.css?v=full-food-hero-20260612">
+    <link rel="stylesheet" href="styles.css?v=edge-picker-20260612">
   </head>
   <body>
     <header class="site-header" id="top">
@@ -143,6 +143,20 @@
 
         <div class="builder-shell meal-system" data-woo-system="meal-builder">
           <div class="meal-builder-phone" aria-label="Meal Prep Revolution meal builder">
+            <div class="builder-hero-card">
+              <img id="builderHeroImage" src="assets/images/breakfast-black-container.png" alt="Breakfast meal in a premium black meal prep container">
+              <div class="hero-quantity-chip" aria-label="Meal quantity">
+                <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
+                <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
+                <span>meals</span>
+                <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
+              </div>
+              <div class="hero-price-chip">
+                <strong id="heroTotal">$126</strong>
+                <span>est.</span>
+              </div>
+            </div>
+
             <div class="builder-toggle-row" role="tablist" aria-label="Meal type">
               <button class="segmented-pill is-active" type="button" data-mode="breakfast" aria-selected="true">
                 <span class="icon icon-sun"></span>
@@ -167,20 +181,6 @@
                 <strong>Large</strong>
                 <span id="largePrice">$12.50</span>
               </button>
-            </div>
-
-            <div class="builder-hero-card">
-              <img id="builderHeroImage" src="assets/images/breakfast-black-container.png" alt="Breakfast meal in a premium black meal prep container">
-              <div class="hero-quantity-chip" aria-label="Meal quantity">
-                <button type="button" id="qtyMinus" aria-label="Decrease meals">-</button>
-                <input id="mealQuantity" type="number" min="1" max="48" value="12" inputmode="numeric">
-                <span>meals</span>
-                <button type="button" id="qtyPlus" aria-label="Increase meals">+</button>
-              </div>
-              <div class="hero-price-chip">
-                <strong id="heroTotal">$126</strong>
-                <span>est.</span>
-              </div>
             </div>
 
             <div class="builder-rail compact-rail" id="builderGroups" aria-label="Meal builder food groups"></div>
@@ -376,6 +376,6 @@
       <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Order Online</a>
     </footer>
 
-    <script src="script.js?v=meal-picker-logic-20260612"></script>
+    <script src="script.js?v=edge-picker-20260612"></script>
   </body>
 </html>

@@ -505,18 +505,22 @@ function renderCurrentBuild() {
   builderHeroImage.alt = `${build.title} preview`;
   heroTotal.textContent = moneyCompact(build.total);
   currentTotal.textContent = moneyCompact(build.total);
-  currentMealLabel.textContent = mealLabel;
+  currentMealLabel.textContent = `${build.quantity} meals`;
+  currentMealLabel.title = mealLabel;
   currentAverage.textContent = `Avg ${dollars(build.avg)}/meal`;
   addMealButton.textContent = `Add ${build.quantity}`;
   mealQuantity.value = build.quantity;
 
   selectionStack.innerHTML = build.groups
-    .map((group) => {
-      const names = group.selected.map((item) => item.name);
-      return names.length
-        ? `<span><small>${escapeHtml(group.label)}</small>${names.map((name) => `<strong>${escapeHtml(name)}</strong>`).join("")}</span>`
-        : "";
-    })
+    .flatMap((group) =>
+      group.selected.map((item) => `
+        <button class="selection-chip" type="button" data-selection-group="${group.id}" data-selection-option="${item.id}" aria-label="Remove ${escapeHtml(item.name)}">
+          <img src="${item.image}" alt="">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      `),
+    )
     .filter(Boolean)
     .join("");
 }
@@ -696,6 +700,26 @@ builderOptions.addEventListener("click", (event) => {
     }
   } else {
     builderState.selections[builderState.mode][group.id] = current === optionId ? null : optionId;
+  }
+
+  builderState.reviewReady = false;
+  renderBuilder();
+});
+
+selectionStack.addEventListener("click", (event) => {
+  const chip = event.target.closest("[data-selection-group][data-selection-option]");
+  if (!chip) return;
+
+  const group = builderCatalog[builderState.mode].groups.find((item) => item.id === chip.dataset.selectionGroup);
+  if (!group) return;
+
+  const current = builderState.selections[builderState.mode][group.id];
+  if (group.multi) {
+    builderState.selections[builderState.mode][group.id] = (Array.isArray(current) ? current : []).filter(
+      (id) => id !== chip.dataset.selectionOption,
+    );
+  } else if (current === chip.dataset.selectionOption) {
+    builderState.selections[builderState.mode][group.id] = null;
   }
 
   builderState.reviewReady = false;
