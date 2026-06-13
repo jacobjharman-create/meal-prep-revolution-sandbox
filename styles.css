@@ -1423,6 +1423,28 @@ h2 {
   cursor: pointer;
 }
 
+.cart-item-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.cart-remove {
+  min-height: 34px;
+  padding: 0 10px;
+  color: #f3f8f1;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .cart-summary {
   margin-top: auto;
   padding-top: 16px;

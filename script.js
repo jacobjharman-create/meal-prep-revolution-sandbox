@@ -989,10 +989,13 @@ function renderCart() {
             </div>
             <div class="cart-item-footer">
               <span>${item.quantity} ${item.quantity === 1 ? "meal" : "meals"} in cart</span>
-              <div class="cart-qty" aria-label="${escapeHtml(item.title)} quantity">
-                <button type="button" data-cart-action="decrease" data-cart-key="${item.key}" aria-label="Decrease ${escapeHtml(item.title)}">-</button>
-                <span>${item.quantity}</span>
-                <button type="button" data-cart-action="increase" data-cart-key="${item.key}" aria-label="Increase ${escapeHtml(item.title)}">+</button>
+              <div class="cart-item-actions">
+                <div class="cart-qty" aria-label="${escapeHtml(item.title)} quantity">
+                  <button type="button" data-cart-action="decrease" data-cart-key="${item.key}" aria-label="Decrease ${escapeHtml(item.title)}">-</button>
+                  <span>${item.quantity}</span>
+                  <button type="button" data-cart-action="increase" data-cart-key="${item.key}" aria-label="Increase ${escapeHtml(item.title)}">+</button>
+                </div>
+                <button class="cart-remove" type="button" data-cart-action="remove" data-cart-key="${item.key}" aria-label="Remove ${escapeHtml(item.title)}">Remove</button>
               </div>
             </div>
           </div>
@@ -1296,6 +1299,16 @@ cartItems.addEventListener("click", (event) => {
 
   const item = builderState.cart.find((cartItem) => cartItem.key === button.dataset.cartKey);
   if (!item) return;
+
+  const removedTitle = item.title;
+  if (button.dataset.cartAction === "remove") {
+    builderState.cart = builderState.cart.filter((cartItem) => cartItem.key !== item.key);
+    builderState.reviewReady = false;
+    resetCheckoutFlow();
+    orderNote.textContent = `${removedTitle} removed from your cart.`;
+    renderCart();
+    return;
+  }
 
   item.quantity += button.dataset.cartAction === "increase" ? 1 : -1;
   item.total = item.quantity * item.unitPrice;
