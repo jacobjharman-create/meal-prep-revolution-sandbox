@@ -355,6 +355,9 @@ const orderStorage = {
   customer: "mprCustomerProfile",
   draft: "mprOrderDraft",
   queue: "mprOrderOsQueue",
+  wooDraft: "mprWooOrderDraft",
+  checkoutStarted: "mprCheckoutStarted",
+  recurringPreference: "mprRecurringPreference",
 };
 
 function readStoredJson(key, fallback) {
@@ -425,6 +428,7 @@ const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
 const checkoutSummary = document.querySelector("#checkoutSummary");
 const recurringChoice = document.querySelector("#recurringChoice");
+const checkoutStatus = document.querySelector("#checkoutStatus");
 const orderIntake = document.querySelector("#orderIntake");
 const customerName = document.querySelector("#customerName");
 const customerPhone = document.querySelector("#customerPhone");
@@ -463,6 +467,13 @@ function escapeHtml(value) {
 
 function cloneData(value) {
   return JSON.parse(JSON.stringify(value));
+}
+
+function formatShortTime(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 }
 
 function getCurrentMode() {
@@ -883,7 +894,7 @@ async function submitOrderToBackend(payload) {
 }
 
 function postOrderEvent(eventName, extra = {}) {
-  const draft = readStoredJson("mprWooOrderDraft", {});
+  const draft = readStoredJson(orderStorage.wooDraft, {});
   const requestIdValue = builderState.activeOrderId || draft.request_id;
   if (!requestIdValue || !builderState.serverBacked) return;
   const payload = JSON.stringify({
@@ -907,11 +918,54 @@ function resetCheckoutFlow() {
   builderState.activeOrderId = "";
   builderState.checkoutUrl = defaultCheckoutUrl;
   builderState.serverBacked = false;
+  if (checkoutStatus) checkoutStatus.hidden = true;
   if (recurringChoice) recurringChoice.hidden = true;
   document.querySelectorAll("[data-recurring]").forEach((button) => {
     button.classList.remove("is-selected");
     button.setAttribute("aria-pressed", "false");
   });
+}
+
+function renderCheckoutStatus(payload = {}) {
+  if (!checkoutStatus) return;
+  const orderId = builderState.activeOrderId || payload.request_id || "";
+  if (!builderState.reviewReady || !builderState.cart.length || !orderId) {
+    checkoutStatus.hidden = true;
+    checkoutStatus.innerHTML = "";
+    return;
+  }
+
+  const checkout = readStoredJson(orderStorage.checkoutStarted, {});
+  const recurring = readStoredJson(orderStorage.recurringPreference, {});
+  const checkoutMatches = checkout.request_id === orderId;
+  const recurringOrderId = recurring.request_id || recurring.order?.request_id || "";
+  const recurringMatches = recurringOrderId === orderId;
+  const checkoutTime = formatShortTime(checkout.started_at);
+  const repeatLabel = recurring.frequency === "one time only" ? "One time only" : recurring.frequency;
+  const rows = [
+    ["Order ticket", `${orderId} created`, true],
+    ["Payment", checkoutMatches ? `${checkout.wallet || "Checkout"} opened${checkoutTime ? ` at ${checkoutTime}` : ""}` : "Choose Apple Pay, Amazon Pay, or card", checkoutMatches],
+    ["Repeat", recurringMatches ? repeatLabel : "Optional after checkout", recurringMatches],
+  ];
+
+  checkoutStatus.hidden = false;
+  checkoutStatus.innerHTML = `
+    <div class="checkout-status-head">
+      <span class="checkout-eyebrow">Order status</span>
+      <strong>${escapeHtml(payload.total_meals || 0)} meals / ${escapeHtml(dollars(payload.estimated_total || 0))}</strong>
+    </div>
+    <div class="checkout-status-steps">
+      ${rows.map(([label, value, complete]) => `
+        <div class="checkout-status-step${complete ? " complete" : ""}">
+          <span aria-hidden="true"></span>
+          <div>
+            <strong>${escapeHtml(label)}</strong>
+            <small>${escapeHtml(value)}</small>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
 }
 
 function renderCart() {
@@ -955,7 +1009,8 @@ function renderCart() {
   if (checkoutSummary && builderState.cart.length) {
     checkoutSummary.textContent = `${payload.total_meals} meals · ${dollars(payload.estimated_total)} estimated`;
   }
-  localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
+  renderCheckoutStatus(payload);
+  localStorage.setItem(orderStorage.wooDraft, JSON.stringify(payload));
 }
 
 function renderBuilder() {
@@ -1042,7 +1097,7 @@ async function prepareStoreOrder() {
   saveOrderRequest(payload);
   saveInternalOrder(payload);
   renderCart();
-  localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
+  localStorage.setItem(orderStorage.wooDraft, JSON.stringify(payload));
   orderNote.innerHTML = payload.server_backed
     ? `<strong>${payload.total_meals} meals</strong> are ready for secure checkout. Choose Apple Pay, Amazon Pay, or card to finish payment.`
     : `<strong>${payload.total_meals} meals</strong> are ready for checkout. Local fallback is active, so the admin board may need a refresh after checkout.`;
@@ -1183,9 +1238,9 @@ purchaseActions?.addEventListener("click", (event) => {
   const recurringButton = event.target.closest("[data-recurring]");
 
   if (walletLink) {
-    const payload = readStoredJson("mprWooOrderDraft", buildWooPayload());
+    const payload = readStoredJson(orderStorage.wooDraft, buildWooPayload());
     const wallet = walletLink.dataset.checkoutWallet;
-    writeStoredJson("mprCheckoutStarted", {
+    writeStoredJson(orderStorage.checkoutStarted, {
       wallet,
       started_at: new Date().toISOString(),
       request_id: payload.request_id,
@@ -1194,6 +1249,7 @@ purchaseActions?.addEventListener("click", (event) => {
     });
     postOrderEvent("checkout_started", { wallet });
     if (recurringChoice) recurringChoice.hidden = false;
+    renderCheckoutStatus(payload);
     orderNote.innerHTML = `<strong>${escapeHtml(wallet)}</strong> checkout opened. After payment, choose whether this should repeat.`;
     return;
   }
@@ -1204,12 +1260,15 @@ purchaseActions?.addEventListener("click", (event) => {
       button.classList.toggle("is-selected", selected);
       button.setAttribute("aria-pressed", String(selected));
     });
-    writeStoredJson("mprRecurringPreference", {
+    const order = readStoredJson(orderStorage.wooDraft, buildWooPayload());
+    writeStoredJson(orderStorage.recurringPreference, {
       frequency: recurringButton.dataset.recurring,
       selected_at: new Date().toISOString(),
-      order: readStoredJson("mprWooOrderDraft", buildWooPayload()),
+      request_id: order.request_id,
+      order,
     });
     postOrderEvent("recurring_selected", { frequency: recurringButton.dataset.recurring });
+    renderCheckoutStatus(order);
     orderNote.innerHTML = recurringButton.dataset.recurring === "one time only"
       ? "Perfect. This order will stay one time only."
       : `Perfect. We saved <strong>${escapeHtml(recurringButton.dataset.recurring)}</strong> as the preferred repeat schedule.`;
