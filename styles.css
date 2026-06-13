@@ -701,6 +701,8 @@ h1 .hero-h1-accent,
 }
 
 .done-for-you-section > .section-heading {
+  max-width: 1240px;
+  margin-bottom: 24px;
   text-align: left;
 }
 
