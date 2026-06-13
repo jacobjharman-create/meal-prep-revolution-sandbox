@@ -818,9 +818,6 @@ cartItems.addEventListener("click", (event) => {
 
 const toggle = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
-const heroInfoToggle = document.querySelector(".hero-info-toggle");
-const heroInfoPanel = document.querySelector("#heroInfoPanel");
-const heroPromiseRail = document.querySelector(".hero-promise-list");
 
 toggle.addEventListener("click", () => {
   const isOpen = mobileNav.classList.toggle("open");
@@ -835,72 +832,3 @@ mobileNav.querySelectorAll("a").forEach((link) => {
     toggle.setAttribute("aria-label", "Open menu");
   });
 });
-
-if (heroInfoToggle && heroInfoPanel) {
-  const statusText = heroInfoToggle.querySelector("span span");
-  let closeTimer;
-
-  heroInfoToggle.addEventListener("click", () => {
-    const willOpen = heroInfoToggle.getAttribute("aria-expanded") !== "true";
-    clearTimeout(closeTimer);
-    heroInfoToggle.setAttribute("aria-expanded", String(willOpen));
-
-    if (statusText) {
-      statusText.textContent = willOpen ? "Close details" : "Open for details";
-    }
-
-    if (willOpen) {
-      heroInfoPanel.hidden = false;
-      void heroInfoPanel.offsetHeight;
-      heroInfoPanel.classList.add("is-open");
-      return;
-    }
-
-    heroInfoPanel.classList.remove("is-open");
-    closeTimer = window.setTimeout(() => {
-      heroInfoPanel.hidden = true;
-    }, 340);
-  });
-}
-
-if (heroPromiseRail && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const mobileRail = window.matchMedia("(max-width: 680px)");
-  let railIndex = 0;
-  let railTimer;
-  let resumeTimer;
-
-  const stopRail = () => {
-    window.clearInterval(railTimer);
-    railTimer = null;
-  };
-
-  const startRail = () => {
-    stopRail();
-    if (!mobileRail.matches) {
-      heroPromiseRail.scrollTo({ left: 0 });
-      return;
-    }
-
-    const items = Array.from(heroPromiseRail.children);
-    if (items.length < 2) return;
-
-    railTimer = window.setInterval(() => {
-      railIndex = (railIndex + 1) % items.length;
-      heroPromiseRail.scrollTo({
-        left: items[railIndex].offsetLeft - heroPromiseRail.offsetLeft,
-        behavior: "smooth",
-      });
-    }, 2600);
-  };
-
-  const pauseRail = () => {
-    stopRail();
-    window.clearTimeout(resumeTimer);
-    resumeTimer = window.setTimeout(startRail, 5200);
-  };
-
-  heroPromiseRail.addEventListener("pointerdown", pauseRail, { passive: true });
-  heroPromiseRail.addEventListener("focusin", pauseRail);
-  mobileRail.addEventListener("change", startRail);
-  startRail();
-}
