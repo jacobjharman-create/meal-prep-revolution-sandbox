@@ -1524,7 +1524,7 @@ h2 {
   color: var(--white);
   background: transparent;
   border: 0;
-  font-size: 13px;
+  font-size: calc(13px * var(--picker-font-scale));
   font-weight: 950;
 }
 
@@ -1549,7 +1549,7 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 10px;
+  font-size: calc(10px * var(--picker-font-scale));
   font-weight: 950;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1592,8 +1592,9 @@ h2 {
   display: none;
 }
 
-.purchase-actions .button {
+.meal-system .purchase-actions .button {
   width: 100%;
+  font-size: calc(12px * var(--picker-font-scale));
 }
 
 .checkout-flow {
@@ -1646,7 +1647,7 @@ h2 {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: calc(15px * var(--picker-font-scale));
   font-weight: 950;
   letter-spacing: 0;
   transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
@@ -1665,7 +1666,7 @@ h2 {
 .wallet-apple::before {
   margin-right: 8px;
   content: "Pay";
-  font-size: 12px;
+  font-size: calc(12px * var(--picker-font-scale));
   font-weight: 760;
   opacity: 0.78;
 }
@@ -1679,7 +1680,7 @@ h2 {
 .wallet-amazon::before {
   margin-right: 8px;
   content: "Pay with";
-  font-size: 12px;
+  font-size: calc(12px * var(--picker-font-scale));
   font-weight: 760;
   opacity: 0.82;
 }
@@ -1716,7 +1717,7 @@ h2 {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: calc(11px * var(--picker-font-scale));
   font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -1860,7 +1861,7 @@ h2 {
   border: 1px solid rgba(140, 255, 120, 0.22);
   border-radius: 10px;
   cursor: pointer;
-  font-size: 10px;
+  font-size: calc(10px * var(--picker-font-scale));
   font-weight: 950;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -3161,40 +3162,82 @@ cite {
   }
 
   .hero-plan-actions {
-    left: auto;
-    right: 12px !important;
-    left: auto !important;
-    bottom: 12px;
-    width: min(262px, calc(100vw - 24px));
-    gap: 6px;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    width: 100%;
+    padding: 0 12px;
+    gap: 0;
+    justify-content: flex-end;
   }
 
   .hero-plan-card {
     min-height: 0;
-    gap: 8px;
-    padding: 10px;
-  }
-
-  .hero-plan-card strong {
-    max-width: 220px;
-    font-size: 15px;
-  }
-
-  .hero-plan-card p {
-    max-width: 220px;
-    font-size: 10px;
-    line-height: 1.24;
+    max-height: 46px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    gap: 2px 9px;
+    width: 100%;
+    padding: 7px 10px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .hero-plan-card span {
+    grid-column: 1;
+    grid-row: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    font-size: 8px;
+  }
+
+  .hero-plan-card strong {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: none;
+    font-size: 12px;
+    line-height: 1.1;
+    margin: 0;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hero-plan-card p {
+    grid-column: 1;
+    grid-row: 3;
+    max-width: none;
+    margin: 0;
+    text-align: left;
     font-size: 9px;
-    letter-spacing: 0.06em;
+    line-height: 1.2;
+    max-height: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .hero-plan-card strong,
+  .hero-plan-card p,
+  .hero-plan-card span {
+    justify-self: start;
+    width: 100%;
   }
 
   .hero-plan-card .button {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: stretch;
     min-height: 34px;
-    padding-inline: 12px;
+    min-width: 96px;
+    padding-inline: 10px;
     font-size: 9px;
+    letter-spacing: 0.06em;
   }
 
   .hero-frame::before {
@@ -3443,6 +3486,7 @@ cite {
 }
 
 .meal-system {
+  --picker-font-scale: 1.25;
   grid-template-columns: minmax(360px, 620px) minmax(300px, 430px);
   align-items: stretch;
   justify-content: center;
@@ -3452,6 +3496,10 @@ cite {
   background: transparent;
   border: 0;
   box-shadow: none;
+}
+
+.meal-system .button {
+  font-size: calc(12px * var(--picker-font-scale));
 }
 
 .meal-builder-phone {
@@ -3547,7 +3595,7 @@ cite {
 .segmented-pill strong,
 .portion-pill strong {
   overflow: hidden;
-  font-size: 10px;
+  font-size: calc(10px * var(--picker-font-scale));
   font-weight: 950;
   letter-spacing: 0.02em;
   text-overflow: ellipsis;
@@ -3557,7 +3605,7 @@ cite {
 
 .portion-pill span {
   color: var(--muted);
-  font-size: 8px;
+  font-size: calc(8px * var(--picker-font-scale));
   font-weight: 800;
   line-height: 1;
 }
@@ -3642,7 +3690,7 @@ cite {
   background: transparent;
   border: 0;
   text-align: center;
-  font-size: 14px;
+  font-size: calc(14px * var(--picker-font-scale));
   font-weight: 900;
 }
 
@@ -3716,7 +3764,7 @@ cite {
 
 .meal-system .builder-step strong {
   margin-top: 3px;
-  font-size: 8px;
+  font-size: calc(8px * var(--picker-font-scale));
   line-height: 1.1;
 }
 
@@ -3796,7 +3844,7 @@ cite {
   max-width: 100%;
   overflow: hidden;
   color: var(--white);
-  font-size: 11px;
+  font-size: calc(11px * var(--picker-font-scale));
   font-weight: 950;
   line-height: 1.1;
   text-shadow: none;
@@ -3866,7 +3914,7 @@ cite {
 
 .compact-stack strong,
 .selection-chip strong {
-  font-size: 10px;
+  font-size: calc(10px * var(--picker-font-scale));
   font-weight: 950;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -3920,6 +3968,7 @@ cite {
   width: max-content;
   max-width: max-content;
   white-space: nowrap;
+  font-size: calc(12px * var(--picker-font-scale));
 }
 
 .woo-order-panel {
@@ -4108,12 +4157,12 @@ cite {
 
   .segmented-pill strong,
   .portion-pill strong {
-    font-size: 10px;
+    font-size: calc(10px * var(--picker-font-scale));
     letter-spacing: 0.06em;
   }
 
   .portion-pill span {
-    font-size: 9px;
+    font-size: calc(9px * var(--picker-font-scale));
   }
 
   .segmented-pill .icon {
@@ -4147,12 +4196,12 @@ cite {
   .hero-quantity-chip input {
     width: 35px;
     height: 32px;
-    font-size: 18px;
+    font-size: calc(18px * var(--picker-font-scale));
   }
 
   .hero-quantity-chip input {
     width: 38px;
-    font-size: 19px;
+    font-size: calc(19px * var(--picker-font-scale));
   }
 
   .hero-quantity-chip span {
@@ -4186,7 +4235,7 @@ cite {
 
   .meal-system .builder-step strong {
     margin-top: 4px;
-    font-size: 9px;
+    font-size: calc(9px * var(--picker-font-scale));
     letter-spacing: 0.04em;
   }
 
@@ -4208,7 +4257,7 @@ cite {
     right: 4px;
     bottom: 6px;
     left: 4px;
-    font-size: 9px;
+    font-size: calc(9px * var(--picker-font-scale));
   }
 
   .builder-bottom-row {
@@ -4222,7 +4271,7 @@ cite {
     min-width: 0;
     min-height: 40px;
     border-radius: 11px;
-    font-size: 11px;
+    font-size: calc(11px * var(--picker-font-scale));
     letter-spacing: 0.08em;
   }
 
@@ -4257,7 +4306,7 @@ cite {
   }
 
   .selection-chip strong {
-    font-size: 10px;
+    font-size: calc(10px * var(--picker-font-scale));
   }
 
   .selection-chip img {
