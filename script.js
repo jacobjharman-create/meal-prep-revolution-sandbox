@@ -926,6 +926,19 @@ function resetCheckoutFlow() {
   });
 }
 
+function activeCheckoutPayload(basePayload = buildWooPayload()) {
+  if (!builderState.reviewReady || !builderState.activeOrderId) return basePayload;
+  const draft = readStoredJson(orderStorage.wooDraft, {});
+  return {
+    ...basePayload,
+    request_id: builderState.activeOrderId,
+    created_at: draft.created_at || new Date().toISOString(),
+    checkout_url: builderState.checkoutUrl || draft.checkout_url || defaultCheckoutUrl,
+    payment_status: draft.payment_status || "Pending checkout",
+    server_backed: builderState.serverBacked || Boolean(draft.server_backed),
+  };
+}
+
 function renderCheckoutStatus(payload = {}) {
   if (!checkoutStatus) return;
   const orderId = builderState.activeOrderId || payload.request_id || "";
@@ -1004,13 +1017,16 @@ function renderCart() {
       .join("");
   }
 
-  const payload = buildWooPayload();
+  const payload = activeCheckoutPayload(buildWooPayload());
   cartMealTotal.textContent = payload.total_meals;
   cartPriceTotal.textContent = builderState.cart.length ? dollars(payload.estimated_total) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
   setWalletCheckoutUrl(builderState.checkoutUrl);
   if (checkoutSummary && builderState.cart.length) {
     checkoutSummary.textContent = `${payload.total_meals} meals · ${dollars(payload.estimated_total)} estimated`;
+  }
+  if (submitOrderButton && !submitOrderButton.disabled) {
+    submitOrderButton.textContent = builderState.reviewReady && builderState.activeOrderId ? "Checkout Ready" : "Continue to Secure Checkout";
   }
   renderCheckoutStatus(payload);
   localStorage.setItem(orderStorage.wooDraft, JSON.stringify(payload));
@@ -1054,6 +1070,16 @@ async function prepareStoreOrder() {
 
   if (validationMessage) {
     orderNote.textContent = validationMessage;
+    return;
+  }
+
+  if (builderState.reviewReady && builderState.activeOrderId) {
+    const activePayload = activeCheckoutPayload(buildWooPayload());
+    builderState.checkoutUrl = activePayload.checkout_url || defaultCheckoutUrl;
+    setWalletCheckoutUrl(builderState.checkoutUrl);
+    renderCart();
+    orderNote.innerHTML = `<strong>${activePayload.total_meals} meals</strong> already have a checkout ticket. Choose Apple Pay, Amazon Pay, or card to finish payment.`;
+    purchaseActions?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     return;
   }
 
