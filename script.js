@@ -7,14 +7,24 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
+const pickerImageVersion = "breakfast-components-20260613";
+const pickerImage = (src) => `${src}${src.includes("?") ? "&" : "?"}v=${pickerImageVersion}`;
+
 const mealImages = {
   chicken: "assets/images/black-plate-builder/protein-chicken.png",
   steak: "assets/images/black-plate-builder/protein-steak.png",
   salmon: "assets/images/black-plate-builder/protein-salmon.png",
   salad: "assets/images/black-plate-builder/veg-asparagus.png",
-  breakfast: "assets/images/black-plate-builder/protein-eggs.png",
+  breakfast: "assets/images/black-plate-builder/breakfast-bowl.png",
+  breakfastBurrito: "assets/images/black-plate-builder/breakfast-burrito.png",
+  breakfastPancakeWaffle: "assets/images/black-plate-builder/breakfast-pancake-waffle.png",
+  breakfastBowl: "assets/images/black-plate-builder/breakfast-bowl.png",
   pack: "assets/images/black-plate-builder/protein-chicken.png",
 };
+
+Object.keys(mealImages).forEach((key) => {
+  mealImages[key] = pickerImage(mealImages[key]);
+});
 
 const builderItemImages = {
   chicken: "assets/images/black-plate-builder/protein-chicken.png",
@@ -24,6 +34,19 @@ const builderItemImages = {
   shrimp: "assets/images/black-plate-builder/protein-shrimp.png",
   tofu: "assets/images/black-plate-builder/protein-tofu.png",
   eggs: "assets/images/black-plate-builder/protein-eggs.png",
+  "breakfast-protein-pancakes": "assets/images/black-plate-builder/breakfast-protein-pancakes.png",
+  "breakfast-protein-waffles": "assets/images/black-plate-builder/breakfast-protein-waffles.png",
+  "breakfast-turkey-sausage": "assets/images/black-plate-builder/breakfast-turkey-sausage.png",
+  "breakfast-pork-sausage": "assets/images/black-plate-builder/breakfast-pork-sausage.png",
+  "breakfast-egg-whites": "assets/images/black-plate-builder/breakfast-egg-whites.png",
+  "breakfast-egg-bites": "assets/images/black-plate-builder/breakfast-egg-bites.png",
+  "breakfast-hash": "assets/images/black-plate-builder/breakfast-hash.png",
+  "breakfast-cinnamon-sweet-potato": "assets/images/black-plate-builder/breakfast-cinnamon-sweet-potato.png",
+  "breakfast-maple-syrup": "assets/images/black-plate-builder/breakfast-maple-syrup.png",
+  "breakfast-blueberry-syrup": "assets/images/black-plate-builder/breakfast-blueberry-syrup.png",
+  "breakfast-salsa": "assets/images/black-plate-builder/breakfast-salsa.png",
+  "breakfast-chimichurri": "assets/images/black-plate-builder/breakfast-chimichurri.png",
+  "breakfast-hot-sauce": "assets/images/black-plate-builder/breakfast-hot-sauce.png",
   meatballs: "assets/images/black-plate-builder/protein-meatballs.png",
   "jasmine-rice": "assets/images/black-plate-builder/grain-jasmine-rice.png",
   "sweet-potato": "assets/images/black-plate-builder/grain-sweet-potato.png",
@@ -50,6 +73,10 @@ const builderItemImages = {
   tahini: "assets/images/black-plate-builder/sauce-tahini.png?v=sauce-refresh-20260612",
   none: "assets/images/black-plate-builder/sauce-none.png?v=sauce-refresh-20260612",
 };
+
+Object.keys(builderItemImages).forEach((key) => {
+  builderItemImages[key] = pickerImage(builderItemImages[key]);
+});
 
 const builderGroupIcons = {
   "icon-protein": {
@@ -84,10 +111,9 @@ const menus = {
     ["Salmon Power Plate", "Salmon, quinoa, asparagus, and lemon.", "$14.49+", mealImages.salmon],
   ],
   breakfast: [
-    ["Protein Breakfast Bowl", "Eggs, potatoes, turkey, and fresh salsa.", "$10.49+", mealImages.breakfast],
-    ["Clean Morning Stack", "Balanced breakfast built for busy mornings.", "$10.49+", mealImages.pack],
-    ["Greek Yogurt Cup", "Fruit-forward, simple, and ready fast.", "$7.49+", mealImages.breakfast],
-    ["Breakfast Pack", "Stock the fridge for the early part of the week.", "Order", mealImages.breakfast],
+    ["Breakfast Burrito", "Egg whites, breakfast hash, protein, vegetables, and salsa in a 14-inch tortilla.", "$9.99 - $13.99", mealImages.breakfastBurrito],
+    ["Pancake or Waffle Breakfast", "Protein pancakes or waffles with sausage, syrup, and optional toppings.", "$10.99 - $12.99", mealImages.breakfastPancakeWaffle],
+    ["Breakfast Bowl", "Egg style, sausage, breakfast carbs, toppings, and add-ons in one bowl.", "$10.99 - $11.99", mealImages.breakfastBowl],
   ],
   salads: [
     ["Buffalo Chicken Salad", "Romaine, cucumber, tomato, carrots, blue cheese.", "$11.49+", mealImages.salad],
@@ -134,7 +160,7 @@ const builderCatalog = {
   breakfast: {
     label: "Breakfast",
     mealLabel: "breakfast",
-    hero: "assets/images/black-plate-builder/protein-eggs.png",
+    hero: builderItemImages["breakfast-bowl"],
     defaultPortion: "medium",
     defaultGroup: "protein",
     groups: [
@@ -145,45 +171,45 @@ const builderCatalog = {
         multi: false,
         options: [
           { id: "eggs", name: "Eggs", image: builderItemImages.eggs },
-          { id: "turkey", name: "Turkey", image: builderItemImages.turkey },
+          { id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] },
+          { id: "breakfast-egg-bites", name: "Egg Bites", image: builderItemImages["breakfast-egg-bites"] },
+          { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] },
+          { id: "breakfast-pork-sausage", name: "Pork Sausage", image: builderItemImages["breakfast-pork-sausage"] },
+          { id: "breakfast-protein-pancakes", name: "Protein Pancakes", image: builderItemImages["breakfast-protein-pancakes"] },
+          { id: "breakfast-protein-waffles", name: "Protein Waffles", image: builderItemImages["breakfast-protein-waffles"] },
           { id: "steak", name: "Steak", image: builderItemImages.steak },
-          { id: "tofu", name: "Tofu", image: builderItemImages.tofu },
-          { id: "chicken", name: "Chicken", image: builderItemImages.chicken },
-          { id: "salmon", name: "Salmon", image: builderItemImages.salmon },
-          { id: "shrimp", name: "Shrimp", image: builderItemImages.shrimp },
-          { id: "meatballs", name: "Meatballs", image: builderItemImages.meatballs },
         ],
       },
       {
-        id: "base",
+        id: "carbs",
         label: "Carbs",
         icon: "icon-carb",
         multi: false,
         options: [
+          { id: "breakfast-hash", name: "Breakfast Hash", image: builderItemImages["breakfast-hash"] },
+          { id: "breakfast-cinnamon-sweet-potato", name: "Cinnamon Sweet Potato", image: builderItemImages["breakfast-cinnamon-sweet-potato"] },
           { id: "potatoes", name: "Potatoes", image: builderItemImages.potatoes },
           { id: "oats", name: "Oats", image: builderItemImages.quinoa },
           { id: "sweet-potato", name: "Sweet Potato", image: builderItemImages["sweet-potato"] },
           { id: "rice", name: "Rice", image: builderItemImages["jasmine-rice"] },
           { id: "beans", name: "Beans", image: builderItemImages["black-beans"] },
-          { id: "cauli-rice", name: "Cauli Rice", image: builderItemImages["cauli-rice"] },
-          { id: "noodles", name: "Noodles", image: builderItemImages.noodles },
-          { id: "no-base", name: "No Carbs", image: builderItemImages.none },
+          { id: "no-carbs", name: "No Carbs", image: builderItemImages.none },
         ],
       },
       {
-        id: "fruit",
+        id: "vegetables",
         label: "Vegetables",
         icon: "icon-leaf",
         multi: true,
         options: [
-          { id: "berries", name: "Berries", image: builderItemImages.peppers },
-          { id: "avocado", name: "Avocado", image: builderItemImages.asparagus },
-          { id: "banana", name: "Banana", image: builderItemImages["sweet-potato"] },
-          { id: "apple", name: "Apple", image: builderItemImages.carrots },
-          { id: "pineapple", name: "Pineapple", image: builderItemImages.potatoes },
-          { id: "spinach", name: "Spinach", image: builderItemImages.spinach },
+          { id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli },
+          { id: "asparagus", name: "Asparagus", image: builderItemImages.asparagus },
           { id: "peppers", name: "Peppers", image: builderItemImages.peppers },
-          { id: "no-fruit", name: "No Fruit", image: builderItemImages.none },
+          { id: "green-beans", name: "Green Beans", image: builderItemImages["green-beans"] },
+          { id: "spinach", name: "Spinach", image: builderItemImages.spinach },
+          { id: "carrots", name: "Carrots", image: builderItemImages.carrots },
+          { id: "zucchini", name: "Zucchini", image: builderItemImages.zucchini },
+          { id: "no-vegetables", name: "No Vegetables", image: builderItemImages.none },
         ],
       },
       {
@@ -192,22 +218,19 @@ const builderCatalog = {
         icon: "icon-drop",
         multi: false,
         options: [
-          { id: "salsa-verde", name: "Salsa", image: builderItemImages["salsa-verde"] },
-          { id: "lemon-herb", name: "Lemon Herb", image: builderItemImages["lemon-herb"] },
-          { id: "buffalo", name: "Buffalo", image: builderItemImages.buffalo },
-          { id: "garlic-aioli", name: "Aioli", image: builderItemImages["garlic-aioli"] },
-          { id: "teriyaki", name: "Teriyaki", image: builderItemImages.teriyaki },
-          { id: "chimichurri", name: "Chimichurri", image: builderItemImages.chimichurri },
-          { id: "tahini", name: "Tahini", image: builderItemImages.tahini },
-          { id: "none", name: "No Sauce", image: builderItemImages.none },
+          { id: "breakfast-maple-syrup", name: "Maple Syrup", image: builderItemImages["breakfast-maple-syrup"] },
+          { id: "breakfast-blueberry-syrup", name: "Blueberry Syrup", image: builderItemImages["breakfast-blueberry-syrup"] },
+          { id: "breakfast-salsa", name: "Salsa", image: builderItemImages["breakfast-salsa"] },
+          { id: "breakfast-chimichurri", name: "Chimichurri", image: builderItemImages["breakfast-chimichurri"] },
+          { id: "breakfast-hot-sauce", name: "Hot Sauce", image: builderItemImages["breakfast-hot-sauce"] },
         ],
       },
     ],
     defaults: {
       protein: "eggs",
-      base: "potatoes",
-      fruit: ["berries"],
-      sauce: "salsa-verde",
+      carbs: "breakfast-hash",
+      vegetables: ["peppers"],
+      sauce: "breakfast-salsa",
     },
   },
   lunch: {
@@ -293,10 +316,14 @@ const builderCatalog = {
 
 const heroByProtein = {
   breakfast: {
-    eggs: "assets/images/black-plate-builder/protein-eggs.png",
-    turkey: "assets/images/black-plate-builder/protein-turkey.png",
-    steak: "assets/images/black-plate-builder/protein-steak.png",
-    tofu: "assets/images/black-plate-builder/protein-tofu.png",
+    eggs: builderItemImages.eggs,
+    "breakfast-egg-whites": builderItemImages["breakfast-egg-whites"],
+    "breakfast-egg-bites": builderItemImages["breakfast-egg-bites"],
+    "breakfast-turkey-sausage": builderItemImages["breakfast-turkey-sausage"],
+    "breakfast-pork-sausage": builderItemImages["breakfast-pork-sausage"],
+    "breakfast-protein-pancakes": builderItemImages["breakfast-protein-pancakes"],
+    "breakfast-protein-waffles": builderItemImages["breakfast-protein-waffles"],
+    steak: builderItemImages.steak,
   },
   lunch: {
     chicken: "assets/images/black-plate-builder/protein-chicken.png",
@@ -306,7 +333,7 @@ const heroByProtein = {
 };
 
 const builderState = {
-  mode: "breakfast",
+  mode: "lunch",
   portion: "medium",
   activeGroup: "protein",
   portionByMode: {
@@ -587,6 +614,8 @@ function buildWooPayload() {
     quantity: item.quantity,
     unit_price: item.unitPrice,
     line_total: item.total,
+    summary: item.description,
+    preview_image: item.hero,
     meta_data: [
       { key: "Meal Type", value: item.mealType },
       { key: "Portion", value: item.portion },
@@ -614,13 +643,20 @@ function renderCart() {
     cartItems.innerHTML = builderState.cart
       .map((item) => `
         <article class="cart-item">
-          <div>
-            <h4>${escapeHtml(item.title)}</h4>
-            <p>${escapeHtml(item.description)}</p>
-            <small>${dollars(item.avg)}/meal</small>
+          <div class="cart-meal-thumb" aria-hidden="true">
+            <img src="${item.hero}" alt="">
+          </div>
+          <div class="cart-item-body">
+            <div class="cart-item-main">
+              <div>
+                <h4>${escapeHtml(item.title)}</h4>
+                <p>${escapeHtml(item.description)}</p>
+                <small>${item.quantity} meals in cart · ${dollars(item.avg)}/meal</small>
+              </div>
+              <strong>${dollars(item.total)}</strong>
+            </div>
           </div>
           <div class="cart-row">
-            <strong>${dollars(item.total)}</strong>
             <div class="cart-qty" aria-label="${escapeHtml(item.title)} quantity">
               <button type="button" data-cart-action="decrease" data-cart-key="${item.key}" aria-label="Decrease ${escapeHtml(item.title)}">-</button>
               <span>${item.quantity}</span>
