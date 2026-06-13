@@ -355,6 +355,7 @@ const orderStorage = {
   customer: "mprCustomerProfile",
   draft: "mprOrderDraft",
   queue: "mprOrderOsQueue",
+  cart: "mprBuilderCart",
   wooDraft: "mprWooOrderDraft",
   checkoutStarted: "mprCheckoutStarted",
   recurringPreference: "mprRecurringPreference",
@@ -655,6 +656,51 @@ function createCartPreview(build) {
 
 function cartForStorage() {
   return builderState.cart.map((item) => ({ ...item }));
+}
+
+function cartSignature(list = builderState.cart) {
+  return (Array.isArray(list) ? list : [])
+    .map((item) => `${item.key || ""}:${Number(item.quantity) || 0}:${Number(item.total) || 0}`)
+    .join("|");
+}
+
+function normalizeCartItem(item) {
+  if (!item || typeof item !== "object" || !item.key || !item.title) return null;
+  const unitPrice = Number(item.unitPrice) || Number(item.avg) || 0;
+  const quantity = Math.min(96, Math.max(1, Number.parseInt(item.quantity, 10) || 1));
+  return {
+    ...item,
+    quantity,
+    unitPrice,
+    avg: Number(item.avg) || unitPrice,
+    total: Number((quantity * unitPrice).toFixed(2)),
+    groups: Array.isArray(item.groups) ? item.groups : [],
+  };
+}
+
+function saveCartState() {
+  writeStoredJson(orderStorage.cart, cartForStorage());
+}
+
+function hydrateCartState() {
+  const savedCart = readStoredJson(orderStorage.cart, []);
+  builderState.cart = (Array.isArray(savedCart) ? savedCart : []).map(normalizeCartItem).filter(Boolean);
+  if (!builderState.cart.length) return;
+
+  const draft = readStoredJson(orderStorage.wooDraft, {});
+  const draftMatchesCart = draft.request_id && cartSignature(draft.cart) === cartSignature(builderState.cart);
+  if (draftMatchesCart) {
+    builderState.reviewReady = true;
+    builderState.activeOrderId = draft.request_id;
+    builderState.checkoutUrl = draft.checkout_url || defaultCheckoutUrl;
+    builderState.serverBacked = Boolean(draft.server_backed);
+    const checkout = readStoredJson(orderStorage.checkoutStarted, {});
+    if (recurringChoice) recurringChoice.hidden = checkout.request_id !== draft.request_id;
+    orderNote.innerHTML = `<strong>${draft.total_meals || builderState.cart.reduce((sum, item) => sum + item.quantity, 0)} meals</strong> already have a checkout ticket. Finish payment or edit the cart to start a fresh checkout.`;
+    return;
+  }
+
+  orderNote.textContent = "Your saved meal cart is ready. Review details, then continue to checkout.";
 }
 
 function setImageWithSlide(image, src, force = false) {
@@ -1029,6 +1075,7 @@ function renderCart() {
     submitOrderButton.textContent = builderState.reviewReady && builderState.activeOrderId ? "Checkout Ready" : "Continue to Secure Checkout";
   }
   renderCheckoutStatus(payload);
+  saveCartState();
   localStorage.setItem(orderStorage.wooDraft, JSON.stringify(payload));
 }
 
@@ -1137,6 +1184,7 @@ async function prepareStoreOrder() {
 async function bootCustomerApp() {
   await loadCatalogConfig();
   hydrateCustomerDraft();
+  hydrateCartState();
   renderMenu("build");
   renderBuilder();
 }
