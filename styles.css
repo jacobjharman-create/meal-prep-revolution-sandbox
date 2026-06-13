@@ -3914,8 +3914,12 @@ cite {
 }
 
 .add-build-button {
+  justify-self: end;
   min-width: 86px;
   min-height: 38px;
+  width: max-content;
+  max-width: max-content;
+  white-space: nowrap;
 }
 
 .woo-order-panel {
@@ -4208,7 +4212,7 @@ cite {
   }
 
   .builder-bottom-row {
-    grid-template-columns: 0.74fr 0.74fr 1fr;
+    grid-template-columns: 0.74fr 0.74fr auto;
     gap: 8px;
   }
 
