@@ -1,0 +1,47 @@
+Create one high-resolution vertical contact sheet for production use in a website meal-builder food picker. The image must be a precise 4-column by 8-row grid containing 32 equal square food photos. Each square must be crop-safe as its own standalone image asset. No text, no labels, no numbers, no logos, no watermarks, no hands, no people, no film overlays, no haze, no dark filters.
+
+Overall style: photorealistic premium commercial restaurant food photography. Fresh, vibrant, appetizing food styled for a modern meal-prep ordering website. Use matte graphite ceramic dishware, charcoal stoneware, or dark slate serving surfaces. Keep the background neutral dark graphite so the food colors pop clearly.
+
+Composition: each food item should fill 85-95% of its square frame. The crop should be tight enough for small picker buttons but not grotesque or extreme macro. The item must be immediately recognizable at mobile size.
+
+Lighting: high-end studio food photography lighting, soft directional light, subtle edge highlights, realistic shadows, clean reflections, and bright appetizing texture. Increase food vibrancy by about 5% so greens look fresh, proteins look juicy, and sauces look rich, while staying realistic.
+
+Quality target: high-resolution, photorealistic, premium, polished, conversion-focused food photography comparable to Sweetgreen, CAVA, Tender Greens, Michelin Guide restaurant photography, Uber Eats premium listings, DoorDash featured restaurants, and Apple-style product photography applied to food.
+
+Avoid: burnt or blackened food, diseased speckles, dry meat, gray meat, plastic-looking food, muddy shadows, yellow color casts, excessive props, messy backgrounds, fake CGI appearance, unreadable food items, tiny food floating in empty space.
+
+Grid order, left to right, top to bottom:
+1. Fluffy golden scrambled eggs, moist and appetizing, no shells, no black eggs, no burnt spots.
+2. Juicy sliced roasted turkey breast, tender interior, lightly browned edges.
+3. Sliced grilled steak, medium doneness, seared crust, juicy pink center, not raw.
+4. Golden pan-seared tofu cubes, crisp edges, lightly glazed.
+5. Juicy grilled chicken breast slices, golden sear, tender white interior.
+6. Flaky grilled salmon fillet, vibrant coral color, crisp golden surface.
+7. Plump seared shrimp, pink-orange, glossy, fresh.
+8. Tender browned meatballs, moist interior, savory glaze.
+9. Fluffy jasmine rice, distinct pearly white grains.
+10. Roasted sweet potato cubes, caramelized orange edges.
+11. Fluffy cooked quinoa, distinct grains, fresh and wholesome.
+12. Fluffy brown rice, distinct warm brown grains.
+13. Roasted baby potatoes, golden crisp edges, lightly herbed.
+14. Cauliflower rice, finely chopped bright white grains, fresh and clean.
+15. Glossy cooked noodles, distinct strands, appetizing golden color.
+16. Black beans, glossy whole beans, rich dark purple-black color.
+17. Roasted broccoli florets, bright green, crisp edges, appetizing.
+18. Grilled asparagus spears, bright green, lightly charred but not burnt.
+19. Roasted bell peppers, red, yellow, and orange strips, glossy and vibrant.
+20. Green beans, bright green, crisp-tender, lightly seasoned.
+21. Sauteed spinach, deep green glossy leaves, fresh, not slimy.
+22. Roasted carrots, vibrant orange, caramelized edges, tender.
+23. Grilled zucchini slices, green edges, golden centers, juicy.
+24. Roasted Brussels sprouts, green with golden crisp edges, not blackened.
+25. Lemon herb sauce in a small graphite ramekin, pale green-yellow glossy sauce with visible herbs.
+26. Chimichurri sauce in a small graphite ramekin, vivid green herbs and olive oil.
+27. Teriyaki sauce in a small graphite ramekin, glossy amber-brown sauce.
+28. Buffalo sauce in a small graphite ramekin, vibrant orange-red sauce.
+29. Garlic aioli in a small graphite ramekin, creamy off-white sauce, glossy.
+30. Salsa verde in a small graphite ramekin, bright green fresh salsa.
+31. Tahini sauce in a small graphite ramekin, creamy beige sauce with sesame sheen.
+32. No sauce option represented by a clean empty matte graphite ramekin on dark slate, premium and minimal.
+
+Final output: one high-resolution 4x8 contact sheet where every cell looks like a finished premium food picker asset.
