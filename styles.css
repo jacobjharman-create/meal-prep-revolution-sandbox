@@ -3173,14 +3173,14 @@ cite {
 
   .hero-plan-card {
     min-height: 0;
-    max-height: 51px;
+    max-height: 54px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) max-content;
     grid-template-rows: auto auto auto;
     align-items: center;
     gap: 2px 9px;
     width: 100%;
-    padding: 9px 12px;
+    padding: 9px 12px 12px;
     box-sizing: border-box;
     overflow: hidden;
   }
