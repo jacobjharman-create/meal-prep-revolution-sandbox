@@ -219,7 +219,7 @@ button {
   min-height: calc(100svh - 82px);
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  --hero-right-rail: clamp(22px, 4vw, 58px);
+  --hero-left-rail: clamp(22px, 4vw, 58px);
   --hero-copy-width: min(48vw, 720px);
 }
 
@@ -230,8 +230,8 @@ button {
   pointer-events: none;
   content: "";
   background:
-    radial-gradient(circle at 82% 16%, rgba(0, 0, 0, 0.78), transparent 34%),
-    linear-gradient(255deg, rgba(2, 4, 2, 0.78) 0%, rgba(2, 4, 2, 0.42) 34%, rgba(2, 4, 2, 0.08) 66%, transparent 100%),
+    radial-gradient(circle at 18% 16%, rgba(0, 0, 0, 0.78), transparent 34%),
+    linear-gradient(75deg, rgba(2, 4, 2, 0.78) 0%, rgba(2, 4, 2, 0.42) 34%, rgba(2, 4, 2, 0.08) 66%, transparent 100%),
     linear-gradient(180deg, rgba(2, 4, 2, 0.1) 0%, transparent 46%, rgba(2, 4, 2, 0.34) 100%);
 }
 
@@ -240,8 +240,8 @@ button {
   isolation: isolate;
   z-index: 2;
   top: clamp(218px, 26vh, 248px);
-  right: var(--hero-right-rail);
-  left: auto;
+  left: var(--hero-left-rail);
+  right: auto;
   width: var(--hero-copy-width);
   min-height: 0;
   display: flex;
@@ -298,11 +298,12 @@ button {
   position: absolute;
   z-index: 30;
   top: clamp(24px, 4.5vh, 52px);
-  right: var(--hero-right-rail);
+  left: var(--hero-left-rail);
+  right: auto;
   box-sizing: border-box;
   width: var(--hero-copy-width);
   padding: 0;
-  text-align: right;
+  text-align: left;
 }
 
 h1,
@@ -784,7 +785,8 @@ h1 .hero-h1-accent {
 
 .hero-plan-actions {
   position: absolute;
-  right: clamp(18px, 4vw, 64px);
+  left: clamp(18px, 4vw, 64px);
+  right: auto;
   bottom: clamp(22px, 5vw, 72px);
   z-index: 4;
   width: min(360px, calc(100vw - 36px));
@@ -2913,8 +2915,8 @@ cite {
 
   .hero-copy {
     top: clamp(188px, 27svh, 224px);
-    right: 14px;
     left: 14px;
+    right: auto;
     bottom: auto;
     width: auto;
     min-height: 0;
@@ -2927,12 +2929,13 @@ cite {
   .hero-heading {
     position: absolute;
     top: 16px;
-    right: 14px;
+    left: 14px;
+    right: auto;
     box-sizing: border-box;
     width: min(76vw, 360px);
     padding: 0;
     overflow: hidden;
-    text-align: right;
+    text-align: left;
   }
 
   .hero-promise-list {
@@ -3112,9 +3115,9 @@ cite {
   }
 
   .hero-plan-actions {
-    right: 12px;
+    left: 12px;
     bottom: 12px;
-    left: auto;
+    right: auto;
     width: min(318px, calc(100vw - 24px));
   }
 
