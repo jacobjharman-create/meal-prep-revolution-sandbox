@@ -583,7 +583,10 @@ h1 .hero-h1-accent {
   }
 
   .hero-cta-band .button {
-    width: min(100%, 176px);
+    width: max-content;
+    max-width: 100%;
+    min-width: 0;
+    justify-self: end;
     justify-content: center;
   }
 }
@@ -636,7 +639,7 @@ h1 .hero-h1-accent {
 
 .hero-cta-band {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) minmax(178px, 0.3fr);
+  grid-template-columns: 42px minmax(0, 1fr) auto;
   gap: clamp(12px, 1.1vw, 18px);
   align-items: center;
   max-width: 100%;
@@ -657,7 +660,8 @@ h1 .hero-h1-accent {
 }
 
 .hero-cta-band .button {
-  width: min(100%, 176px);
+  width: max-content;
+  max-width: 100%;
   min-width: 0;
   justify-self: end;
   justify-content: center;
