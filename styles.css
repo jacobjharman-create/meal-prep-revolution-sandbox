@@ -237,15 +237,15 @@ button {
   position: absolute;
   isolation: isolate;
   z-index: 2;
-  top: clamp(545px, 59vh, 620px);
-  left: clamp(22px, 4vw, 58px);
+  top: clamp(320px, 38vh, 400px);
+  left: clamp(16px, 2.5vw, 24px);
   width: min(50vw, 760px);
   min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   margin: 0;
-  padding: clamp(14px, 1.5vw, 20px);
+  padding: clamp(10px, 1.1vw, 16px);
   --hero-control-gap: clamp(9px, 1vw, 16px);
   background:
     radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.13), transparent 30%),
@@ -268,7 +268,7 @@ button {
 }
 
 .hero-copy:has(.hero-info-panel.is-open) {
-  top: clamp(565px, 54vh, 575px);
+  top: clamp(340px, 40vh, 420px);
   bottom: auto;
   width: min(50vw, 760px);
   --hero-control-gap: clamp(8px, 0.8vw, 12px);
@@ -310,7 +310,7 @@ button {
   z-index: 30;
   box-sizing: border-box;
   width: min(58vw, 920px);
-  padding: clamp(72px, 9vh, 110px) clamp(22px, 4vw, 58px) 0;
+  padding: clamp(20px, 3vh, 38px) clamp(16px, 2.5vw, 24px) 0;
 }
 
 h1,
@@ -331,7 +331,7 @@ p {
 
 h1 {
   max-width: 710px;
-  margin-top: 18px;
+  margin-top: 8px;
   color: var(--white);
   font-size: clamp(48px, 5.35vw, 78px);
   font-weight: 950;
@@ -355,7 +355,7 @@ h1 .hero-h1-accent {
 .hero-heading h1 {
   width: min(100%, 1180px);
   max-width: none;
-  font-size: clamp(44px, 5.4vw, 80px);
+  font-size: clamp(42px, 5vw, 74px);
   text-shadow:
     0 3px 0 rgba(0, 0, 0, 0.9),
     0 12px 22px rgba(0, 0, 0, 0.92),
@@ -2940,7 +2940,7 @@ cite {
   }
 
   .hero-copy {
-    top: clamp(418px, 51svh, 452px);
+    top: clamp(300px, 40svh, 360px);
     right: 14px;
     left: 14px;
     bottom: auto;
@@ -2952,12 +2952,12 @@ cite {
   }
 
   .hero-copy:has(.hero-info-panel.is-open) {
-    top: 346px;
+    top: clamp(320px, 42svh, 380px);
     right: 14px;
     bottom: auto;
     left: 14px;
     width: auto;
-    max-height: calc(100svh - 358px);
+    max-height: calc(100svh - 320px);
     overflow-y: auto;
   }
 
@@ -2979,7 +2979,7 @@ cite {
   .hero-heading {
     box-sizing: border-box;
     width: 100vw;
-    padding: 82px 20px 0;
+    padding: 24px 20px 0;
     overflow: hidden;
   }
 
