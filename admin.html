@@ -9,7 +9,7 @@
       content="Meal Prep Revolution internal CRM admin for kitchen production and owner operations."
     >
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="admin.css?v=dispatch-safety-20260613">
+    <link rel="stylesheet" href="admin.css?v=daily-brief-20260613">
   </head>
   <body class="admin-locked">
     <section class="admin-gate" id="adminGate" aria-labelledby="adminGateTitle">
@@ -141,6 +141,14 @@
               <div class="pipeline-bars" id="pipelineBars"></div>
             </section>
 
+            <section class="owner-card daily-brief-card" aria-labelledby="brief-title">
+              <div class="subhead">
+                <h3 id="brief-title">Daily ops brief</h3>
+                <button class="text-action" type="button" id="copyDailyBrief">Copy</button>
+              </div>
+              <div class="daily-brief" id="dailyBrief"></div>
+            </section>
+
             <section class="owner-card followup-card" aria-labelledby="followup-title">
               <div class="subhead">
                 <h3 id="followup-title">Customer follow-up</h3>
@@ -205,6 +213,6 @@
     </template>
     </div>
 
-    <script src="admin.js?v=dispatch-safety-20260613"></script>
+    <script src="admin.js?v=daily-brief-20260613"></script>
   </body>
 </html>

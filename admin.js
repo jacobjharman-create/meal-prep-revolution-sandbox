@@ -25,6 +25,8 @@ const elements = {
   adminTime: document.querySelector("#adminTime"),
   kitchenKpis: document.querySelector("#kitchenKpis"),
   ownerMetrics: document.querySelector("#ownerMetrics"),
+  dailyBrief: document.querySelector("#dailyBrief"),
+  copyDailyBrief: document.querySelector("#copyDailyBrief"),
   kitchenTickets: document.querySelector("#kitchenTickets"),
   prepBoard: document.querySelector("#prepBoard"),
   ticketCount: document.querySelector("#ticketCount"),
@@ -52,6 +54,7 @@ let opsState = {};
 let customerInsights = {};
 let customerFollowups = [];
 let serverBacked = false;
+let latestDailyBrief = "";
 
 function readJson(key, fallback) {
   try {
@@ -355,6 +358,14 @@ function prepBuckets(list) {
   return buckets;
 }
 
+function topBucketItems(bucket, limit = 2) {
+  return Object.entries(bucket || {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([name, count]) => `${name} ${count}`)
+    .join(", ");
+}
+
 function filteredOrders() {
   const status = elements.statusFilter.value;
   const fulfillment = elements.fulfillmentFilter.value;
@@ -557,6 +568,45 @@ function renderPipeline() {
     .join("");
 }
 
+function buildDailyBriefText() {
+  const active = activeOrders();
+  const deliveries = active.filter((order) => order.fulfillment?.type === "delivery");
+  const allergyOrders = active.filter((order) => orderAllergies(order).trim() !== "");
+  const ready = active.filter((order) => order.status === "Ready");
+  const next = active
+    .slice()
+    .sort((a, b) =>
+      String(a.fulfillment?.date || "").localeCompare(String(b.fulfillment?.date || ""))
+      || String(a.fulfillment?.window || "").localeCompare(String(b.fulfillment?.window || ""))
+    )[0];
+  const buckets = prepBuckets(active);
+  const prepFocus = [
+    topBucketItems(buckets.Protein) && `Protein: ${topBucketItems(buckets.Protein)}`,
+    topBucketItems(buckets.Carbs) && `Carbs: ${topBucketItems(buckets.Carbs)}`,
+    topBucketItems(buckets.Vegetables) && `Veg: ${topBucketItems(buckets.Vegetables)}`,
+    topBucketItems(buckets.Sauce) && `Sauce: ${topBucketItems(buckets.Sauce)}`,
+  ].filter(Boolean).join(" | ");
+  const followup = customerFollowups[0];
+
+  return [
+    `MPR Daily Ops Brief - ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
+    `Open tickets: ${active.length} / Active meals: ${totalMeals(active)} / Est. revenue: ${compactDollars(totalRevenue(active))}`,
+    `Next handoff: ${next ? `${customerName(next)} - ${next.fulfillment?.type || "pickup"} / ${formatDate(next.fulfillment?.date)} / ${next.fulfillment?.window || "window"}` : "Clear"}`,
+    `Ready: ${ready.length} / Delivery stops: ${deliveries.length} / Allergy flags: ${allergyOrders.length}`,
+    `Prep focus: ${prepFocus || "No active prep load"}`,
+    `Follow-up: ${followup ? `${followup.name} - ${followup.next_action}` : "No customer follow-up queued"}`,
+  ].join("\n");
+}
+
+function renderDailyBrief() {
+  if (!elements.dailyBrief) return;
+  latestDailyBrief = buildDailyBriefText();
+  elements.dailyBrief.innerHTML = latestDailyBrief
+    .split("\n")
+    .map((line, index) => index === 0 ? `<strong>${escapeHtml(line)}</strong>` : `<span>${escapeHtml(line)}</span>`)
+    .join("");
+}
+
 function renderCustomerFollowups() {
   if (!elements.customerFollowups) return;
   if (elements.followupSignal) {
@@ -703,6 +753,7 @@ function render() {
   renderTickets();
   renderPrepBoard();
   renderPipeline();
+  renderDailyBrief();
   renderCustomerFollowups();
   renderDeliveryRoute();
   renderAllergyWatch();
@@ -857,6 +908,20 @@ document.querySelector("#seedDemoDay").addEventListener("click", () => {
 });
 document.querySelector("#printKitchen").addEventListener("click", () => window.print());
 document.querySelector("#exportDay").addEventListener("click", exportDay);
+elements.copyDailyBrief?.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(latestDailyBrief || buildDailyBriefText());
+    elements.copyDailyBrief.textContent = "Copied";
+    window.setTimeout(() => {
+      elements.copyDailyBrief.textContent = "Copy";
+    }, 1400);
+  } catch {
+    elements.copyDailyBrief.textContent = "Select text";
+    window.setTimeout(() => {
+      elements.copyDailyBrief.textContent = "Copy";
+    }, 1800);
+  }
+});
 elements.gateForm.addEventListener("submit", submitAdminGate);
 
 document.querySelector("#clearFulfilled").addEventListener("click", () => {

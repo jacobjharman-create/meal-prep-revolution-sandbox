@@ -869,8 +869,53 @@ textarea:focus {
 }
 
 .pipeline-card,
+.daily-brief-card,
 .followup-card {
   grid-column: 1 / -1;
+}
+
+.text-action {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--green-soft);
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid var(--line-green);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.daily-brief {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+}
+
+.daily-brief strong,
+.daily-brief span {
+  display: block;
+}
+
+.daily-brief strong {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.daily-brief span {
+  color: #e8f3e5;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .pipeline-bars {
