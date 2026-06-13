@@ -266,6 +266,10 @@ function formatAddress(address = {}) {
   return parts.join(", ");
 }
 
+function phoneDigits(value) {
+  return String(value || "").replace(/\D+/g, "");
+}
+
 function orderAllergies(order) {
   return order.fulfillment?.allergies || order.customer?.allergies || "";
 }
@@ -307,6 +311,32 @@ function customerActivityMarkup(order) {
           ${escapeHtml(orderEventLabel(event))}
         </span>
       `).join("")}
+    </div>
+  `;
+}
+
+function contactActionsMarkup(order) {
+  const phone = String(order.customer?.phone || "").trim();
+  const email = String(order.customer?.email || "").trim();
+  const digits = phoneDigits(phone);
+  const preference = order.fulfillment?.contact_preference || order.customer?.contact_preference || "text";
+  const details = [phone, email].filter(Boolean).join(" / ");
+  const actions = [
+    digits ? `<a href="sms:${escapeHtml(digits)}">Text</a>` : "",
+    digits ? `<a href="tel:${escapeHtml(digits)}">Call</a>` : "",
+    email ? `<a href="mailto:${escapeHtml(encodeURIComponent(email))}">Email</a>` : "",
+  ].filter(Boolean).join("");
+
+  return `
+    <div class="ticket-contact">
+      <div>
+        <strong>Contact</strong>
+        <span>${escapeHtml(details || "Contact missing")}</span>
+        <small>Preferred: ${escapeHtml(preference)}</small>
+      </div>
+      <div class="ticket-contact-actions">
+        ${actions || `<span>Missing</span>`}
+      </div>
     </div>
   `;
 }
@@ -499,6 +529,7 @@ function ticketMarkup(order) {
   const checkoutStatus = order.checkout_started_at ? `Checkout: ${order.checkout_wallet || "opened"}` : "";
   const recurring = order.recurring_frequency ? `Repeat: ${order.recurring_frequency}` : "";
   const activity = customerActivityMarkup(order);
+  const contact = contactActionsMarkup(order);
 
   return `
     <article class="ticket-card${ops.priority ? " priority" : ""}" data-ticket-id="${escapeHtml(order.id)}">
@@ -518,6 +549,7 @@ function ticketMarkup(order) {
         ${checkoutStatus ? `<span>${escapeHtml(checkoutStatus)}</span>` : ""}
         ${recurring ? `<span>${escapeHtml(recurring)}</span>` : ""}
       </div>
+      ${contact}
       ${address ? `<div class="ticket-alert neutral"><strong>Delivery</strong><span>${escapeHtml(address)}</span></div>` : ""}
       ${allergies ? `<div class="ticket-alert"><strong>Allergies</strong><span>${escapeHtml(allergies)}</span></div>` : ""}
       ${activity}

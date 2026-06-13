@@ -660,6 +660,77 @@ textarea:focus {
   text-transform: uppercase;
 }
 
+.ticket-contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  color: #e8f3e5;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+}
+
+.ticket-contact strong,
+.ticket-contact span,
+.ticket-contact small {
+  display: block;
+}
+
+.ticket-contact strong {
+  color: var(--green-soft);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ticket-contact span {
+  overflow: hidden;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 850;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+}
+
+.ticket-contact small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+  text-transform: capitalize;
+}
+
+.ticket-contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.ticket-contact-actions a,
+.ticket-contact-actions span {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  padding: 0 9px;
+  color: #071107;
+  background: var(--green);
+  border: 1px solid var(--green-soft);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.ticket-contact-actions span {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 .ticket-alert {
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
@@ -1190,6 +1261,7 @@ textarea:focus {
 
   .ticket-meta,
   .ticket-top,
+  .ticket-contact,
   .ticket-control-row,
   .route-item,
   .allergy-item,
@@ -1200,6 +1272,10 @@ textarea:focus {
 
   .ticket-history {
     text-align: left;
+  }
+
+  .ticket-contact-actions {
+    justify-content: flex-start;
   }
 
   .ticket-alert {
