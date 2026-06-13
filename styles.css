@@ -790,16 +790,20 @@ h1 .hero-h1-accent {
 
 .hero-plan-actions {
   position: absolute;
-  left: auto;
-  right: clamp(16px, 3vw, 52px);
-  bottom: clamp(22px, 5vw, 72px);
+  left: auto !important;
+  right: clamp(16px, 3vw, 52px) !important;
+  bottom: clamp(22px, 5vw, 72px) !important;
+  top: auto;
   z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: flex-end;
   gap: 8px;
   width: min(270px, calc(100vw - 36px));
   pointer-events: auto;
+  transform: none;
+  margin: 0;
 }
 
 .hero-plan-tabs {
@@ -808,6 +812,7 @@ h1 .hero-h1-accent {
   justify-content: flex-end;
   gap: 6px;
   width: 100%;
+  margin-left: auto;
 }
 
 .hero-plan-tab {
@@ -3165,7 +3170,8 @@ cite {
 
   .hero-plan-actions {
     left: auto;
-    right: 12px;
+    right: 12px !important;
+    left: auto !important;
     bottom: 12px;
     width: min(262px, calc(100vw - 24px));
     gap: 6px;
