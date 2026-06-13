@@ -30,6 +30,8 @@ const elements = {
   ticketCount: document.querySelector("#ticketCount"),
   pipelineBars: document.querySelector("#pipelineBars"),
   pipelineSignal: document.querySelector("#pipelineSignal"),
+  customerFollowups: document.querySelector("#customerFollowups"),
+  followupSignal: document.querySelector("#followupSignal"),
   handoffList: document.querySelector("#handoffList"),
   fulfillmentMix: document.querySelector("#fulfillmentMix"),
   capacityFill: document.querySelector("#capacityFill"),
@@ -44,6 +46,7 @@ const elements = {
 let orders = [];
 let opsState = {};
 let customerInsights = {};
+let customerFollowups = [];
 let serverBacked = false;
 
 function readJson(key, fallback) {
@@ -123,6 +126,7 @@ function applyServerData(data) {
   orders = Array.isArray(data.orders) ? data.orders : [];
   opsState = data.opsState && typeof data.opsState === "object" ? data.opsState : {};
   customerInsights = data.customerInsights && typeof data.customerInsights === "object" ? data.customerInsights : {};
+  customerFollowups = Array.isArray(data.customerFollowups) ? data.customerFollowups : [];
   serverBacked = true;
   saveState();
   render();
@@ -545,6 +549,34 @@ function renderPipeline() {
     .join("");
 }
 
+function renderCustomerFollowups() {
+  if (!elements.customerFollowups) return;
+  if (elements.followupSignal) {
+    elements.followupSignal.textContent = customerFollowups.length ? `${customerFollowups.length} queued` : "Clear";
+  }
+
+  if (!customerFollowups.length) {
+    elements.customerFollowups.innerHTML = elements.emptyTemplate.innerHTML;
+    return;
+  }
+
+  elements.customerFollowups.innerHTML = customerFollowups
+    .slice(0, 6)
+    .map((customer) => `
+      <div class="followup-item">
+        <div>
+          <strong>${escapeHtml(customer.name || "Customer")}</strong>
+          <span>${escapeHtml(customer.reason || "Follow-up")} / ${escapeHtml(customer.contact_preference || "text")}${customer.recurring_frequency ? ` / ${escapeHtml(customer.recurring_frequency)}` : ""}</span>
+        </div>
+        <div class="followup-meta">
+          <span>${escapeHtml(customer.next_action || "Follow up")}</span>
+          <small>${escapeHtml(customer.last_total_meals || 0)} meals / ${escapeHtml(compactDollars(customer.last_estimated_total || 0))} last order</small>
+        </div>
+      </div>
+    `)
+    .join("");
+}
+
 function renderOwnerLists() {
   const active = activeOrders();
   const sorted = active.slice().sort((a, b) => String(a.fulfillment?.date || "").localeCompare(String(b.fulfillment?.date || "")));
@@ -602,6 +634,7 @@ function render() {
   renderTickets();
   renderPrepBoard();
   renderPipeline();
+  renderCustomerFollowups();
   renderOwnerLists();
   renderCapacity();
 }

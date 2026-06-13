@@ -817,7 +817,8 @@ textarea:focus {
   box-shadow: none;
 }
 
-.pipeline-card {
+.pipeline-card,
+.followup-card {
   grid-column: 1 / -1;
 }
 
@@ -825,6 +826,62 @@ textarea:focus {
   display: grid;
   gap: 10px;
   margin-top: 12px;
+}
+
+.followup-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.followup-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 0.72fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+}
+
+.followup-item strong,
+.followup-item span,
+.followup-item small {
+  display: block;
+}
+
+.followup-item strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.followup-item span {
+  margin-top: 5px;
+  color: #e8f3e5;
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.followup-meta {
+  text-align: right;
+}
+
+.followup-meta span {
+  color: var(--green-soft);
+  font-weight: 900;
+}
+
+.followup-meta small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
 }
 
 .pipeline-row {
@@ -951,8 +1008,13 @@ textarea:focus {
   .owner-grid,
   .ops-toolbar,
   .ticket-controls,
-  .mini-grid {
+  .mini-grid,
+  .followup-item {
     grid-template-columns: 1fr;
+  }
+
+  .followup-meta {
+    text-align: left;
   }
 
   .dashboard-panel {

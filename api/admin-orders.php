@@ -21,6 +21,58 @@ function admin_ensure_ops(array &$ops, array $order): array {
   return $ops[$id];
 }
 
+function admin_customer_followups(array $customers): array {
+  $rows = [];
+  foreach ($customers as $customer) {
+    if (!is_array($customer)) continue;
+    $recurring = mpr_text($customer['recurring_frequency'] ?? '', 80);
+    $orderCount = (int) ($customer['order_count'] ?? 0);
+    $lastMeals = (int) ($customer['last_total_meals'] ?? 0);
+    $lifetimeValue = mpr_money($customer['lifetime_value'] ?? 0);
+    $priority = 0;
+    $reason = 'New customer';
+    $nextAction = 'Thank them after handoff';
+
+    if ($recurring !== '') {
+      $priority = 100;
+      $reason = 'Recurring requested';
+      $nextAction = 'Confirm cadence and preferred meals';
+    } elseif ($orderCount > 1) {
+      $priority = 70;
+      $reason = 'Returning customer';
+      $nextAction = 'Send reorder reminder';
+    } elseif ($lastMeals >= 12) {
+      $priority = 45;
+      $reason = 'Large first order';
+      $nextAction = 'Ask if they want this repeated';
+    }
+
+    $rows[] = [
+      'name' => mpr_text($customer['name'] ?? 'Customer', 120),
+      'contact' => mpr_text($customer['phone'] ?? $customer['email'] ?? '', 160),
+      'contact_preference' => mpr_text($customer['contact_preference'] ?? 'text', 40),
+      'reason' => $reason,
+      'next_action' => $nextAction,
+      'recurring_frequency' => $recurring,
+      'last_order_id' => mpr_text($customer['last_order_id'] ?? '', 80),
+      'last_order_at' => mpr_text($customer['last_order_at'] ?? '', 80),
+      'last_total_meals' => $lastMeals,
+      'last_estimated_total' => mpr_money($customer['last_estimated_total'] ?? 0),
+      'order_count' => $orderCount,
+      'lifetime_meals' => (int) ($customer['lifetime_meals'] ?? 0),
+      'lifetime_value' => $lifetimeValue,
+      'priority' => $priority + min(25, (int) floor($lifetimeValue / 100)),
+    ];
+  }
+
+  usort($rows, fn ($a, $b) =>
+    ($b['priority'] <=> $a['priority'])
+    ?: strcmp((string) ($b['last_order_at'] ?? ''), (string) ($a['last_order_at'] ?? ''))
+  );
+
+  return array_slice($rows, 0, 12);
+}
+
 function admin_payload(array $orders, array $ops): array {
   foreach ($orders as $order) {
     admin_ensure_ops($ops, $order);
@@ -38,6 +90,7 @@ function admin_payload(array $orders, array $ops): array {
       'recurring_interested' => count($recurring),
       'lifetime_meals' => array_sum(array_map(fn ($customer) => (int) ($customer['lifetime_meals'] ?? 0), $customers)),
     ],
+    'customerFollowups' => admin_customer_followups($customers),
     'source' => 'server',
     'updated_at' => mpr_now(),
   ];
