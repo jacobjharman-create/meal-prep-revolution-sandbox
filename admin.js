@@ -307,6 +307,16 @@ function customerConfirmationMessage(order) {
   return `Hi ${firstName}, this is Meal Prep Revolution. We have your ${meals}-meal order (${total}) for ${fulfillmentLabel(order)}. ${payment}${repeat} Reply here if anything needs to change.`;
 }
 
+function customerFollowupMessage(customer = {}) {
+  const firstName = String(customer.name || "there").split(/\s+/)[0] || "there";
+  const meals = Number(customer.last_total_meals) || 0;
+  const mealText = meals ? `${meals}-meal ` : "";
+  if (customer.recurring_frequency) {
+    return `Hi ${firstName}, this is Meal Prep Revolution. I saw you marked ${customer.recurring_frequency} as your repeat preference for your ${mealText}order. Want us to set that up with the same meals, or should we make any changes first?`;
+  }
+  return `Hi ${firstName}, this is Meal Prep Revolution. Thanks again for your ${mealText}order. Want us to repeat that meal prep for next week, or adjust anything before we build it?`;
+}
+
 function orderEventLabel(event = {}) {
   if (event.event === "order_created") return "Order ticket created";
   if (event.event === "checkout_started") return `Checkout opened${event.wallet ? ` / ${event.wallet}` : ""}`;
@@ -754,7 +764,17 @@ function renderCustomerFollowups() {
 
   elements.customerFollowups.innerHTML = customerFollowups
     .slice(0, 6)
-    .map((customer) => `
+    .map((customer, index) => {
+      const contact = String(customer.contact || "").trim();
+      const digits = phoneDigits(contact);
+      const email = contact.includes("@") ? contact : "";
+      const actions = [
+        digits ? `<a href="sms:${escapeHtml(digits)}">Text</a>` : "",
+        email ? `<a href="mailto:${escapeHtml(encodeURIComponent(email))}">Email</a>` : "",
+        `<button type="button" data-action="copy-followup" data-followup-index="${index}">Copy</button>`,
+      ].filter(Boolean).join("");
+
+      return `
       <div class="followup-item">
         <div>
           <strong>${escapeHtml(customer.name || "Customer")}</strong>
@@ -763,9 +783,11 @@ function renderCustomerFollowups() {
         <div class="followup-meta">
           <span>${escapeHtml(customer.next_action || "Follow up")}</span>
           <small>${escapeHtml(customer.last_total_meals || 0)} meals / ${escapeHtml(compactDollars(customer.last_estimated_total || 0))} last order</small>
+          <div class="followup-actions">${actions}</div>
         </div>
       </div>
-    `)
+    `;
+    })
     .join("");
 }
 
@@ -1132,6 +1154,27 @@ elements.kitchenTickets.addEventListener("click", (event) => {
   const order = orders.find((item) => item.id === bumpButton.dataset.ticket);
   if (!order) return;
   updateTicket(order.id, "status", orderStatusNext(order.status));
+});
+
+elements.customerFollowups?.addEventListener("click", (event) => {
+  const copyButton = event.target.closest("[data-action='copy-followup']");
+  if (!copyButton) return;
+  const customer = customerFollowups[Number(copyButton.dataset.followupIndex)];
+  if (!customer) return;
+  const originalText = copyButton.textContent;
+  navigator.clipboard.writeText(customerFollowupMessage(customer))
+    .then(() => {
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1400);
+    })
+    .catch(() => {
+      copyButton.textContent = "Select";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1800);
+    });
 });
 
 window.addEventListener("storage", (event) => {
