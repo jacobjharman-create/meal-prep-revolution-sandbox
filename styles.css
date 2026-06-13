@@ -219,8 +219,8 @@ button {
   min-height: calc(100svh - 82px);
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  --hero-left-rail: clamp(22px, 4vw, 58px);
-  --hero-copy-width: min(48vw, 720px);
+  --hero-left-rail: clamp(24px, 5vw, 76px);
+  --hero-copy-width: min(46vw, 680px);
 }
 
 .hero::before {
@@ -230,8 +230,8 @@ button {
   pointer-events: none;
   content: "";
   background:
-    radial-gradient(circle at 18% 16%, rgba(0, 0, 0, 0.78), transparent 34%),
-    linear-gradient(75deg, rgba(2, 4, 2, 0.78) 0%, rgba(2, 4, 2, 0.42) 34%, rgba(2, 4, 2, 0.08) 66%, transparent 100%),
+    radial-gradient(circle at 19% 18%, rgba(0, 0, 0, 0.86), transparent 36%),
+    linear-gradient(90deg, rgba(2, 4, 2, 0.9) 0%, rgba(2, 4, 2, 0.68) 28%, rgba(2, 4, 2, 0.24) 56%, transparent 100%),
     linear-gradient(180deg, rgba(2, 4, 2, 0.1) 0%, transparent 46%, rgba(2, 4, 2, 0.34) 100%);
 }
 
@@ -347,9 +347,9 @@ h1 .hero-h1-accent {
 
 .hero-heading h1 {
   width: 100%;
-  max-width: none;
+  max-width: 650px;
   margin-top: 10px;
-  font-size: clamp(42px, 4.8vw, 72px);
+  font-size: clamp(42px, 4.22vw, 64px);
   text-shadow:
     0 3px 0 rgba(0, 0, 0, 0.9),
     0 12px 22px rgba(0, 0, 0, 0.92),
@@ -2932,7 +2932,7 @@ cite {
     left: 14px;
     right: auto;
     box-sizing: border-box;
-    width: min(76vw, 360px);
+    width: min(78vw, 370px);
     padding: 0;
     overflow: hidden;
     text-align: left;
@@ -3023,7 +3023,7 @@ cite {
 
   .hero-heading h1 {
     width: 100%;
-    max-width: none;
+    max-width: 360px;
     margin-top: 7px;
     font-size: clamp(32px, 8.8vw, 38px);
   }
