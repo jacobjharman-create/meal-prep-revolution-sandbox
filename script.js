@@ -411,26 +411,31 @@ const doneForYouPlans = {
 const heroPlanSequence = [
   {
     key: "strength-athlete",
+    tabLabel: "Strength",
     eyebrow: "12 meals / strength",
     copy: "4 breakfast, 4 lunch, and 4 dinner meals for training weeks.",
   },
   {
     key: "bodybuilder",
+    tabLabel: "Bodybuilder",
     eyebrow: "12 meals / bodybuilder",
     copy: "A higher-protein approval cart built around steak, chicken, rice, and greens.",
   },
   {
     key: "womens-fitness",
+    tabLabel: "Fitness",
     eyebrow: "12 meals / fitness",
     copy: "A lean, fresh plan with salmon, turkey, quinoa, greens, and sauce on the side.",
   },
   {
     key: "single-mom",
+    tabLabel: "Family",
     eyebrow: "12 meals / family week",
     copy: "Breakfasts and familiar lunch/dinner plates for a calmer weekday fridge.",
   },
   {
     key: "business-lean",
+    tabLabel: "Lean Workweek",
     eyebrow: "12 meals / lean workweek",
     copy: "A lighter office-week cart with chicken, shrimp, salads, beans, and fajita vegetables.",
   },
@@ -745,9 +750,11 @@ const heroPlanEyebrow = document.querySelector("#heroPlanEyebrow");
 const heroPlanTitle = document.querySelector("#heroPlanTitle");
 const heroPlanCopy = document.querySelector("#heroPlanCopy");
 const heroPlanButton = document.querySelector("#heroPlanButton");
+const heroPlanTabs = document.querySelector("#heroPlanTabs");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
 let heroPlanTimer = 0;
+let heroPlanCurrentIndex = 0;
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -1167,8 +1174,69 @@ function renderMenu(category) {
   categoryLink.href = squareLinks[category];
 }
 
+function getHeroPlanLabel(item, index) {
+  const plan = doneForYouPlans[item.key];
+  const tabLabel = item.tabLabel?.trim();
+  if (tabLabel) return tabLabel;
+  const planLabel = (plan?.title || item.key || "")
+    .replace(/plan/i, "")
+    .replace(/-/g, " ")
+    .trim();
+  const eyebrowText = item.eyebrow?.split("/")[1]?.trim();
+  return eyebrowText || planLabel || `Plan ${index + 1}`;
+}
+
+function renderHeroPlanTabs() {
+  if (!heroPlanTabs || !heroPlanSequence.length) return;
+  heroPlanTabs.innerHTML = heroPlanSequence
+    .map((item, index) => {
+      const label = getHeroPlanLabel(item, index);
+      const isActive = index === heroPlanCurrentIndex;
+      return `
+        <button
+          class="hero-plan-tab ${isActive ? "is-active" : ""}"
+          type="button"
+          role="tab"
+          data-hero-plan-tab="${index}"
+          aria-selected="${String(isActive)}"
+          aria-controls="heroPlanCard"
+          title="${escapeHtml(label)}"
+        >
+          ${escapeHtml(label)}
+        </button>
+      `;
+    })
+    .join("");
+
+  heroPlanTabs.addEventListener("click", (event) => {
+    const tab = event.target.closest("[data-hero-plan-tab]");
+    if (!tab) return;
+    const nextIndex = Number(tab.dataset.heroPlanTab);
+    if (Number.isNaN(nextIndex)) return;
+    setHeroPlan(nextIndex);
+    const mobile = window.matchMedia("(max-width: 680px)");
+    const interval = () => (mobile.matches ? 8000 : 9000);
+    window.clearTimeout(heroPlanTimer);
+    heroPlanTimer = window.setTimeout(() => {
+      heroPlanCycleTick();
+    }, interval());
+  });
+}
+
+function heroPlanCycleTick() {
+  if (!heroPlanButton || !heroPlanSequence.length) return;
+  const nextIndex = (heroPlanCurrentIndex + 1) % heroPlanSequence.length;
+  setHeroPlan(nextIndex);
+  const mobile = window.matchMedia("(max-width: 680px)");
+  const interval = () => (mobile.matches ? 8000 : 9000);
+  window.clearTimeout(heroPlanTimer);
+  heroPlanTimer = window.setTimeout(heroPlanCycleTick, interval());
+}
+
 function setHeroPlan(index = 0) {
-  const item = heroPlanSequence[index % heroPlanSequence.length];
+  if (!heroPlanSequence.length) return;
+  heroPlanCurrentIndex = ((index % heroPlanSequence.length) + heroPlanSequence.length) % heroPlanSequence.length;
+  const item = heroPlanSequence[heroPlanCurrentIndex];
   const plan = doneForYouPlans[item.key];
   if (!item || !plan || !heroPlanButton) return;
   if (heroPlanCard) {
@@ -1181,22 +1249,26 @@ function setHeroPlan(index = 0) {
   if (heroPlanCopy) heroPlanCopy.textContent = item.copy;
   heroPlanButton.dataset.loadPlan = item.key;
   heroPlanButton.setAttribute("aria-label", `Load ${plan.title} into the meal builder`);
+
+  if (heroPlanTabs) {
+    heroPlanTabs.querySelectorAll("[data-hero-plan-tab]").forEach((tab) => {
+      const selected = Number(tab.dataset.heroPlanTab) === heroPlanCurrentIndex;
+      tab.classList.toggle("is-active", selected);
+      tab.setAttribute("aria-selected", String(selected));
+    });
+  }
 }
 
 function startHeroPlanSync() {
   if (!heroPlanButton || !heroPlanSequence.length) return;
-  let index = 0;
+  renderHeroPlanTabs();
+  setHeroPlan(heroPlanCurrentIndex);
   const mobile = window.matchMedia("(max-width: 680px)");
   const interval = () => (mobile.matches ? 8000 : 9000);
-  const tick = () => {
-    index = (index + 1) % heroPlanSequence.length;
-    setHeroPlan(index);
-    window.clearTimeout(heroPlanTimer);
-    heroPlanTimer = window.setTimeout(tick, interval());
-  };
-  setHeroPlan(index);
   window.clearTimeout(heroPlanTimer);
-  heroPlanTimer = window.setTimeout(tick, interval());
+  heroPlanTimer = window.setTimeout(() => {
+    heroPlanCycleTick();
+  }, interval());
 }
 
 function renderToggles() {

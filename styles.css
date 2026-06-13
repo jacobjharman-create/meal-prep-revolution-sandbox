@@ -794,8 +794,50 @@ h1 .hero-h1-accent {
   right: clamp(16px, 3vw, 52px);
   bottom: clamp(22px, 5vw, 72px);
   z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
   width: min(270px, calc(100vw - 36px));
   pointer-events: auto;
+}
+
+.hero-plan-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 100%;
+}
+
+.hero-plan-tab {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #d6e6d3;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  min-height: 26px;
+  padding: 6px 10px;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition:
+    border-color 170ms ease,
+    color 170ms ease,
+    background-color 170ms ease,
+    transform 170ms ease;
+}
+
+.hero-plan-tab.is-active {
+  border-color: rgba(141, 255, 148, 0.78);
+  color: #0f1811;
+  background: rgba(170, 255, 180, 0.93);
+}
+
+.hero-plan-tab:hover:not(:disabled) {
+  transform: translateY(-1px);
 }
 
 .hero-plan-card {
@@ -3126,6 +3168,11 @@ cite {
     right: 12px;
     bottom: 12px;
     width: min(262px, calc(100vw - 24px));
+    gap: 6px;
+  }
+
+  .hero-plan-tabs {
+    gap: 4px;
   }
 
   .hero-plan-card {
@@ -3156,10 +3203,11 @@ cite {
     font-size: 9px;
   }
 
-  .hero-plan-card .button {
-    min-height: 38px;
-    padding-inline: 14px;
-    font-size: 10px;
+  .hero-plan-tab {
+    min-height: 22px;
+    padding: 4px 8px;
+    font-size: 8px;
+    letter-spacing: 0.02em;
   }
 
   .hero-frame::before {
