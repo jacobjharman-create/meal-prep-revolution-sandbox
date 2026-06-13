@@ -3164,7 +3164,7 @@ cite {
   .hero-plan-actions {
     left: 0 !important;
     right: 0 !important;
-    bottom: max(10px, env(safe-area-inset-bottom));
+    bottom: calc(28px + env(safe-area-inset-bottom));
     width: 100%;
     padding: 0 12px;
     gap: 0;
