@@ -1008,6 +1008,30 @@ function createCartPreview(build) {
   };
 }
 
+function doneForYouPreviewMeta(meal, plan, groups) {
+  const preferredGroupOrder = ["protein", "grain", "carbs", "vegetables", "sauce"];
+
+  const pickFromGroup = (groupId) => {
+    const group = groups.find((entry) => entry.id === groupId);
+    if (!group) return null;
+
+    return (group.selected || []).find((item) => item?.id && item.id !== "none" && !item.id.startsWith("no-") && item.image);
+  };
+
+  const previewItem =
+    preferredGroupOrder.map(pickFromGroup).find(Boolean) ||
+    groups
+      .flatMap((group) => group.selected || [])
+      .find((item) => item?.id && item.id !== "none" && !item.id.startsWith("no-")) ||
+    groups.flatMap((group) => group.selected || [])[0];
+
+  return {
+    previewImage: previewItem?.image || plan.image,
+    previewAlt: previewItem ? `${previewItem.name || previewItem.id} for ${meal.title}` : `${meal.title} preview`,
+    previewLabel: previewItem ? `${meal.title} · ${previewItem.name || previewItem.id}` : `${plan.title} / ${titleCase(meal.type || "meal")}`,
+  };
+}
+
 function createDoneForYouCartItem(planKey, plan, meal) {
   const groups = meal.components.map(([id, label, selected]) => ({
     id,
@@ -1023,7 +1047,7 @@ function createDoneForYouCartItem(planKey, plan, meal) {
     .map((group) => group.selected.map((item) => item.name).join(" + "))
     .filter(Boolean)
     .join(" + ");
-  const previewItem = groups.flatMap((group) => group.selected)[0];
+  const preview = doneForYouPreviewMeta(meal, plan, groups);
 
   return {
     key: `done-for-you|${planKey}|${meal.type}`,
@@ -1042,9 +1066,9 @@ function createDoneForYouCartItem(planKey, plan, meal) {
     summary,
     hero: plan.image,
     heroAlt: `${plan.title} ${meal.type} meal preview`,
-    previewImage: plan.image,
-    previewAlt: `${plan.title} done for you meal plan`,
-    previewLabel: `${plan.title} / ${titleCase(meal.type)}`,
+    previewImage: preview.previewImage,
+    previewAlt: preview.previewAlt,
+    previewLabel: preview.previewLabel,
     compactDescription: description,
     groups,
     selections: Object.fromEntries(groups.map((group) => [group.id, group.selected.map((item) => item.name)])),
