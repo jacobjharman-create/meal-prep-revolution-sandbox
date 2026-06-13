@@ -3166,7 +3166,7 @@ cite {
     right: 0 !important;
     bottom: calc(40px + env(safe-area-inset-bottom));
     width: 100%;
-    padding: 0 12px;
+    padding: 0 13px;
     gap: 0;
     justify-content: flex-end;
   }
@@ -3180,7 +3180,7 @@ cite {
     align-items: center;
     gap: 2px 9px;
     width: 100%;
-    padding: 8px 11px;
+    padding: 9px 12px;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -3235,7 +3235,7 @@ cite {
     align-self: stretch;
     min-height: 38px;
     min-width: 106px;
-    padding-inline: 10px;
+    padding-inline: 11px;
     font-size: 10px;
     letter-spacing: 0.06em;
   }
