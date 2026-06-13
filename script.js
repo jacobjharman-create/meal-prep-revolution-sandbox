@@ -167,7 +167,7 @@ const doneForYouPlanImages = {
 
 const doneForYouPlans = {
   "strength-athlete": {
-    title: "High School Strength Athlete",
+    title: "Performance Athlete",
     image: doneForYouPlanImages["strength-athlete"],
     focus: {
       mode: "lunch",
