@@ -790,20 +790,20 @@ h1 .hero-h1-accent {
 
 .hero-plan-actions {
   position: absolute;
-  left: clamp(18px, 4vw, 64px);
-  right: auto;
+  left: auto;
+  right: clamp(16px, 3vw, 52px);
   bottom: clamp(22px, 5vw, 72px);
   z-index: 4;
-  width: min(360px, calc(100vw - 36px));
+  width: min(270px, calc(100vw - 36px));
   pointer-events: auto;
 }
 
 .hero-plan-card {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-height: 0;
-  padding: 18px;
+  padding: 12px;
   color: var(--white);
   background:
     radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.16), transparent 34%),
@@ -824,34 +824,34 @@ h1 .hero-h1-accent {
 
 .hero-plan-card span {
   color: var(--green-soft);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .hero-plan-card strong {
-  max-width: 310px;
-  font-size: clamp(22px, 2.4vw, 32px);
+  max-width: 245px;
+  font-size: clamp(16px, 1.85vw, 24px);
   font-weight: 950;
   line-height: 0.95;
   text-transform: uppercase;
 }
 
 .hero-plan-card p {
-  max-width: 280px;
+  max-width: 245px;
   color: #dce9d8;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 750;
-  line-height: 1.35;
+  line-height: 1.28;
 }
 
 .hero-plan-card .button {
   justify-self: end;
   width: max-content;
-  min-height: 44px;
-  padding-inline: 18px;
-  font-size: 11px;
+  min-height: 38px;
+  padding-inline: 14px;
+  font-size: 10px;
 }
 
 .hero-plan-card.is-refreshing {
@@ -3122,26 +3122,38 @@ cite {
   }
 
   .hero-plan-actions {
-    left: 12px;
+    left: auto;
+    right: 12px;
     bottom: 12px;
-    right: auto;
-    width: min(318px, calc(100vw - 24px));
+    width: min(262px, calc(100vw - 24px));
   }
 
   .hero-plan-card {
     min-height: 0;
     gap: 8px;
-    padding: 12px;
+    padding: 10px;
   }
 
   .hero-plan-card strong {
-    max-width: 245px;
-    font-size: 17px;
+    max-width: 220px;
+    font-size: 15px;
   }
 
   .hero-plan-card p {
-    max-width: 238px;
-    font-size: 11px;
+    max-width: 220px;
+    font-size: 10px;
+    line-height: 1.24;
+  }
+
+  .hero-plan-card span {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+  }
+
+  .hero-plan-card .button {
+    min-height: 34px;
+    padding-inline: 12px;
+    font-size: 9px;
   }
 
   .hero-plan-card .button {
