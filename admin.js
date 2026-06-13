@@ -331,6 +331,28 @@ function allergyLabelMessage(order) {
   ].filter(Boolean).join("\n");
 }
 
+function handoffSummaryMessage(order) {
+  const meals = Number(order.total_meals) || 0;
+  const allergy = orderAllergies(order).trim();
+  const notes = order.fulfillment?.notes || order.customer?.notes || "";
+  const address = formatAddress(order.fulfillment?.address || order.customer?.address || {});
+  const summaries = (order.line_items || [])
+    .map((item) => item.summary || item.name)
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(" | ");
+  return [
+    `HANDOFF - ${customerName(order)} / ${order.id}`,
+    `${meals} meals / ${order.fulfillment?.type || "pickup"} / ${formatDate(order.fulfillment?.date)} / ${order.fulfillment?.window || "window"}`,
+    `Payment: ${orderPaymentStatus(order)}`,
+    address ? `Address: ${address}` : "",
+    allergy ? `Allergy: ${allergy}` : "",
+    notes ? `Notes: ${notes}` : "",
+    summaries ? `Meal summary: ${summaries}` : "",
+    "Verify payment, labels, bags, and handoff details before release.",
+  ].filter(Boolean).join("\n");
+}
+
 function recurringIsInterest(value) {
   const frequency = String(value || "").trim().toLowerCase();
   return Boolean(frequency && frequency !== "one time only");
@@ -917,9 +939,12 @@ function renderOwnerLists() {
   const sorted = active.slice().sort((a, b) => String(a.fulfillment?.date || "").localeCompare(String(b.fulfillment?.date || "")));
   elements.handoffList.innerHTML = sorted.length
     ? sorted.slice(0, 7).map((order) => `
-      <div class="handoff-item">
+      <div class="handoff-item handoff-item-actionable">
         <span>${escapeHtml(customerName(order))}<br>${escapeHtml(order.fulfillment?.type || "pickup")} / ${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")}</span>
         <strong>${escapeHtml(order.total_meals || 0)} meals</strong>
+        <div class="handoff-actions">
+          <button type="button" data-action="copy-handoff" data-ticket="${escapeHtml(order.id)}">Copy Handoff</button>
+        </div>
       </div>
     `).join("")
     : elements.emptyTemplate.innerHTML;
@@ -1265,6 +1290,27 @@ elements.allergyWatch?.addEventListener("click", (event) => {
   if (!order) return;
   const originalText = copyButton.textContent;
   navigator.clipboard.writeText(allergyLabelMessage(order))
+    .then(() => {
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1400);
+    })
+    .catch(() => {
+      copyButton.textContent = "Select";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1800);
+    });
+});
+
+elements.handoffList?.addEventListener("click", (event) => {
+  const copyButton = event.target.closest("[data-action='copy-handoff']");
+  if (!copyButton) return;
+  const order = orders.find((item) => item.id === copyButton.dataset.ticket);
+  if (!order) return;
+  const originalText = copyButton.textContent;
+  navigator.clipboard.writeText(handoffSummaryMessage(order))
     .then(() => {
       copyButton.textContent = "Copied";
       window.setTimeout(() => {
