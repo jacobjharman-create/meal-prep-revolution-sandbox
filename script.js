@@ -823,6 +823,16 @@ function createDoneForYouCartItem(planKey, plan, meal) {
   };
 }
 
+function addCartItem(item) {
+  const existing = builderState.cart.find((cartItem) => cartItem.key === item.key);
+  if (existing) {
+    existing.quantity += item.quantity;
+    existing.total = Number((existing.quantity * existing.unitPrice).toFixed(2));
+    return;
+  }
+  builderState.cart.push({ ...item });
+}
+
 function loadDoneForYouPlan(planKey) {
   const plan = doneForYouPlans[planKey];
   if (!plan) return;
@@ -846,10 +856,10 @@ function loadDoneForYouPlan(planKey) {
     label: plan.title,
   };
   builderState.forceHeroSlide = true;
-  builderState.cart = plan.meals.map((meal) => createDoneForYouCartItem(planKey, plan, meal));
+  plan.meals.forEach((meal) => addCartItem(createDoneForYouCartItem(planKey, plan, meal)));
   builderState.reviewReady = false;
   renderBuilder();
-  orderNote.innerHTML = `<strong>${escapeHtml(plan.title)}</strong> loaded: 4 breakfasts, 4 lunches, and 4 dinners are ready to review.`;
+  orderNote.innerHTML = `<strong>${escapeHtml(plan.title)}</strong> added: 4 breakfasts, 4 lunches, and 4 dinners are in the cart.`;
   document.querySelector("#wizard")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1095,9 +1105,9 @@ function addCurrentBuildToCart() {
 
   if (existing) {
     existing.quantity += build.quantity;
-    existing.total = existing.quantity * existing.unitPrice;
+    existing.total = Number((existing.quantity * existing.unitPrice).toFixed(2));
   } else {
-    builderState.cart.push({ ...build });
+    addCartItem(build);
   }
 
   orderNote.textContent = `${build.quantity} ${build.title} meals added. Prepare checkout when the stack is ready.`;
