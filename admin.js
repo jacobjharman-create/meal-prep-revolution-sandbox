@@ -9,8 +9,6 @@ const statuses = ["New", "In prep", "Ready", "Fulfilled"];
 const stationOptions = ["Unassigned", "Grill", "Cold line", "Sauce", "Packout", "Delivery"];
 const capacityTarget = 96;
 const authConfig = {
-  salt: "841df338ae7f63c9d4766c08fcc4bca7",
-  hash: "fb0fa5ed51c6ce57a248f422f0c3677a7372f78001fda4f744488c31092be1c9",
   previewSalt: "ba8940a42c10b551816c524aa618376e",
   previewHash: "4ad21813fe8a3e0f58932a29d1c9281e8982a2fae04364db4c5ee093d9fccb26",
   previewHosts: ["beige-cattle-772158.hostingersite.com"],
@@ -31,6 +29,7 @@ const elements = {
   prepBoard: document.querySelector("#prepBoard"),
   ticketCount: document.querySelector("#ticketCount"),
   pipelineBars: document.querySelector("#pipelineBars"),
+  pipelineSignal: document.querySelector("#pipelineSignal"),
   handoffList: document.querySelector("#handoffList"),
   fulfillmentMix: document.querySelector("#fulfillmentMix"),
   capacityFill: document.querySelector("#capacityFill"),
@@ -44,6 +43,8 @@ const elements = {
 
 let orders = [];
 let opsState = {};
+let customerInsights = {};
+let serverBacked = false;
 
 function readJson(key, fallback) {
   try {
@@ -66,10 +67,6 @@ async function sha256Hex(value) {
   return [...new Uint8Array(buffer)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function passcodeHash(passcode) {
-  return sha256Hex(`${authConfig.salt}:${passcode}`);
-}
-
 function readAuthSession() {
   try {
     return JSON.parse(sessionStorage.getItem(storageKeys.auth)) || {};
@@ -80,7 +77,7 @@ function readAuthSession() {
 
 function authSessionIsValid() {
   const session = readAuthSession();
-  return session.hash === authConfig.hash && Date.now() - Number(session.unlockedAt || 0) < authConfig.maxAgeMs;
+  return Boolean(session.server || session.preview) && Date.now() - Number(session.unlockedAt || 0) < authConfig.maxAgeMs;
 }
 
 function localPreviewIsAllowed() {
@@ -103,6 +100,58 @@ async function hostedPreviewIsAllowed() {
   }
 }
 
+function apiPath(path) {
+  const joiner = path.includes("?") ? "&" : "?";
+  return localPreviewIsAllowed() ? `${path}${joiner}preview=1` : path;
+}
+
+async function apiJson(path, options = {}) {
+  const response = await fetch(apiPath(path), {
+    credentials: "same-origin",
+    ...options,
+    headers: {
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(options.headers || {}),
+    },
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Admin API request failed.");
+  return data;
+}
+
+function applyServerData(data) {
+  orders = Array.isArray(data.orders) ? data.orders : [];
+  opsState = data.opsState && typeof data.opsState === "object" ? data.opsState : {};
+  customerInsights = data.customerInsights && typeof data.customerInsights === "object" ? data.customerInsights : {};
+  serverBacked = true;
+  saveState();
+  render();
+}
+
+function updateSyncStatus(message) {
+  if (elements.pipelineSignal) elements.pipelineSignal.textContent = message;
+}
+
+async function loadServerState() {
+  try {
+    const data = await apiJson("api/admin-orders.php");
+    applyServerData(data);
+    updateSyncStatus("Server source");
+  } catch (error) {
+    serverBacked = false;
+    updateSyncStatus("Local fallback");
+  }
+}
+
+async function serverAuthIsValid() {
+  try {
+    const data = await apiJson("api/admin-auth.php");
+    return Boolean(data.authenticated);
+  } catch {
+    return false;
+  }
+}
+
 function showGateError(message) {
   elements.gateError.textContent = message;
 }
@@ -114,6 +163,7 @@ function showAdminApp() {
   elements.gate.setAttribute("aria-hidden", "true");
   loadState();
   render();
+  loadServerState();
 }
 
 function showAdminGate() {
@@ -135,21 +185,21 @@ async function submitAdminGate(event) {
   }
 
   try {
-    const hash = await passcodeHash(passcode);
-    if (hash !== authConfig.hash) {
-      showGateError("That passcode did not match.");
-      elements.gatePasscode.select();
-      return;
-    }
-    sessionStorage.setItem(storageKeys.auth, JSON.stringify({ hash, unlockedAt: Date.now() }));
+    await apiJson("api/admin-auth.php", {
+      method: "POST",
+      body: JSON.stringify({ passcode }),
+    });
+    sessionStorage.setItem(storageKeys.auth, JSON.stringify({ server: true, unlockedAt: Date.now() }));
     showAdminApp();
   } catch (error) {
-    showGateError(error.message || "This browser cannot unlock the CRM.");
+    showGateError(error.message || "That passcode did not match.");
+    elements.gatePasscode.select();
   }
 }
 
 function lockAdmin() {
   sessionStorage.removeItem(storageKeys.auth);
+  apiJson("api/admin-auth.php", { method: "DELETE" }).catch(() => {});
   showAdminGate();
 }
 
@@ -198,6 +248,11 @@ function formatTime(value) {
   return new Date(value).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 }
 
+function formatAddress(address = {}) {
+  const parts = [address.street, address.unit, address.city].filter(Boolean);
+  return parts.join(", ");
+}
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -238,21 +293,27 @@ function saveState() {
   writeJson(storageKeys.ops, opsState);
 }
 
+function orderItems(order) {
+  return Array.isArray(order.cart) && order.cart.length ? order.cart : (Array.isArray(order.line_items) ? order.line_items : []);
+}
+
 function lineSummary(order) {
-  return (order.cart || order.line_items || [])
+  return orderItems(order)
     .map((item) => {
       const quantity = item.quantity ? `${item.quantity}x ` : "";
       const title = item.title || item.name || "Custom meal";
-      const summary = item.summary || item.description || "";
+      const summary = item.summary || item.compactDescription || item.description || (item.builder_groups || [])
+        .map((group) => `${group.label}: ${(group.selected || []).join(", ")}`)
+        .join(" / ");
       return `${quantity}${title}${summary ? ` - ${summary}` : ""}`;
     })
     .slice(0, 4);
 }
 
 function selectedGroups(order) {
-  return (order.cart || [])
+  return orderItems(order)
     .flatMap((item) =>
-      (item.groups || []).map((group) => ({
+      (item.groups || item.builder_groups || []).map((group) => ({
         label: group.label === "Grain" ? "Carbs" : group.label,
         quantity: Number(item.quantity) || 0,
         selections: (group.selected || []).map((selection) => selection.name || selection),
@@ -341,8 +402,8 @@ function renderKpis() {
   elements.ownerMetrics.innerHTML = [
     ["Estimated revenue", compactDollars(totalRevenue()), `${orders.length} tickets tracked`],
     ["Meals sold", totalMeals(), `${totalMeals(active)} active`],
-    ["Avg ticket", compactDollars(avg), "Current CRM queue"],
-    ["Ready rate", `${percent(ready.length, Math.max(active.length, 1))}%`, "Ready / active orders"],
+    ["Avg ticket", compactDollars(avg), `${customerInsights.returning_customers || 0} returning customers`],
+    ["Recurring interest", customerInsights.recurring_interested || 0, "Selected after checkout"],
   ]
     .map(([label, value, helper]) => metricMarkup(label, value, helper))
     .join("");
@@ -365,6 +426,11 @@ function ticketMarkup(order) {
     ? lines.map((line) => `<span>${escapeHtml(line)}</span>`).join("")
     : `<span>No meal lines recorded.</span>`;
   const history = (ops.history || []).slice(-2).map((entry) => `<span>${escapeHtml(entry)}</span>`).join("");
+  const allergies = order.fulfillment?.allergies || order.customer?.allergies || "";
+  const address = formatAddress(order.fulfillment?.address || order.customer?.address || {});
+  const contactPreference = order.fulfillment?.contact_preference || order.customer?.contact_preference || "text";
+  const paymentStatus = order.payment_status || (ops.paid ? "Paid" : "Pending checkout");
+  const recurring = order.recurring_frequency ? `Repeat: ${order.recurring_frequency}` : "";
 
   return `
     <article class="ticket-card${ops.priority ? " priority" : ""}" data-ticket-id="${escapeHtml(order.id)}">
@@ -376,9 +442,15 @@ function ticketMarkup(order) {
         <span class="status-pill ${statusClass(order.status)}">${escapeHtml(order.status)}</span>
       </div>
       <div class="ticket-meta">
-        <span>${escapeHtml(order.fulfillment?.type || "pickup")} / ${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")}</span>
+        <span>${escapeHtml(order.fulfillment?.type || "pickup")} / ${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")} / ${escapeHtml(contactPreference)}</span>
         <strong>${escapeHtml(order.total_meals || 0)} meals / ${escapeHtml(compactDollars(order.estimated_total || 0))}</strong>
       </div>
+      <div class="ticket-tags">
+        <span>${escapeHtml(paymentStatus)}</span>
+        ${recurring ? `<span>${escapeHtml(recurring)}</span>` : ""}
+      </div>
+      ${address ? `<div class="ticket-alert neutral"><strong>Delivery</strong><span>${escapeHtml(address)}</span></div>` : ""}
+      ${allergies ? `<div class="ticket-alert"><strong>Allergies</strong><span>${escapeHtml(allergies)}</span></div>` : ""}
       <div class="ticket-items">${itemRows}</div>
       <div class="ticket-controls">
         <label class="ticket-field">
@@ -539,6 +611,21 @@ function addHistory(order, message) {
   ops.history = [...(ops.history || []), `${message} ${formatTime(nowIso())}`].slice(-10);
 }
 
+async function persistTicketUpdate(id, field, value) {
+  if (!serverBacked) return;
+  try {
+    const data = await apiJson("api/admin-orders.php", {
+      method: "POST",
+      body: JSON.stringify({ action: "update_ticket", id, field, value }),
+    });
+    applyServerData(data);
+    updateSyncStatus("Server source");
+  } catch {
+    serverBacked = false;
+    updateSyncStatus("Local fallback");
+  }
+}
+
 function updateTicket(id, field, value) {
   const order = orders.find((item) => item.id === id);
   if (!order) return;
@@ -562,9 +649,25 @@ function updateTicket(id, field, value) {
 
   saveState();
   render();
+  persistTicketUpdate(id, field, value);
 }
 
-function loadDemoDay() {
+async function loadDemoDay() {
+  if (serverBacked) {
+    try {
+      const data = await apiJson("api/admin-orders.php", {
+        method: "POST",
+        body: JSON.stringify({ action: "seed_demo_day" }),
+      });
+      applyServerData(data);
+      updateSyncStatus("Server source");
+      return;
+    } catch {
+      serverBacked = false;
+      updateSyncStatus("Local fallback");
+    }
+  }
+
   const today = new Date();
   const tomorrow = new Date();
   tomorrow.setDate(today.getDate() + 1);
@@ -641,16 +744,34 @@ function exportDay() {
 document.querySelector("#refreshAdmin").addEventListener("click", () => {
   loadState();
   render();
+  loadServerState();
 });
 
 document.querySelector("#lockAdmin").addEventListener("click", lockAdmin);
-document.querySelector("#seedDemoDay").addEventListener("click", loadDemoDay);
+document.querySelector("#seedDemoDay").addEventListener("click", () => {
+  loadDemoDay();
+});
 document.querySelector("#printKitchen").addEventListener("click", () => window.print());
 document.querySelector("#exportDay").addEventListener("click", exportDay);
 elements.gateForm.addEventListener("submit", submitAdminGate);
 
 document.querySelector("#clearFulfilled").addEventListener("click", () => {
-  if (!window.confirm("Clear fulfilled tickets from this local admin queue?")) return;
+  if (!window.confirm("Clear fulfilled tickets from this admin queue?")) return;
+  if (serverBacked) {
+    apiJson("api/admin-orders.php", {
+      method: "POST",
+      body: JSON.stringify({ action: "clear_fulfilled" }),
+    })
+      .then((data) => {
+        applyServerData(data);
+        updateSyncStatus("Server source");
+      })
+      .catch(() => {
+        serverBacked = false;
+        updateSyncStatus("Local fallback");
+      });
+    return;
+  }
   orders = orders.filter((order) => order.status !== "Fulfilled");
   saveState();
   render();
@@ -696,7 +817,11 @@ window.addEventListener("storage", (event) => {
 });
 
 async function bootAdmin() {
-  if (authSessionIsValid() || localPreviewIsAllowed() || await hostedPreviewIsAllowed()) {
+  if (await serverAuthIsValid()) {
+    sessionStorage.setItem(storageKeys.auth, JSON.stringify({ server: true, unlockedAt: Date.now() }));
+    showAdminApp();
+  } else if (localPreviewIsAllowed() || await hostedPreviewIsAllowed()) {
+    sessionStorage.setItem(storageKeys.auth, JSON.stringify({ preview: true, unlockedAt: Date.now() }));
     showAdminApp();
   } else {
     showAdminGate();

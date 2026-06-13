@@ -7,6 +7,8 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
+const defaultCheckoutUrl = "https://ordermealpreprevolution.square.site/";
+
 const pickerImageVersion = "hires-20260612";
 const pickerImage = (src) => `${src}${src.includes("?") ? "&" : "?"}v=${pickerImageVersion}`;
 
@@ -364,6 +366,9 @@ const builderState = {
   forceHeroSlide: false,
   cart: [],
   reviewReady: false,
+  activeOrderId: "",
+  checkoutUrl: defaultCheckoutUrl,
+  serverBacked: false,
 };
 
 const menuGrid = document.querySelector("#mealGrid");
@@ -394,8 +399,15 @@ const customerEmail = document.querySelector("#customerEmail");
 const fulfillmentType = document.querySelector("#fulfillmentType");
 const fulfillmentDate = document.querySelector("#fulfillmentDate");
 const fulfillmentWindow = document.querySelector("#fulfillmentWindow");
+const contactPreference = document.querySelector("#contactPreference");
+const deliveryFields = document.querySelector("#deliveryFields");
+const deliveryStreet = document.querySelector("#deliveryStreet");
+const deliveryUnit = document.querySelector("#deliveryUnit");
+const deliveryCity = document.querySelector("#deliveryCity");
+const allergyNotes = document.querySelector("#allergyNotes");
 const orderNotes = document.querySelector("#orderNotes");
 const saveCustomerProfile = document.querySelector("#saveCustomerProfile");
+const submitOrderButton = document.querySelector("#submitOrder");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
 
@@ -452,8 +464,23 @@ function getCustomerDraft() {
     fulfillment: fulfillmentType?.value || "pickup",
     date: fulfillmentDate?.value || fulfillmentDateDefault(),
     window: fulfillmentWindow?.value || "morning",
+    contact_preference: contactPreference?.value || "text",
+    address: {
+      street: deliveryStreet?.value.trim() || "",
+      unit: deliveryUnit?.value.trim() || "",
+      city: deliveryCity?.value.trim() || "",
+    },
+    allergies: allergyNotes?.value.trim() || "",
     notes: orderNotes?.value.trim() || "",
   };
+}
+
+function setFulfillmentFields() {
+  const isDelivery = fulfillmentType?.value === "delivery";
+  if (deliveryFields) deliveryFields.hidden = !isDelivery;
+  [deliveryStreet, deliveryCity].forEach((field) => {
+    if (field) field.required = isDelivery;
+  });
 }
 
 function hydrateCustomerDraft() {
@@ -468,7 +495,13 @@ function hydrateCustomerDraft() {
   if (fulfillmentType && source.fulfillment) fulfillmentType.value = source.fulfillment;
   if (fulfillmentDate && source.date) fulfillmentDate.value = source.date;
   if (fulfillmentWindow && source.window) fulfillmentWindow.value = source.window;
+  if (contactPreference && source.contact_preference) contactPreference.value = source.contact_preference;
+  if (deliveryStreet && source.address?.street) deliveryStreet.value = source.address.street;
+  if (deliveryUnit && source.address?.unit) deliveryUnit.value = source.address.unit;
+  if (deliveryCity && source.address?.city) deliveryCity.value = source.address.city;
+  if (allergyNotes && source.allergies) allergyNotes.value = source.allergies;
   if (orderNotes && source.notes) orderNotes.value = source.notes;
+  setFulfillmentFields();
 }
 
 function customerDisplayName(customer) {
@@ -479,6 +512,9 @@ function validateOrderRequest(customer) {
   if (!builderState.cart.length) return "Add at least one meal build before checkout.";
   if (!customer.name) return "Add your name so your order can be confirmed.";
   if (!customer.phone && !customer.email) return "Add a phone or email so your order can be confirmed.";
+  if (customer.fulfillment === "delivery" && (!customer.address.street || !customer.address.city)) {
+    return "Add the delivery address and city before checkout.";
+  }
   return "";
 }
 
@@ -704,6 +740,8 @@ function buildWooPayload() {
     unit_price: item.unitPrice,
     line_total: item.total,
     reorder_key: item.key,
+    preview_image: item.previewImage,
+    summary: item.compactDescription || item.summary,
     builder_groups: item.groups.map((group) => ({
       id: group.id,
       label: group.label,
@@ -715,6 +753,9 @@ function buildWooPayload() {
       { key: "Average Meal Price", value: dollars(item.avg) },
       { key: "Selections", value: item.description },
       { key: "Fulfillment", value: `${customer.fulfillment} / ${customer.date} / ${customer.window}` },
+      { key: "Contact Preference", value: customer.contact_preference },
+      { key: "Delivery Address", value: customer.fulfillment === "delivery" ? `${customer.address.street}${customer.address.unit ? ` ${customer.address.unit}` : ""}, ${customer.address.city}` : "Pickup" },
+      { key: "Allergies", value: customer.allergies || "None" },
       { key: "Customer Notes", value: customer.notes || "None" },
     ],
   }));
@@ -723,7 +764,7 @@ function buildWooPayload() {
 
   return {
     source: "meal-prep-revolution-sandbox-builder",
-    version: "2026-06-12-order-request",
+    version: "2026-06-13-ops-foundation",
     currency: "USD",
     customer,
     fulfillment: {
@@ -731,10 +772,14 @@ function buildWooPayload() {
       date: customer.date,
       window: customer.window,
       notes: customer.notes,
+      allergies: customer.allergies,
+      address: customer.address,
+      contact_preference: customer.contact_preference,
     },
     total_meals: totalMeals,
     estimated_total: Number(totalPrice.toFixed(2)),
     line_items: lines,
+    cart: cloneData(cartForStorage()),
   };
 }
 
@@ -764,6 +809,9 @@ function saveInternalOrder(payload) {
   const ticket = {
     id: payload.request_id,
     status: "New",
+    payment_status: payload.payment_status || "Pending checkout",
+    checkout_url: payload.checkout_url || defaultCheckoutUrl,
+    server_backed: Boolean(payload.server_backed),
     created_at: payload.created_at,
     customer: payload.customer,
     fulfillment: payload.fulfillment,
@@ -777,7 +825,54 @@ function saveInternalOrder(payload) {
   writeStoredJson(orderStorage.queue, [ticket, ...withoutDuplicate].slice(0, 24));
 }
 
+function setWalletCheckoutUrl(url) {
+  const checkoutUrl = url || defaultCheckoutUrl;
+  document.querySelectorAll("a[data-checkout-wallet]").forEach((link) => {
+    link.href = checkoutUrl;
+  });
+}
+
+async function submitOrderToBackend(payload) {
+  const response = await fetch("api/orders.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const error = new Error(data.error || "Order could not be created.");
+    error.status = response.status;
+    error.validation = response.status >= 400 && response.status < 500 && response.status !== 404;
+    throw error;
+  }
+  return data;
+}
+
+function postOrderEvent(eventName, extra = {}) {
+  const draft = readStoredJson("mprWooOrderDraft", {});
+  const requestIdValue = builderState.activeOrderId || draft.request_id;
+  if (!requestIdValue || !builderState.serverBacked) return;
+  const payload = JSON.stringify({
+    request_id: requestIdValue,
+    event: eventName,
+    ...extra,
+  });
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon("api/order-event.php", new Blob([payload], { type: "application/json" }));
+    return;
+  }
+  fetch("api/order-event.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payload,
+    keepalive: true,
+  }).catch(() => {});
+}
+
 function resetCheckoutFlow() {
+  builderState.activeOrderId = "";
+  builderState.checkoutUrl = defaultCheckoutUrl;
+  builderState.serverBacked = false;
   if (recurringChoice) recurringChoice.hidden = true;
   document.querySelectorAll("[data-recurring]").forEach((button) => {
     button.classList.remove("is-selected");
@@ -822,6 +917,7 @@ function renderCart() {
   cartMealTotal.textContent = payload.total_meals;
   cartPriceTotal.textContent = builderState.cart.length ? dollars(payload.estimated_total) : "Review";
   purchaseActions.hidden = !builderState.reviewReady || !builderState.cart.length;
+  setWalletCheckoutUrl(builderState.checkoutUrl);
   if (checkoutSummary && builderState.cart.length) {
     checkoutSummary.textContent = `${payload.total_meals} meals · ${dollars(payload.estimated_total)} estimated`;
   }
@@ -860,7 +956,7 @@ function addCurrentBuildToCart() {
   renderCart();
 }
 
-function prepareStoreOrder() {
+async function prepareStoreOrder() {
   const customer = getCustomerDraft();
   const validationMessage = validateOrderRequest(customer);
 
@@ -873,12 +969,51 @@ function prepareStoreOrder() {
   const payload = buildWooPayload();
   payload.request_id = requestId();
   payload.created_at = new Date().toISOString();
+  payload.checkout_url = defaultCheckoutUrl;
+  payload.payment_status = "Pending checkout";
+
+  if (submitOrderButton) {
+    submitOrderButton.disabled = true;
+    submitOrderButton.textContent = "Creating checkout...";
+  }
+  orderNote.textContent = "Creating a clean checkout ticket...";
+
+  try {
+    const serverOrder = await submitOrderToBackend(payload);
+    payload.request_id = serverOrder.request_id || payload.request_id;
+    payload.checkout_url = serverOrder.checkout_url || defaultCheckoutUrl;
+    payload.payment_status = serverOrder.payment_status || "Pending checkout";
+    payload.server_backed = true;
+    builderState.serverBacked = true;
+  } catch (error) {
+    if (error.validation) {
+      builderState.reviewReady = false;
+      builderState.serverBacked = false;
+      orderNote.textContent = error.message || "Review the order details before checkout.";
+      renderCart();
+      return;
+    }
+    payload.server_backed = false;
+    payload.backend_error = error.message || "Order API unavailable.";
+    builderState.serverBacked = false;
+  } finally {
+    if (submitOrderButton) {
+      submitOrderButton.disabled = false;
+      submitOrderButton.textContent = "Continue to Secure Checkout";
+    }
+  }
+
+  builderState.activeOrderId = payload.request_id;
+  builderState.checkoutUrl = payload.checkout_url || defaultCheckoutUrl;
   saveOrderRequest(payload);
   saveInternalOrder(payload);
   renderCart();
   localStorage.setItem("mprWooOrderDraft", JSON.stringify(payload));
-  orderNote.innerHTML = `<strong>${payload.total_meals} meals</strong> are ready for secure checkout. Choose Apple Pay, Amazon Pay, or card to finish payment.`;
+  orderNote.innerHTML = payload.server_backed
+    ? `<strong>${payload.total_meals} meals</strong> are ready for secure checkout. Choose Apple Pay, Amazon Pay, or card to finish payment.`
+    : `<strong>${payload.total_meals} meals</strong> are ready for checkout. Local fallback is active, so the admin board may need a refresh after checkout.`;
   purchaseActions?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
 }
 
 hydrateCustomerDraft();
@@ -994,21 +1129,31 @@ document.querySelector("#qtyMinus").addEventListener("click", () => setQuantity(
 document.querySelector("#qtyPlus").addEventListener("click", () => setQuantity(builderState.quantity + 1));
 mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
 addMealButton.addEventListener("click", addCurrentBuildToCart);
-document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
+submitOrderButton?.addEventListener("click", () => {
+  prepareStoreOrder().catch((error) => {
+    orderNote.textContent = error.message || "Checkout could not be prepared.";
+    if (submitOrderButton) {
+      submitOrderButton.disabled = false;
+      submitOrderButton.textContent = "Continue to Secure Checkout";
+    }
+  });
+});
 
 purchaseActions?.addEventListener("click", (event) => {
   const walletLink = event.target.closest("[data-checkout-wallet]");
   const recurringButton = event.target.closest("[data-recurring]");
 
   if (walletLink) {
-    const payload = buildWooPayload();
+    const payload = readStoredJson("mprWooOrderDraft", buildWooPayload());
     const wallet = walletLink.dataset.checkoutWallet;
     writeStoredJson("mprCheckoutStarted", {
       wallet,
       started_at: new Date().toISOString(),
+      request_id: payload.request_id,
       total_meals: payload.total_meals,
       estimated_total: payload.estimated_total,
     });
+    postOrderEvent("checkout_started", { wallet });
     if (recurringChoice) recurringChoice.hidden = false;
     orderNote.innerHTML = `<strong>${escapeHtml(wallet)}</strong> checkout opened. After payment, choose whether this should repeat.`;
     return;
@@ -1023,8 +1168,9 @@ purchaseActions?.addEventListener("click", (event) => {
     writeStoredJson("mprRecurringPreference", {
       frequency: recurringButton.dataset.recurring,
       selected_at: new Date().toISOString(),
-      order: buildWooPayload(),
+      order: readStoredJson("mprWooOrderDraft", buildWooPayload()),
     });
+    postOrderEvent("recurring_selected", { frequency: recurringButton.dataset.recurring });
     orderNote.innerHTML = recurringButton.dataset.recurring === "one time only"
       ? "Perfect. This order will stay one time only."
       : `Perfect. We saved <strong>${escapeHtml(recurringButton.dataset.recurring)}</strong> as the preferred repeat schedule.`;
@@ -1039,6 +1185,7 @@ orderIntake?.addEventListener("input", () => {
 });
 
 orderIntake?.addEventListener("change", () => {
+  setFulfillmentFields();
   writeStoredJson(orderStorage.draft, getCustomerDraft());
   builderState.reviewReady = false;
   resetCheckoutFlow();

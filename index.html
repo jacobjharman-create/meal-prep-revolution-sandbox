@@ -15,7 +15,7 @@
     >
     <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="styles.css?v=simplified-cart-20260612">
+    <link rel="stylesheet" href="styles.css?v=ops-foundation-20260613">
   </head>
   <body>
     <header class="site-header" id="top">
@@ -285,10 +285,36 @@
                     <option value="evening">Evening</option>
                   </select>
                 </label>
+                <label>
+                  <span>Contact</span>
+                  <select id="contactPreference" name="contact_preference">
+                    <option value="text">Text</option>
+                    <option value="call">Call</option>
+                    <option value="email">Email</option>
+                  </select>
+                </label>
+              </div>
+              <div class="delivery-fields" id="deliveryFields" hidden>
+                <label>
+                  <span>Delivery address</span>
+                  <input id="deliveryStreet" name="delivery_street" type="text" autocomplete="street-address" placeholder="Street address">
+                </label>
+                <label>
+                  <span>Unit</span>
+                  <input id="deliveryUnit" name="delivery_unit" type="text" autocomplete="address-line2" placeholder="Apt, suite, gate">
+                </label>
+                <label>
+                  <span>City</span>
+                  <input id="deliveryCity" name="delivery_city" type="text" autocomplete="address-level2" placeholder="City">
+                </label>
               </div>
               <label class="intake-notes">
-                <span>Notes / allergies</span>
-                <textarea id="orderNotes" name="notes" rows="3" placeholder="Sauce on side, allergy notes, gate code, delivery details"></textarea>
+                <span>Allergies</span>
+                <textarea id="allergyNotes" name="allergies" rows="2" placeholder="Food allergies or strict avoidances"></textarea>
+              </label>
+              <label class="intake-notes">
+                <span>Order notes</span>
+                <textarea id="orderNotes" name="notes" rows="3" placeholder="Sauce on side, gate code, delivery details, pickup notes"></textarea>
               </label>
               <label class="intake-check">
                 <input id="saveCustomerProfile" type="checkbox" checked>
@@ -491,6 +517,6 @@
       <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Order Online</a>
     </footer>
 
-    <script src="script.js?v=simplified-cart-20260612"></script>
+    <script src="script.js?v=ops-foundation-20260613"></script>
   </body>
 </html>

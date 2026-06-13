@@ -1,0 +1,27 @@
+{
+  "version": "2026-06-13-ops-foundation",
+  "checkout": {
+    "provider": "square",
+    "url": "https://ordermealpreprevolution.square.site/"
+  },
+  "capacity": {
+    "daily_comfort_target": 96
+  },
+  "fulfillment": {
+    "handoff_types": ["pickup", "delivery"],
+    "windows": ["morning", "midday", "evening"],
+    "delivery_required_fields": ["street", "city"]
+  },
+  "pricing": {
+    "breakfast": {
+      "small": 9.5,
+      "medium": 10.5,
+      "large": 12.5
+    },
+    "lunch": {
+      "small": 11,
+      "medium": 13,
+      "large": 15
+    }
+  }
+}

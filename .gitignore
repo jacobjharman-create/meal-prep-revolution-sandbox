@@ -7,3 +7,5 @@ tmp/
 generated/meal-previews/*.jpg
 generated/meal-previews/*.jpeg
 generated/meal-previews/*.png
+data/*.json
+data/*.tmp

@@ -6,4 +6,5 @@
   RewriteEngine On
   RewriteRule (^|/)\.env($|\.) - [F,L]
   RewriteRule (^|/)mpr-secrets\.env$ - [F,L]
+  RewriteRule (^|/)data/ - [F,L]
 </IfModule>
