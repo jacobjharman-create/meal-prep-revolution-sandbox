@@ -235,14 +235,38 @@ button {
     linear-gradient(180deg, rgba(2, 4, 2, 0.1) 0%, transparent 46%, rgba(2, 4, 2, 0.34) 100%);
 }
 
-.hero-copy {
+.hero-text-column {
   position: absolute;
   isolation: isolate;
   z-index: 2;
-  top: clamp(218px, 26vh, 248px);
+  top: 50%;
+  transform: translateY(-50%);
   left: var(--hero-left-rail);
   right: auto;
   width: var(--hero-copy-width);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(9px, 1vw, 14px);
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.hero-heading {
+  position: relative;
+  z-index: 30;
+  left: 0;
+  right: auto;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  width: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -292,18 +316,6 @@ button {
 .hero-copy > * {
   position: relative;
   z-index: 1;
-}
-
-.hero-heading {
-  position: absolute;
-  z-index: 30;
-  top: clamp(24px, 4.5vh, 52px);
-  left: var(--hero-left-rail);
-  right: auto;
-  box-sizing: border-box;
-  width: var(--hero-copy-width);
-  padding: 0;
-  text-align: left;
 }
 
 h1,
@@ -804,45 +816,6 @@ h1 .hero-h1-accent {
   pointer-events: auto;
   transform: none;
   margin: 0;
-}
-
-.hero-plan-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 6px;
-  width: 100%;
-  margin-left: auto;
-}
-
-.hero-plan-tab {
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.4);
-  color: #d6e6d3;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
-  min-height: 26px;
-  padding: 6px 10px;
-  letter-spacing: 0.03em;
-  text-transform: capitalize;
-  cursor: pointer;
-  transition:
-    border-color 170ms ease,
-    color 170ms ease,
-    background-color 170ms ease,
-    transform 170ms ease;
-}
-
-.hero-plan-tab.is-active {
-  border-color: rgba(141, 255, 148, 0.78);
-  color: #0f1811;
-  background: rgba(170, 255, 180, 0.93);
-}
-
-.hero-plan-tab:hover:not(:disabled) {
-  transform: translateY(-1px);
 }
 
 .hero-plan-card {
@@ -2965,12 +2938,14 @@ cite {
     right: 16px;
   }
 
-  .hero-copy {
-    top: clamp(188px, 27svh, 224px);
+  .hero-text-column {
+    top: 50%;
+    transform: translateY(-50%);
     left: 14px;
     right: auto;
+    width: min(86vw, 430px);
     bottom: auto;
-    width: auto;
+    z-index: 2;
     min-height: 0;
     margin: 0;
     padding: 8px;
@@ -2979,12 +2954,9 @@ cite {
   }
 
   .hero-heading {
-    position: absolute;
-    top: 16px;
-    left: 14px;
-    right: auto;
+    left: 0;
     box-sizing: border-box;
-    width: min(78vw, 370px);
+    width: 100%;
     padding: 0;
     overflow: hidden;
     text-align: left;
@@ -3177,10 +3149,6 @@ cite {
     gap: 6px;
   }
 
-  .hero-plan-tabs {
-    gap: 4px;
-  }
-
   .hero-plan-card {
     min-height: 0;
     gap: 8px;
@@ -3207,13 +3175,6 @@ cite {
     min-height: 34px;
     padding-inline: 12px;
     font-size: 9px;
-  }
-
-  .hero-plan-tab {
-    min-height: 22px;
-    padding: 4px 8px;
-    font-size: 8px;
-    letter-spacing: 0.02em;
   }
 
   .hero-frame::before {

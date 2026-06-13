@@ -750,7 +750,6 @@ const heroPlanEyebrow = document.querySelector("#heroPlanEyebrow");
 const heroPlanTitle = document.querySelector("#heroPlanTitle");
 const heroPlanCopy = document.querySelector("#heroPlanCopy");
 const heroPlanButton = document.querySelector("#heroPlanButton");
-const heroPlanTabs = document.querySelector("#heroPlanTabs");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
 let heroPlanTimer = 0;
@@ -1174,55 +1173,6 @@ function renderMenu(category) {
   categoryLink.href = squareLinks[category];
 }
 
-function getHeroPlanLabel(item, index) {
-  const plan = doneForYouPlans[item.key];
-  const tabLabel = item.tabLabel?.trim();
-  if (tabLabel) return tabLabel;
-  const planLabel = (plan?.title || item.key || "")
-    .replace(/plan/i, "")
-    .replace(/-/g, " ")
-    .trim();
-  const eyebrowText = item.eyebrow?.split("/")[1]?.trim();
-  return eyebrowText || planLabel || `Plan ${index + 1}`;
-}
-
-function renderHeroPlanTabs() {
-  if (!heroPlanTabs || !heroPlanSequence.length) return;
-  heroPlanTabs.innerHTML = heroPlanSequence
-    .map((item, index) => {
-      const label = getHeroPlanLabel(item, index);
-      const isActive = index === heroPlanCurrentIndex;
-      return `
-        <button
-          class="hero-plan-tab ${isActive ? "is-active" : ""}"
-          type="button"
-          role="tab"
-          data-hero-plan-tab="${index}"
-          aria-selected="${String(isActive)}"
-          aria-controls="heroPlanCard"
-          title="${escapeHtml(label)}"
-        >
-          ${escapeHtml(label)}
-        </button>
-      `;
-    })
-    .join("");
-
-  heroPlanTabs.addEventListener("click", (event) => {
-    const tab = event.target.closest("[data-hero-plan-tab]");
-    if (!tab) return;
-    const nextIndex = Number(tab.dataset.heroPlanTab);
-    if (Number.isNaN(nextIndex)) return;
-    setHeroPlan(nextIndex);
-    const mobile = window.matchMedia("(max-width: 680px)");
-    const interval = () => (mobile.matches ? 8000 : 9000);
-    window.clearTimeout(heroPlanTimer);
-    heroPlanTimer = window.setTimeout(() => {
-      heroPlanCycleTick();
-    }, interval());
-  });
-}
-
 function heroPlanCycleTick() {
   if (!heroPlanButton || !heroPlanSequence.length) return;
   const nextIndex = (heroPlanCurrentIndex + 1) % heroPlanSequence.length;
@@ -1249,19 +1199,10 @@ function setHeroPlan(index = 0) {
   if (heroPlanCopy) heroPlanCopy.textContent = item.copy;
   heroPlanButton.dataset.loadPlan = item.key;
   heroPlanButton.setAttribute("aria-label", `Load ${plan.title} into the meal builder`);
-
-  if (heroPlanTabs) {
-    heroPlanTabs.querySelectorAll("[data-hero-plan-tab]").forEach((tab) => {
-      const selected = Number(tab.dataset.heroPlanTab) === heroPlanCurrentIndex;
-      tab.classList.toggle("is-active", selected);
-      tab.setAttribute("aria-selected", String(selected));
-    });
-  }
 }
 
 function startHeroPlanSync() {
   if (!heroPlanButton || !heroPlanSequence.length) return;
-  renderHeroPlanTabs();
   setHeroPlan(heroPlanCurrentIndex);
   const mobile = window.matchMedia("(max-width: 680px)");
   const interval = () => (mobile.matches ? 8000 : 9000);
