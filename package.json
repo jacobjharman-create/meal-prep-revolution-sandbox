@@ -1,0 +1,24 @@
+{
+  "name": "meal-prep-revolution",
+  "version": "1.0.0",
+  "description": "Static GitHub-backed sandbox for an upgraded Meal Prep Revolution website direction.",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "playwright": "playwright"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobjharman-create/meal-prep-revolution-sandbox.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jacobjharman-create/meal-prep-revolution-sandbox/issues"
+  },
+  "homepage": "https://github.com/jacobjharman-create/meal-prep-revolution-sandbox#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
