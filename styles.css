@@ -3173,14 +3173,14 @@ cite {
 
   .hero-plan-card {
     min-height: 0;
-    max-height: 46px;
+    max-height: 51px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) max-content;
     grid-template-rows: auto auto auto;
     align-items: center;
     gap: 2px 9px;
     width: 100%;
-    padding: 7px 10px;
+    padding: 8px 11px;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -3192,14 +3192,14 @@ cite {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
-    font-size: 8px;
+    font-size: 9px;
   }
 
   .hero-plan-card strong {
     grid-column: 1;
     grid-row: 2;
     max-width: none;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.1;
     margin: 0;
     text-align: left;
@@ -3214,7 +3214,7 @@ cite {
     max-width: none;
     margin: 0;
     text-align: left;
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1.2;
     max-height: 1.2em;
     overflow: hidden;
@@ -3233,10 +3233,10 @@ cite {
     grid-column: 2;
     grid-row: 1 / span 3;
     align-self: stretch;
-    min-height: 34px;
-    min-width: 96px;
+    min-height: 38px;
+    min-width: 106px;
     padding-inline: 10px;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.06em;
   }
 
