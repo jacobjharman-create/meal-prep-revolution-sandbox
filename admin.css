@@ -562,7 +562,9 @@ textarea:focus {
 .ticket-list,
 .prep-grid,
 .handoff-list,
-.activity-feed {
+.activity-feed,
+.route-list,
+.allergy-list {
   display: grid;
   gap: 10px;
   margin-top: 10px;
@@ -749,6 +751,8 @@ textarea:focus {
 .prep-bucket,
 .feed-item,
 .handoff-item,
+.route-item,
+.allergy-item,
 .pipeline-row {
   padding: 12px;
   background: rgba(255, 255, 255, 0.045);
@@ -776,6 +780,8 @@ textarea:focus {
 .prep-bucket li,
 .handoff-item,
 .feed-item,
+.route-item,
+.allergy-item,
 .pipeline-row {
   color: #e8f3e5;
   font-size: 12px;
@@ -784,7 +790,9 @@ textarea:focus {
 
 .prep-bucket li,
 .handoff-item,
-.feed-item {
+.feed-item,
+.route-item,
+.allergy-item {
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -792,17 +800,60 @@ textarea:focus {
 
 .prep-bucket li span,
 .handoff-item span,
-.feed-item span {
+.feed-item span,
+.route-item span,
+.allergy-item span {
   min-width: 0;
 }
 
 .prep-bucket li strong,
 .handoff-item strong,
-.feed-item strong {
+.feed-item strong,
+.route-item > strong,
+.allergy-item > strong {
   color: var(--text);
   font-size: 12px;
   font-weight: 950;
   white-space: nowrap;
+}
+
+.route-item > div,
+.allergy-item > div {
+  min-width: 0;
+}
+
+.route-item strong:first-child,
+.allergy-item strong:first-child {
+  display: block;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.route-item small,
+.allergy-item small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.allergy-card {
+  border-color: rgba(255, 107, 107, 0.32);
+}
+
+.allergy-item {
+  background: rgba(255, 107, 107, 0.08);
+  border-color: rgba(255, 107, 107, 0.22);
+}
+
+.allergy-item span {
+  color: #ffd7d7;
 }
 
 .owner-grid {
@@ -1023,7 +1074,9 @@ textarea:focus {
 
   .ticket-meta,
   .ticket-top,
-  .ticket-control-row {
+  .ticket-control-row,
+  .route-item,
+  .allergy-item {
     align-items: stretch;
     flex-direction: column;
   }

@@ -9,7 +9,7 @@
       content="Meal Prep Revolution internal CRM admin for kitchen production and owner operations."
     >
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="admin.css?v=customer-followups-20260613">
+    <link rel="stylesheet" href="admin.css?v=dispatch-safety-20260613">
   </head>
   <body class="admin-locked">
     <section class="admin-gate" id="adminGate" aria-labelledby="adminGateTitle">
@@ -157,6 +157,22 @@
               <div class="handoff-list" id="handoffList"></div>
             </section>
 
+            <section class="owner-card" aria-labelledby="route-title">
+              <div class="subhead">
+                <h3 id="route-title">Delivery route</h3>
+                <span id="routeSignal">Active</span>
+              </div>
+              <div class="route-list" id="deliveryRoute"></div>
+            </section>
+
+            <section class="owner-card allergy-card" aria-labelledby="allergy-title">
+              <div class="subhead">
+                <h3 id="allergy-title">Allergy watch</h3>
+                <span id="allergySignal">Safety</span>
+              </div>
+              <div class="allergy-list" id="allergyWatch"></div>
+            </section>
+
             <section class="owner-card" aria-labelledby="capacity-title">
               <div class="subhead">
                 <h3 id="capacity-title">Capacity signal</h3>
@@ -189,6 +205,6 @@
     </template>
     </div>
 
-    <script src="admin.js?v=customer-followups-20260613"></script>
+    <script src="admin.js?v=dispatch-safety-20260613"></script>
   </body>
 </html>

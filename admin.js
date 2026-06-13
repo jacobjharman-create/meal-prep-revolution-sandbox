@@ -33,6 +33,10 @@ const elements = {
   customerFollowups: document.querySelector("#customerFollowups"),
   followupSignal: document.querySelector("#followupSignal"),
   handoffList: document.querySelector("#handoffList"),
+  deliveryRoute: document.querySelector("#deliveryRoute"),
+  routeSignal: document.querySelector("#routeSignal"),
+  allergyWatch: document.querySelector("#allergyWatch"),
+  allergySignal: document.querySelector("#allergySignal"),
   fulfillmentMix: document.querySelector("#fulfillmentMix"),
   capacityFill: document.querySelector("#capacityFill"),
   capacityText: document.querySelector("#capacityText"),
@@ -255,6 +259,10 @@ function formatTime(value) {
 function formatAddress(address = {}) {
   const parts = [address.street, address.unit, address.city].filter(Boolean);
   return parts.join(", ");
+}
+
+function orderAllergies(order) {
+  return order.fulfillment?.allergies || order.customer?.allergies || "";
 }
 
 function nowIso() {
@@ -577,6 +585,67 @@ function renderCustomerFollowups() {
     .join("");
 }
 
+function renderDeliveryRoute() {
+  if (!elements.deliveryRoute) return;
+  const deliveries = activeOrders()
+    .filter((order) => order.fulfillment?.type === "delivery")
+    .slice()
+    .sort((a, b) =>
+      String(a.fulfillment?.date || "").localeCompare(String(b.fulfillment?.date || ""))
+      || String(a.fulfillment?.window || "").localeCompare(String(b.fulfillment?.window || ""))
+      || customerName(a).localeCompare(customerName(b))
+    );
+
+  if (elements.routeSignal) {
+    elements.routeSignal.textContent = deliveries.length ? `${deliveries.length} stops` : "Clear";
+  }
+
+  if (!deliveries.length) {
+    elements.deliveryRoute.innerHTML = elements.emptyTemplate.innerHTML;
+    return;
+  }
+
+  elements.deliveryRoute.innerHTML = deliveries.slice(0, 6).map((order) => {
+    const address = formatAddress(order.fulfillment?.address || order.customer?.address || {});
+    const contactPreference = order.fulfillment?.contact_preference || order.customer?.contact_preference || "text";
+    return `
+      <div class="route-item">
+        <div>
+          <strong>${escapeHtml(customerName(order))}</strong>
+          <span>${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")} / ${escapeHtml(contactPreference)}</span>
+          <small>${escapeHtml(address || "Address needed")}</small>
+        </div>
+        <strong>${escapeHtml(order.total_meals || 0)} meals</strong>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderAllergyWatch() {
+  if (!elements.allergyWatch) return;
+  const allergyOrders = activeOrders().filter((order) => orderAllergies(order).trim() !== "");
+
+  if (elements.allergySignal) {
+    elements.allergySignal.textContent = allergyOrders.length ? `${allergyOrders.length} flagged` : "Clear";
+  }
+
+  if (!allergyOrders.length) {
+    elements.allergyWatch.innerHTML = elements.emptyTemplate.innerHTML;
+    return;
+  }
+
+  elements.allergyWatch.innerHTML = allergyOrders.slice(0, 6).map((order) => `
+    <div class="allergy-item">
+      <div>
+        <strong>${escapeHtml(customerName(order))}</strong>
+        <span>${escapeHtml(orderAllergies(order))}</span>
+        <small>${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")} / ${escapeHtml(order.fulfillment?.type || "pickup")}</small>
+      </div>
+      <strong>${escapeHtml(order.total_meals || 0)} meals</strong>
+    </div>
+  `).join("");
+}
+
 function renderOwnerLists() {
   const active = activeOrders();
   const sorted = active.slice().sort((a, b) => String(a.fulfillment?.date || "").localeCompare(String(b.fulfillment?.date || "")));
@@ -635,6 +704,8 @@ function render() {
   renderPrepBoard();
   renderPipeline();
   renderCustomerFollowups();
+  renderDeliveryRoute();
+  renderAllergyWatch();
   renderOwnerLists();
   renderCapacity();
 }
