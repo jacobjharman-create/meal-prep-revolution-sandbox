@@ -4,6 +4,8 @@
 .DS_Store
 node_modules/
 tmp/
+playwright-report/
+test-results/
 generated/meal-previews/*.jpg
 generated/meal-previews/*.jpeg
 generated/meal-previews/*.png
