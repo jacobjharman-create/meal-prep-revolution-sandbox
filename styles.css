@@ -521,7 +521,7 @@ h1 .hero-h1-accent {
 
 .hero-info-panel {
   display: grid;
-  gap: var(--hero-control-gap);
+  gap: 0;
   max-height: 0;
   opacity: 0;
   overflow: hidden;
@@ -648,7 +648,7 @@ h1 .hero-h1-accent {
   align-items: center;
   max-width: 100%;
   min-height: 68px;
-  margin-top: var(--hero-control-gap);
+  margin-top: 0;
   padding: 12px 14px;
   background:
     radial-gradient(circle at 17% 50%, rgba(22, 209, 0, 0.12), transparent 34%),
