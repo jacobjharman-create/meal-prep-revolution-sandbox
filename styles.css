@@ -234,12 +234,14 @@ button {
 }
 
 .hero-copy {
+  --hero-text-edge: clamp(16px, 2.5vw, 24px);
+  --hero-text-width: min(50vw, 760px);
   position: absolute;
   isolation: isolate;
   z-index: 2;
   top: clamp(320px, 38vh, 400px);
-  left: clamp(16px, 2.5vw, 24px);
-  width: min(50vw, 760px);
+  left: var(--hero-text-edge);
+  width: var(--hero-text-width);
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -270,7 +272,7 @@ button {
 .hero-copy:has(.hero-info-panel.is-open) {
   top: clamp(340px, 40vh, 420px);
   bottom: auto;
-  width: min(50vw, 760px);
+  width: var(--hero-text-width);
   --hero-control-gap: clamp(8px, 0.8vw, 12px);
 }
 
@@ -303,14 +305,22 @@ button {
 .hero-copy > * {
   position: relative;
   z-index: 1;
+  width: 100%;
+}
+
+.hero-copy .hero-promise-list,
+.hero-copy .hero-info-toggle,
+.hero-copy .hero-info-panel,
+.hero-copy .hero-cta-band {
+  width: 100%;
 }
 
 .hero-heading {
   position: relative;
   z-index: 30;
   box-sizing: border-box;
-  width: min(58vw, 920px);
-  padding: clamp(20px, 3vh, 38px) clamp(16px, 2.5vw, 24px) 0;
+  width: var(--hero-text-width);
+  padding: clamp(20px, 3vh, 38px) var(--hero-text-edge) 0;
 }
 
 h1,
@@ -2978,9 +2988,14 @@ cite {
 
   .hero-heading {
     box-sizing: border-box;
-    width: 100vw;
-    padding: 24px 20px 0;
+    width: calc(100vw - 28px);
+    margin: 0 14px;
+    padding: 24px 0 0;
     overflow: hidden;
+  }
+
+  .hero-heading h1 {
+    width: 100%;
   }
 
   .hero-promise-list {
