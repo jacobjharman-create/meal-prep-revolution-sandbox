@@ -895,6 +895,56 @@ h1 .hero-h1-accent {
   animation: planCardRefresh 520ms cubic-bezier(0.2, 0.84, 0.21, 1);
 }
 
+.done-for-you-section {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.done-for-you-section > .section-heading {
+  text-align: left;
+  max-width: 1240px;
+}
+
+.done-for-you-section > .section-heading p {
+  max-width: 740px;
+}
+
+.done-for-you-frame {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.done-for-you-frame .hero-product {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+}
+
+.done-for-you-frame .hero-frame {
+  position: relative;
+  height: clamp(340px, 46vw, 560px);
+  min-height: 320px;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.done-for-you-frame .hero-slider {
+  position: absolute;
+  inset: 0;
+}
+
+.done-for-you-section .hero-meal {
+  min-height: 100%;
+  height: 100%;
+  object-position: 52% 52%;
+}
+
+.done-for-you-frame .hero-plan-actions {
+  right: clamp(14px, 2.8vw, 36px);
+  bottom: clamp(14px, 2.6vw, 42px);
+}
+
 @keyframes planCardRefresh {
   0% {
     opacity: 0.72;
@@ -3122,6 +3172,20 @@ cite {
 
   .hero-meal {
     min-height: calc(100svh - 74px);
+  }
+
+  .done-for-you-frame .hero-product,
+  .done-for-you-frame .hero-meal {
+    min-height: 100%;
+  }
+
+  .done-for-you-frame .hero-frame {
+    height: clamp(300px, 56vw, 450px);
+    min-height: 280px;
+  }
+
+  .done-for-you-section > .section-heading {
+    text-align: left;
   }
 
   .desktop-hero-slide {
