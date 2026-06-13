@@ -300,7 +300,7 @@ const doneForYouPlans = {
     ],
   },
   "single-mom": {
-    title: "Single Mom Week Stack",
+    title: "Hero Mom Week Stack",
     image: doneForYouPlanImages["single-mom"],
     focus: {
       mode: "lunch",
