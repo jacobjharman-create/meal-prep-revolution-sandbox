@@ -156,6 +156,280 @@ const portionPricing = {
   },
 };
 
+const doneForYouPlanImages = {
+  "strength-athlete": "assets/images/done-for-you-plans/single-meal/high-school-strength-athlete-single.png?v=plans-20260613",
+  bodybuilder: "assets/images/done-for-you-plans/single-meal/pro-bodybuilder-single.png?v=plans-20260613",
+  "womens-fitness": "assets/images/done-for-you-plans/single-meal/womens-fitness-athlete-single.png?v=plans-20260613",
+  "single-mom": "assets/images/done-for-you-plans/single-meal/single-mom-week-stack-single.png?v=plans-20260613",
+  "business-lean": "assets/images/done-for-you-plans/single-meal/business-lean-cut-single.png?v=plans-20260613",
+};
+
+const doneForYouPlans = {
+  "strength-athlete": {
+    title: "High School Strength Athlete",
+    image: doneForYouPlanImages["strength-athlete"],
+    focus: {
+      mode: "lunch",
+      portion: "medium",
+      selections: { protein: "steak", grain: "jasmine-rice", vegetables: ["broccoli", "green-beans"], sauce: "teriyaki" },
+    },
+    meals: [
+      {
+        type: "breakfast",
+        title: "Strength Breakfast Bowl",
+        quantity: 4,
+        unitPrice: portionPricing.breakfast.medium,
+        components: [
+          ["protein", "Protein", [{ id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] }, { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] }]],
+          ["carbs", "Carbs", [{ id: "breakfast-hash", name: "Breakfast Hash", image: builderItemImages["breakfast-hash"] }]],
+          ["vegetables", "Vegetables", [{ id: "peppers", name: "Bell Peppers", image: builderItemImages.peppers }]],
+          ["sauce", "Sauce", [{ id: "breakfast-salsa", name: "Salsa", image: builderItemImages["breakfast-salsa"] }]],
+        ],
+      },
+      {
+        type: "lunch",
+        title: "Lemon Pepper Chicken Strength Plate",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.medium,
+        components: [
+          ["protein", "Protein", [{ id: "chicken", name: "Lemon Pepper Chicken", image: builderItemImages.chicken }]],
+          ["grain", "Carbs", [{ id: "jasmine-rice", name: "Steamed White Rice", image: builderItemImages["jasmine-rice"] }]],
+          ["vegetables", "Vegetables", [{ id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli }]],
+          ["sauce", "Sauce", [{ id: "teriyaki", name: "Teriyaki Sauce", image: builderItemImages.teriyaki }]],
+        ],
+      },
+      {
+        type: "dinner",
+        title: "Steak Rub Tri-Tip Recovery Plate",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.medium,
+        components: [
+          ["protein", "Protein", [{ id: "steak", name: "Steak Rub Tri-Tip", image: builderItemImages.steak }]],
+          ["grain", "Carbs", [{ id: "sweet-potato", name: "Cinnamon Sweet Potato Mash", image: builderItemImages["sweet-potato"] }]],
+          ["vegetables", "Vegetables", [{ id: "green-beans", name: "Green Beans", image: builderItemImages["green-beans"] }]],
+          ["sauce", "Sauce", [{ id: "teriyaki", name: "Teriyaki Sauce", image: builderItemImages.teriyaki }]],
+        ],
+      },
+    ],
+  },
+  bodybuilder: {
+    title: "Pro Bodybuilder Pack",
+    image: doneForYouPlanImages.bodybuilder,
+    focus: {
+      mode: "lunch",
+      portion: "large",
+      selections: { protein: "steak", grain: "jasmine-rice", vegetables: ["asparagus", "broccoli"], sauce: "none" },
+    },
+    meals: [
+      {
+        type: "breakfast",
+        title: "High Protein Egg White Breakfast",
+        quantity: 4,
+        unitPrice: portionPricing.breakfast.large,
+        components: [
+          ["protein", "Protein", [{ id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] }, { id: "steak", name: "Steak Rub Steak", image: builderItemImages.steak }]],
+          ["carbs", "Carbs", [{ id: "breakfast-cinnamon-sweet-potato", name: "Cinnamon Sweet Potato Mash", image: builderItemImages["breakfast-cinnamon-sweet-potato"] }]],
+          ["vegetables", "Vegetables", [{ id: "spinach", name: "Spinach", image: builderItemImages.spinach }]],
+          ["sauce", "Sauce", [{ id: "none", name: "Sauce on Side", image: builderItemImages.none }]],
+        ],
+      },
+      {
+        type: "lunch",
+        title: "Steak Rub Tri-Tip Macro Plate",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.large,
+        components: [
+          ["protein", "Protein", [{ id: "steak", name: "Steak Rub Tri-Tip", image: builderItemImages.steak }]],
+          ["grain", "Carbs", [{ id: "jasmine-rice", name: "Steamed Jasmine Rice", image: builderItemImages["jasmine-rice"] }]],
+          ["vegetables", "Vegetables", [{ id: "asparagus", name: "Asparagus", image: builderItemImages.asparagus }]],
+          ["sauce", "Sauce", [{ id: "none", name: "No Sauce", image: builderItemImages.none }]],
+        ],
+      },
+      {
+        type: "dinner",
+        title: "Grilled Chicken Red Potato Plate",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.large,
+        components: [
+          ["protein", "Protein", [{ id: "chicken", name: "Grilled Chicken", image: builderItemImages.chicken }]],
+          ["grain", "Carbs", [{ id: "potatoes", name: "Red Potato Mash", image: builderItemImages.potatoes }]],
+          ["vegetables", "Vegetables", [{ id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli }]],
+          ["sauce", "Sauce", [{ id: "none", name: "Sauce on Side", image: builderItemImages.none }]],
+        ],
+      },
+    ],
+  },
+  "womens-fitness": {
+    title: "Lean Fitness Athlete",
+    image: doneForYouPlanImages["womens-fitness"],
+    focus: {
+      mode: "lunch",
+      portion: "medium",
+      selections: { protein: "salmon", grain: "quinoa", vegetables: ["asparagus", "spinach"], sauce: "salsa-verde" },
+    },
+    meals: [
+      {
+        type: "breakfast",
+        title: "Fitness Breakfast Bowl",
+        quantity: 4,
+        unitPrice: portionPricing.breakfast.medium,
+        components: [
+          ["protein", "Protein", [{ id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] }, { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] }]],
+          ["carbs", "Carbs", [{ id: "breakfast-cinnamon-sweet-potato", name: "Sweet Potato Mash", image: builderItemImages["breakfast-cinnamon-sweet-potato"] }]],
+          ["vegetables", "Vegetables", [{ id: "spinach", name: "Spinach", image: builderItemImages.spinach }]],
+          ["sauce", "Sauce", [{ id: "breakfast-salsa", name: "Salsa", image: builderItemImages["breakfast-salsa"] }]],
+        ],
+      },
+      {
+        type: "lunch",
+        title: "Garlic Herb Salmon Quinoa Plate",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.medium,
+        components: [
+          ["protein", "Protein", [{ id: "salmon", name: "Garlic & Herb Salmon", image: builderItemImages.salmon }]],
+          ["grain", "Carbs", [{ id: "quinoa", name: "Steamed Quinoa", image: builderItemImages.quinoa }]],
+          ["vegetables", "Vegetables", [{ id: "asparagus", name: "Asparagus", image: builderItemImages.asparagus }]],
+          ["sauce", "Sauce", [{ id: "salsa-verde", name: "Green Salsa", image: builderItemImages["salsa-verde"] }]],
+        ],
+      },
+      {
+        type: "dinner",
+        title: "Ground Turkey Green Bowl",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.medium,
+        components: [
+          ["protein", "Protein", [{ id: "turkey", name: "Ground Turkey", image: builderItemImages.turkey }]],
+          ["grain", "Carbs", [{ id: "brown-rice", name: "Steamed Brown Rice", image: builderItemImages["brown-rice"] }]],
+          ["vegetables", "Vegetables", [{ id: "zucchini", name: "Zucchini", image: builderItemImages.zucchini }, { id: "spinach", name: "Spinach", image: builderItemImages.spinach }]],
+          ["sauce", "Sauce", [{ id: "salsa-verde", name: "Green Salsa", image: builderItemImages["salsa-verde"] }]],
+        ],
+      },
+    ],
+  },
+  "single-mom": {
+    title: "Hero Mom Week Stack",
+    image: doneForYouPlanImages["single-mom"],
+    focus: {
+      mode: "lunch",
+      portion: "medium",
+      selections: { protein: "meatballs", grain: "noodles", vegetables: ["zucchini", "broccoli"], sauce: "lemon-herb" },
+    },
+    meals: [
+      {
+        type: "breakfast",
+        title: "On-The-Go Breakfast Bowl",
+        quantity: 4,
+        unitPrice: portionPricing.breakfast.medium,
+        components: [
+          ["protein", "Protein", [{ id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] }, { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] }]],
+          ["carbs", "Carbs", [{ id: "breakfast-hash", name: "Breakfast Hash", image: builderItemImages["breakfast-hash"] }]],
+          ["vegetables", "Vegetables", [{ id: "peppers", name: "Bell Peppers", image: builderItemImages.peppers }]],
+          ["sauce", "Sauce", [{ id: "breakfast-salsa", name: "Salsa", image: builderItemImages["breakfast-salsa"] }]],
+        ],
+      },
+      {
+        type: "lunch",
+        title: "Turkey Meatball Penne Plate",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.medium,
+        components: [
+          ["protein", "Protein", [{ id: "meatballs", name: "Turkey Meatballs", image: builderItemImages.meatballs }]],
+          ["grain", "Carbs", [{ id: "noodles", name: "Gluten Free Penne Pasta", image: builderItemImages.noodles }]],
+          ["vegetables", "Vegetables", [{ id: "zucchini", name: "Zucchini", image: builderItemImages.zucchini }, { id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli }]],
+          ["sauce", "Sauce", [{ id: "lemon-herb", name: "Marinara + Cheese", image: builderItemImages["lemon-herb"] }]],
+        ],
+      },
+      {
+        type: "dinner",
+        title: "Mild Fiesta Chicken Bowl",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.medium,
+        components: [
+          ["protein", "Protein", [{ id: "chicken", name: "Grilled Chicken", image: builderItemImages.chicken }]],
+          ["grain", "Carbs", [{ id: "jasmine-rice", name: "Steamed White Rice", image: builderItemImages["jasmine-rice"] }, { id: "black-beans", name: "Black Beans", image: builderItemImages["black-beans"] }]],
+          ["vegetables", "Vegetables", [{ id: "peppers", name: "Fajita Mix", image: builderItemImages.peppers }, { id: "broccoli", name: "Broccoli", image: builderItemImages.broccoli }]],
+          ["sauce", "Sauce", [{ id: "salsa-verde", name: "Green Salsa", image: builderItemImages["salsa-verde"] }]],
+        ],
+      },
+    ],
+  },
+  "business-lean": {
+    title: "Business Lean Cut",
+    image: doneForYouPlanImages["business-lean"],
+    focus: {
+      mode: "lunch",
+      portion: "small",
+      selections: { protein: "shrimp", grain: "black-beans", vegetables: ["peppers", "spinach"], sauce: "salsa-verde" },
+    },
+    meals: [
+      {
+        type: "breakfast",
+        title: "Lean Egg White Breakfast",
+        quantity: 4,
+        unitPrice: portionPricing.breakfast.small,
+        components: [
+          ["protein", "Protein", [{ id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] }]],
+          ["carbs", "Carbs", [{ id: "breakfast-cinnamon-sweet-potato", name: "Sweet Potato Mash", image: builderItemImages["breakfast-cinnamon-sweet-potato"] }]],
+          ["vegetables", "Vegetables", [{ id: "spinach", name: "Spinach", image: builderItemImages.spinach }]],
+          ["sauce", "Sauce", [{ id: "breakfast-salsa", name: "Salsa", image: builderItemImages["breakfast-salsa"] }]],
+        ],
+      },
+      {
+        type: "lunch",
+        title: "Lemon Pepper Chicken Taco Salad",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.small,
+        components: [
+          ["protein", "Protein", [{ id: "chicken", name: "Lemon Pepper Chicken", image: builderItemImages.chicken }]],
+          ["grain", "Carbs", [{ id: "black-beans", name: "Black Beans", image: builderItemImages["black-beans"] }, { id: "peppers", name: "Corn", image: builderItemImages.peppers }]],
+          ["vegetables", "Vegetables", [{ id: "spinach", name: "Spring Mix", image: builderItemImages.spinach }, { id: "peppers", name: "Fajita Mix", image: builderItemImages.peppers }]],
+          ["sauce", "Sauce", [{ id: "salsa-verde", name: "Green Salsa", image: builderItemImages["salsa-verde"] }]],
+        ],
+      },
+      {
+        type: "dinner",
+        title: "Shrimp Fajita Lean Bowl",
+        quantity: 4,
+        unitPrice: portionPricing.lunch.small,
+        components: [
+          ["protein", "Protein", [{ id: "shrimp", name: "Grilled Shrimp", image: builderItemImages.shrimp }]],
+          ["grain", "Carbs", [{ id: "black-beans", name: "Black Beans", image: builderItemImages["black-beans"] }]],
+          ["vegetables", "Vegetables", [{ id: "peppers", name: "Fajita Mix", image: builderItemImages.peppers }, { id: "spinach", name: "Spring Mix", image: builderItemImages.spinach }]],
+          ["sauce", "Sauce", [{ id: "salsa-verde", name: "Green Salsa", image: builderItemImages["salsa-verde"] }]],
+        ],
+      },
+    ],
+  },
+};
+
+const heroPlanSequence = [
+  {
+    key: "strength-athlete",
+    eyebrow: "12 meals / strength",
+    copy: "4 breakfast, 4 lunch, and 4 dinner meals for training weeks.",
+  },
+  {
+    key: "bodybuilder",
+    eyebrow: "12 meals / bodybuilder",
+    copy: "A higher-protein approval cart built around steak, chicken, rice, and greens.",
+  },
+  {
+    key: "womens-fitness",
+    eyebrow: "12 meals / fitness",
+    copy: "A lean, fresh plan with salmon, turkey, quinoa, greens, and sauce on the side.",
+  },
+  {
+    key: "single-mom",
+    eyebrow: "12 meals / family week",
+    copy: "Breakfasts and familiar lunch/dinner plates for a calmer weekday fridge.",
+  },
+  {
+    key: "business-lean",
+    eyebrow: "12 meals / lean workweek",
+    copy: "A lighter office-week cart with chicken, shrimp, beans, and fajita vegetables.",
+  },
+];
+
 const builderCatalog = {
   breakfast: {
     label: "Breakfast",
@@ -379,8 +653,15 @@ const orderNote = document.querySelector("#orderNote");
 const purchaseActions = document.querySelector("#purchaseActions");
 const wooPayload = document.querySelector("#wooPayload");
 const copyWooPayload = document.querySelector("#copyWooPayload");
+const heroPlanCard = document.querySelector("#heroPlanCard");
+const heroPlanEyebrow = document.querySelector("#heroPlanEyebrow");
+const heroPlanTitle = document.querySelector("#heroPlanTitle");
+const heroPlanCopy = document.querySelector("#heroPlanCopy");
+const heroPlanButton = document.querySelector("#heroPlanButton");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
+let heroPlanTimer = 0;
+let heroPlanCurrentIndex = 0;
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -487,6 +768,122 @@ function currentBuild() {
     groups,
     selections: Object.fromEntries(groups.map((group) => [group.id, group.selected.map((item) => item.name)])),
   };
+}
+
+function doneForYouPreviewMeta(meal, plan, groups) {
+  const preferredGroupOrder = ["protein", "grain", "carbs", "vegetables", "sauce"];
+  const preferredItem = preferredGroupOrder
+    .flatMap((groupId) => groups.find((group) => group.id === groupId)?.selected || [])
+    .find((item) => item?.id && item.id !== "none" && !item.id.startsWith("no-"));
+  const fallbackItem = groups.flatMap((group) => group.selected || [])[0];
+  const previewItem = preferredItem || fallbackItem;
+
+  return {
+    image: previewItem?.image || plan.image,
+    alt: previewItem ? `${previewItem.name || previewItem.id} for ${meal.title}` : `${plan.title} meal preview`,
+  };
+}
+
+function createDoneForYouCartItem(planKey, plan, meal) {
+  const groups = meal.components.map(([id, label, selected]) => ({
+    id,
+    label,
+    selected: selected.map((item) => ({ ...item })),
+  }));
+  const quantity = meal.quantity || 4;
+  const unitPrice = meal.unitPrice || portionPricing.lunch.medium;
+  const description = groups
+    .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)
+    .join(" / ");
+  const summary = groups
+    .map((group) => group.selected.map((item) => item.name).join(" + "))
+    .filter(Boolean)
+    .join(" + ");
+  const preview = doneForYouPreviewMeta(meal, plan, groups);
+
+  return {
+    key: `done-for-you|${planKey}|${meal.type}`,
+    sku: `mpr-done-for-you-${planKey}-${meal.type}`,
+    planKey,
+    planTitle: plan.title,
+    mode: meal.type === "breakfast" ? "breakfast" : "lunch",
+    mealType: meal.type,
+    portion: meal.type === "breakfast" ? "medium" : plan.focus.portion,
+    quantity,
+    unitPrice,
+    total: Number((quantity * unitPrice).toFixed(2)),
+    avg: unitPrice,
+    title: meal.title,
+    description,
+    summary,
+    hero: preview.image,
+    heroAlt: preview.alt,
+    groups,
+    selections: Object.fromEntries(groups.map((group) => [group.id, group.selected.map((item) => item.name)])),
+  };
+}
+
+function loadDoneForYouPlan(planKey) {
+  const plan = doneForYouPlans[planKey];
+  if (!plan) return;
+  const focus = plan.focus || {};
+
+  builderState.mode = focus.mode || "lunch";
+  builderState.portion = focus.portion || builderState.portion;
+  builderState.activeGroup = builderCatalog[builderState.mode].defaultGroup;
+  builderState.portionByMode[builderState.mode] = builderState.portion;
+  builderState.activeGroupByMode[builderState.mode] = builderState.activeGroup;
+
+  if (focus.selections) {
+    builderState.selections[builderState.mode] = {
+      ...builderState.selections[builderState.mode],
+      ...focus.selections,
+    };
+  }
+
+  builderState.featuredHeroByMode[builderState.mode] = {
+    image: plan.image,
+    label: plan.title,
+  };
+  builderState.forceHeroSlide = true;
+  builderState.cart = plan.meals.map((meal) => createDoneForYouCartItem(planKey, plan, meal));
+  builderState.reviewReady = false;
+  renderBuilder();
+  orderNote.innerHTML = `<strong>${escapeHtml(plan.title)}</strong> loaded: 4 breakfasts, 4 lunches, and 4 dinners are ready to review.`;
+  document.querySelector("#wizard")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function setHeroPlan(index = 0) {
+  if (!heroPlanSequence.length) return;
+  heroPlanCurrentIndex = ((index % heroPlanSequence.length) + heroPlanSequence.length) % heroPlanSequence.length;
+  const item = heroPlanSequence[heroPlanCurrentIndex];
+  const plan = doneForYouPlans[item.key];
+  if (!item || !plan || !heroPlanButton) return;
+
+  if (heroPlanCard) {
+    heroPlanCard.classList.remove("is-refreshing");
+    void heroPlanCard.offsetWidth;
+    heroPlanCard.classList.add("is-refreshing");
+  }
+  if (heroPlanEyebrow) heroPlanEyebrow.textContent = item.eyebrow;
+  if (heroPlanTitle) heroPlanTitle.textContent = plan.title;
+  if (heroPlanCopy) heroPlanCopy.textContent = item.copy;
+  heroPlanButton.dataset.loadPlan = item.key;
+  heroPlanButton.setAttribute("aria-label", `Load ${plan.title} into the meal builder`);
+}
+
+function heroPlanCycleTick() {
+  if (!heroPlanButton || !heroPlanSequence.length) return;
+  setHeroPlan(heroPlanCurrentIndex + 1);
+  window.clearTimeout(heroPlanTimer);
+  heroPlanTimer = window.setTimeout(heroPlanCycleTick, window.matchMedia("(max-width: 680px)").matches ? 8000 : 9000);
+}
+
+function startHeroPlanSync() {
+  if (!heroPlanButton || !heroPlanSequence.length) return;
+  setHeroPlan(heroPlanCurrentIndex);
+  window.clearTimeout(heroPlanTimer);
+  heroPlanTimer = window.setTimeout(heroPlanCycleTick, window.matchMedia("(max-width: 680px)").matches ? 8000 : 9000);
 }
 
 function setImageWithSlide(image, src, force = false) {
@@ -609,7 +1006,7 @@ function renderCurrentBuild() {
 
 function buildWooPayload() {
   const lines = builderState.cart.map((item) => ({
-    sku: `mpr-${item.mode}-${item.portion}-custom-meal`,
+    sku: item.sku || `mpr-${item.mode}-${item.portion}-custom-meal`,
     name: item.title,
     quantity: item.quantity,
     unit_price: item.unitPrice,
@@ -618,6 +1015,7 @@ function buildWooPayload() {
     preview_image: item.hero,
     meta_data: [
       { key: "Meal Type", value: item.mealType },
+      { key: "Meal Plan", value: item.planTitle || "Custom build" },
       { key: "Portion", value: item.portion },
       { key: "Average Meal Price", value: dollars(item.avg) },
       { key: "Selections", value: item.description },
@@ -644,7 +1042,7 @@ function renderCart() {
       .map((item) => `
         <article class="cart-item">
           <div class="cart-meal-thumb" aria-hidden="true">
-            <img src="${item.hero}" alt="">
+            <img src="${item.hero}" alt="${escapeHtml(item.heroAlt || item.title)}">
           </div>
           <div class="cart-item-body">
             <div class="cart-item-main">
@@ -720,6 +1118,7 @@ function prepareStoreOrder() {
 
 renderMenu("build");
 renderBuilder();
+startHeroPlanSync();
 
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -826,6 +1225,9 @@ document.querySelector("#qtyMinus").addEventListener("click", () => setQuantity(
 document.querySelector("#qtyPlus").addEventListener("click", () => setQuantity(builderState.quantity + 1));
 mealQuantity.addEventListener("input", () => setQuantity(mealQuantity.value));
 addMealButton.addEventListener("click", addCurrentBuildToCart);
+document.querySelectorAll("[data-load-plan]").forEach((button) => {
+  button.addEventListener("click", () => loadDoneForYouPlan(button.dataset.loadPlan));
+});
 document.querySelector("#submitOrder").addEventListener("click", prepareStoreOrder);
 
 copyWooPayload.addEventListener("click", async () => {

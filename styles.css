@@ -629,6 +629,130 @@ h1 .hero-h1-accent,
   }
 }
 
+.hero-plan-actions {
+  position: absolute;
+  right: clamp(14px, 2.8vw, 36px);
+  bottom: clamp(14px, 2.6vw, 42px);
+  z-index: 4;
+  display: flex;
+  width: min(270px, calc(100vw - 36px));
+  pointer-events: auto;
+}
+
+.hero-plan-card {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  color: var(--white);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.16), transparent 34%),
+    linear-gradient(145deg, rgba(12, 18, 12, 0.66), rgba(0, 0, 0, 0.42));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.58),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 0 0 1px rgba(140, 255, 120, 0.08);
+  backdrop-filter: blur(24px) saturate(1.18);
+  -webkit-backdrop-filter: blur(24px) saturate(1.18);
+}
+
+.hero-plan-card span {
+  color: var(--green-soft);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-plan-card strong {
+  max-width: 245px;
+  color: var(--white);
+  font-size: clamp(16px, 1.85vw, 24px);
+  font-weight: 950;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.hero-plan-card p {
+  max-width: 245px;
+  color: #dce9d8;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.28;
+}
+
+.hero-plan-card .button {
+  justify-self: end;
+  width: max-content;
+  min-height: 38px;
+  padding-inline: 14px;
+  font-size: 10px;
+}
+
+.hero-plan-card.is-refreshing {
+  animation: planCardRefresh 520ms cubic-bezier(0.2, 0.84, 0.21, 1);
+}
+
+.done-for-you-section {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.done-for-you-section > .section-heading {
+  text-align: left;
+}
+
+.done-for-you-section > .section-heading p {
+  max-width: 760px;
+}
+
+.done-for-you-frame {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.done-for-you-frame .hero-product {
+  position: relative;
+  inset: auto;
+  min-height: 0;
+}
+
+.done-for-you-frame .hero-frame {
+  position: relative;
+  height: clamp(340px, 46vw, 560px);
+  min-height: 320px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.done-for-you-frame .hero-slider {
+  position: absolute;
+  inset: 0;
+}
+
+.done-for-you-section .hero-meal {
+  min-height: 100%;
+  height: 100%;
+  object-position: 52% 52%;
+}
+
+@keyframes planCardRefresh {
+  0% {
+    opacity: 0.72;
+    transform: translate3d(0, 8px, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 section {
   padding: clamp(66px, 8vw, 118px) clamp(20px, 5vw, 64px);
 }
@@ -2086,6 +2210,11 @@ cite {
     width: min(720px, 100%);
   }
 
+  .done-for-you-frame .hero-frame {
+    height: clamp(300px, 56vw, 450px);
+    min-height: 280px;
+  }
+
   .builder-shell {
     grid-template-columns: 1fr;
   }
@@ -2199,6 +2328,88 @@ cite {
   .hero-proof-item span {
     margin-top: 3px;
     font-size: 13px;
+  }
+
+  .done-for-you-section > .section-heading {
+    text-align: left;
+  }
+
+  .done-for-you-frame .hero-frame {
+    height: min(520px, 78svh);
+    min-height: 360px;
+  }
+
+  .done-for-you-section .hero-meal {
+    min-height: 100%;
+    object-position: 50% 48%;
+  }
+
+  .done-for-you-frame .hero-plan-actions {
+    left: 0;
+    right: 0;
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    width: 100%;
+    padding: 0 13px;
+  }
+
+  .hero-plan-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    gap: 2px 9px;
+    width: 100%;
+    min-height: 54px;
+    padding: 9px 12px 12px;
+    overflow: hidden;
+  }
+
+  .hero-plan-card span {
+    grid-column: 1;
+    grid-row: 1;
+    overflow: hidden;
+    font-size: 9px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-plan-card strong {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: none;
+    overflow: hidden;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.1;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-plan-card p {
+    grid-column: 1;
+    grid-row: 3;
+    max-width: none;
+    max-height: 1.2em;
+    overflow: hidden;
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.2;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-plan-card .button {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: stretch;
+    min-width: 106px;
+    min-height: 38px;
+    padding-inline: 11px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
   }
 
   .hero-chip-row {
