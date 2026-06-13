@@ -2349,7 +2349,7 @@ cite {
   .done-for-you-frame .hero-plan-actions {
     left: 0;
     right: 0;
-    bottom: calc(18px + env(safe-area-inset-bottom));
+    bottom: calc(42px + env(safe-area-inset-bottom));
     width: 100%;
     padding: 0 13px;
   }
