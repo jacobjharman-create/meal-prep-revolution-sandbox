@@ -583,7 +583,7 @@ h1 .hero-h1-accent {
   }
 
   .hero-cta-band .button {
-    min-width: 230px;
+    width: min(100%, 176px);
     justify-content: center;
   }
 }
@@ -654,6 +654,14 @@ h1 .hero-h1-accent {
     inset 0 0 0 1px rgba(140, 255, 120, 0.06);
   backdrop-filter: blur(16px) saturate(1.1);
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
+}
+
+.hero-cta-band .button {
+  width: min(100%, 176px);
+  min-width: 0;
+  justify-self: end;
+  justify-content: center;
+  padding-inline: 12px;
 }
 
 .hero-cta-band p {
@@ -3039,6 +3047,8 @@ cite {
     grid-column: auto;
     justify-content: center;
     min-height: 46px;
+    width: min(100%, 168px);
+    justify-self: stretch;
   }
 
   h1 {
