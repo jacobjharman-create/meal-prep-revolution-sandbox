@@ -154,24 +154,31 @@ test.describe("breakfast picker photos", () => {
     await expect(page.locator(".meal-card").filter({ hasText: "Breakfast Bowl" }).locator("img")).toHaveAttribute("src", /breakfast-bowl/);
 
     await page.locator("[data-mode='breakfast']").click();
-    await expect(page.locator("[data-builder-step='breakfast']")).toHaveClass(/active/);
-    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-protein-pancakes/);
+    await expect(page.locator("[data-builder-step='breakfast']")).toHaveCount(0);
+    await expect(page.locator("[data-builder-step='protein']")).toHaveClass(/active/);
     await expect(page.locator("#builderOptions .option-card")).toHaveCount(8);
-    await expect(page.locator("[data-option='breakfast-protein-pancakes'] img")).toHaveAttribute("src", /breakfast-protein-pancakes/);
-    await expect(page.locator("[data-option='breakfast-protein-waffles'] img")).toHaveAttribute("src", /breakfast-protein-waffles/);
-    await expect(page.locator("[data-option='breakfast-turkey-sausage'] img")).toHaveAttribute("src", /breakfast-turkey-sausage/);
-    await expect(page.locator("[data-option='breakfast-pork-sausage'] img")).toHaveAttribute("src", /breakfast-pork-sausage/);
+    await expect(page.locator("[data-option='eggs']")).toContainText("Eggs");
     await expect(page.locator("[data-option='breakfast-egg-whites'] img")).toHaveAttribute("src", /breakfast-egg-whites/);
     await expect(page.locator("[data-option='breakfast-egg-bites'] img")).toHaveAttribute("src", /breakfast-egg-bites/);
-    await expect(page.locator("[data-option='breakfast-hash'] img")).toHaveAttribute("src", /breakfast-hash/);
-    await expect(page.locator("[data-option='breakfast-cinnamon-sweet-potato'] img")).toHaveAttribute("src", /breakfast-cinnamon-sweet-potato/);
+    await expect(page.locator("[data-option='breakfast-turkey-sausage'] img")).toHaveAttribute("src", /breakfast-turkey-sausage/);
+    await expect(page.locator("[data-option='breakfast-pork-sausage'] img")).toHaveAttribute("src", /breakfast-pork-sausage/);
+    await expect(page.locator("[data-option='breakfast-protein-pancakes'] img")).toHaveAttribute("src", /breakfast-protein-pancakes/);
+    await expect(page.locator("[data-option='breakfast-protein-waffles'] img")).toHaveAttribute("src", /breakfast-protein-waffles/);
 
     await page.locator("[data-option='breakfast-egg-bites']").click();
     await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-egg-bites/);
 
-    await page.locator("[data-builder-step='protein']").click();
-    await page.locator("[data-option='turkey']").click();
-    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-egg-bites/);
+    await page.locator("[data-builder-step='carbs']").click();
+    await expect(page.locator("[data-option='breakfast-hash'] img")).toHaveAttribute("src", /breakfast-hash/);
+    await expect(page.locator("[data-option='breakfast-cinnamon-sweet-potato'] img")).toHaveAttribute("src", /breakfast-cinnamon-sweet-potato/);
+
+    await page.locator("[data-builder-step='sauce']").click();
+    await expect(page.locator("#builderOptions .option-card")).toHaveCount(5);
+    await expect(page.locator("[data-option='breakfast-maple-syrup'] img")).toHaveAttribute("src", /breakfast-maple-syrup/);
+    await expect(page.locator("[data-option='breakfast-blueberry-syrup'] img")).toHaveAttribute("src", /breakfast-blueberry-syrup/);
+    await expect(page.locator("[data-option='breakfast-salsa'] img")).toHaveAttribute("src", /breakfast-salsa/);
+    await expect(page.locator("[data-option='breakfast-chimichurri'] img")).toHaveAttribute("src", /breakfast-chimichurri/);
+    await expect(page.locator("[data-option='breakfast-hot-sauce'] img")).toHaveAttribute("src", /breakfast-hot-sauce/);
 
     await page.locator("#addMeal").click();
     await expect(page.locator(".cart-item")).toContainText("Egg Bites");

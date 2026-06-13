@@ -10,7 +10,7 @@ const squareLinks = {
 let defaultCheckoutUrl = "https://ordermealpreprevolution.square.site/";
 let activeCatalogVersion = "2026-06-13-js-fallback";
 
-const pickerImageVersion = "breakfast-components-20260613";
+const pickerImageVersion = "breakfast-protein-sauce-20260613";
 const pickerImage = (src) => `${src}${src.includes("?") ? "&" : "?"}v=${pickerImageVersion}`;
 
 const mealImages = {
@@ -48,6 +48,11 @@ const builderItemImages = {
   "breakfast-egg-bites": "assets/images/black-plate-builder/breakfast-egg-bites.png",
   "breakfast-hash": "assets/images/black-plate-builder/breakfast-hash.png",
   "breakfast-cinnamon-sweet-potato": "assets/images/black-plate-builder/breakfast-cinnamon-sweet-potato.png",
+  "breakfast-maple-syrup": "assets/images/black-plate-builder/breakfast-maple-syrup.png",
+  "breakfast-blueberry-syrup": "assets/images/black-plate-builder/breakfast-blueberry-syrup.png",
+  "breakfast-salsa": "assets/images/black-plate-builder/breakfast-salsa.png",
+  "breakfast-chimichurri": "assets/images/black-plate-builder/breakfast-chimichurri.png",
+  "breakfast-hot-sauce": "assets/images/black-plate-builder/breakfast-hot-sauce.png",
   meatballs: "assets/images/black-plate-builder/protein-meatballs.png",
   "jasmine-rice": "assets/images/black-plate-builder/grain-jasmine-rice.png",
   "sweet-potato": "assets/images/black-plate-builder/grain-sweet-potato.png",
@@ -167,7 +172,7 @@ const doneForYouPlanImages = {
 
 const doneForYouPlans = {
   "strength-athlete": {
-    title: "Performance Athlete",
+    title: "High School Strength Athlete",
     image: doneForYouPlanImages["strength-athlete"],
     focus: {
       mode: "lunch",
@@ -469,24 +474,8 @@ const builderCatalog = {
     mealLabel: "breakfast",
     hero: builderItemImages["breakfast-bowl"],
     defaultPortion: "medium",
-    defaultGroup: "breakfast",
+    defaultGroup: "protein",
     groups: [
-      {
-        id: "breakfast",
-        label: "Breakfast",
-        icon: "icon-protein",
-        multi: false,
-        options: [
-          { id: "breakfast-protein-pancakes", name: "Protein Pancakes", image: builderItemImages["breakfast-protein-pancakes"] },
-          { id: "breakfast-protein-waffles", name: "Protein Waffles", image: builderItemImages["breakfast-protein-waffles"] },
-          { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] },
-          { id: "breakfast-pork-sausage", name: "Pork Sausage", image: builderItemImages["breakfast-pork-sausage"] },
-          { id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] },
-          { id: "breakfast-egg-bites", name: "Egg Bites", image: builderItemImages["breakfast-egg-bites"] },
-          { id: "breakfast-hash", name: "Breakfast Hash", image: builderItemImages["breakfast-hash"] },
-          { id: "breakfast-cinnamon-sweet-potato", name: "Cinnamon Sweet Potato", image: builderItemImages["breakfast-cinnamon-sweet-potato"] },
-        ],
-      },
       {
         id: "protein",
         label: "Protein",
@@ -494,13 +483,13 @@ const builderCatalog = {
         multi: false,
         options: [
           { id: "eggs", name: "Eggs", image: builderItemImages.eggs },
-          { id: "turkey", name: "Turkey", image: builderItemImages.turkey },
-          { id: "steak", name: "Steak", image: builderItemImages.steak },
-          { id: "tofu", name: "Tofu", image: builderItemImages.tofu },
-          { id: "chicken", name: "Chicken", image: builderItemImages.chicken },
-          { id: "salmon", name: "Salmon", image: builderItemImages.salmon },
-          { id: "shrimp", name: "Shrimp", image: builderItemImages.shrimp },
-          { id: "meatballs", name: "Meatballs", image: builderItemImages.meatballs },
+          { id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] },
+          { id: "breakfast-egg-bites", name: "Egg Bites", image: builderItemImages["breakfast-egg-bites"] },
+          { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] },
+          { id: "breakfast-pork-sausage", name: "Pork Sausage", image: builderItemImages["breakfast-pork-sausage"] },
+          { id: "breakfast-protein-pancakes", name: "Protein Pancakes", image: builderItemImages["breakfast-protein-pancakes"] },
+          { id: "breakfast-protein-waffles", name: "Protein Waffles", image: builderItemImages["breakfast-protein-waffles"] },
+          { id: "no-protein", name: "No Protein", image: builderItemImages.none },
         ],
       },
       {
@@ -509,13 +498,11 @@ const builderCatalog = {
         icon: "icon-carb",
         multi: false,
         options: [
+          { id: "breakfast-hash", name: "Breakfast Hash", image: builderItemImages["breakfast-hash"] },
+          { id: "breakfast-cinnamon-sweet-potato", name: "Cinnamon Sweet Potato", image: builderItemImages["breakfast-cinnamon-sweet-potato"] },
           { id: "potatoes", name: "Potatoes", image: builderItemImages.potatoes },
           { id: "oats", name: "Oats", image: builderItemImages.quinoa },
           { id: "sweet-potato", name: "Sweet Potato", image: builderItemImages["sweet-potato"] },
-          { id: "rice", name: "Rice", image: builderItemImages["jasmine-rice"] },
-          { id: "beans", name: "Beans", image: builderItemImages["black-beans"] },
-          { id: "cauli-rice", name: "Cauli Rice", image: builderItemImages["cauli-rice"] },
-          { id: "noodles", name: "Noodles", image: builderItemImages.noodles },
           { id: "no-carbs", name: "No Carbs", image: builderItemImages.none },
         ],
       },
@@ -541,23 +528,19 @@ const builderCatalog = {
         icon: "icon-drop",
         multi: false,
         options: [
-          { id: "salsa-verde", name: "Salsa", image: builderItemImages["salsa-verde"] },
-          { id: "lemon-herb", name: "Lemon Herb", image: builderItemImages["lemon-herb"] },
-          { id: "buffalo", name: "Buffalo", image: builderItemImages.buffalo },
-          { id: "garlic-aioli", name: "Aioli", image: builderItemImages["garlic-aioli"] },
-          { id: "teriyaki", name: "Teriyaki", image: builderItemImages.teriyaki },
-          { id: "chimichurri", name: "Chimichurri", image: builderItemImages.chimichurri },
-          { id: "tahini", name: "Tahini", image: builderItemImages.tahini },
-          { id: "none", name: "No Sauce", image: builderItemImages.none },
+          { id: "breakfast-maple-syrup", name: "Maple Syrup", image: builderItemImages["breakfast-maple-syrup"] },
+          { id: "breakfast-blueberry-syrup", name: "Blueberry Syrup", image: builderItemImages["breakfast-blueberry-syrup"] },
+          { id: "breakfast-salsa", name: "Salsa", image: builderItemImages["breakfast-salsa"] },
+          { id: "breakfast-chimichurri", name: "Chimichurri", image: builderItemImages["breakfast-chimichurri"] },
+          { id: "breakfast-hot-sauce", name: "Hot Sauce", image: builderItemImages["breakfast-hot-sauce"] },
         ],
       },
     ],
     defaults: {
-      breakfast: "breakfast-protein-pancakes",
       protein: "eggs",
-      carbs: "potatoes",
+      carbs: "breakfast-hash",
       vegetables: ["peppers"],
-      sauce: "salsa-verde",
+      sauce: "breakfast-maple-syrup",
     },
   },
   lunch: {
@@ -644,9 +627,12 @@ const builderCatalog = {
 const heroByProtein = {
   breakfast: {
     eggs: builderItemImages["breakfast-egg-whites"],
-    turkey: builderItemImages["breakfast-turkey-sausage"],
-    steak: builderItemImages["breakfast-egg-bites"],
-    tofu: builderItemImages["breakfast-protein-pancakes"],
+    "breakfast-egg-whites": builderItemImages["breakfast-egg-whites"],
+    "breakfast-egg-bites": builderItemImages["breakfast-egg-bites"],
+    "breakfast-turkey-sausage": builderItemImages["breakfast-turkey-sausage"],
+    "breakfast-pork-sausage": builderItemImages["breakfast-pork-sausage"],
+    "breakfast-protein-pancakes": builderItemImages["breakfast-protein-pancakes"],
+    "breakfast-protein-waffles": builderItemImages["breakfast-protein-waffles"],
   },
   lunch: {
     chicken: builderItemImages.chicken,
@@ -692,7 +678,7 @@ const builderState = {
     lunch: "medium",
   },
   activeGroupByMode: {
-    breakfast: "breakfast",
+    breakfast: "protein",
     lunch: "protein",
   },
   quantity: 12,
@@ -809,7 +795,8 @@ function getCurrentMode() {
 }
 
 function getCurrentGroup() {
-  return getCurrentMode().groups.find((group) => group.id === builderState.activeGroup);
+  const mode = getCurrentMode();
+  return mode.groups.find((group) => group.id === builderState.activeGroup) || mode.groups.find((group) => group.id === mode.defaultGroup);
 }
 
 function getOption(groupId, optionId, mode = builderState.mode) {
@@ -936,7 +923,7 @@ function setFeaturedHeroFromGroup(groupId) {
 }
 
 function heroGroupForCurrentMode() {
-  return builderState.mode === "breakfast" ? "breakfast" : builderState.activeGroup;
+  return builderState.activeGroup;
 }
 
 function currentBuild() {
@@ -947,7 +934,6 @@ function currentBuild() {
     selected: selectedOptions(group.id),
   }));
   const protein = selectedOptions("protein")[0];
-  const selectedBreakfast = builderState.mode === "breakfast" ? selectedOptions("breakfast")[0] : null;
   const unitPrice = portionPricing[builderState.mode][builderState.portion];
   const total = unitPrice * builderState.quantity;
   const summary = groups
@@ -961,9 +947,9 @@ function currentBuild() {
     ...groups.map((group) => `${group.id}:${group.selected.map((item) => item.id).sort().join("+") || "none"}`),
   ].join("|");
   const featuredHero = builderState.featuredHeroByMode[builderState.mode];
-  const hero = featuredHero?.image || selectedBreakfast?.image || heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
-  const title = selectedBreakfast ? `${selectedBreakfast.name} breakfast` : `${builderState.portion} ${mode.mealLabel} build`;
-  const heroAlt = featuredHero?.label || selectedBreakfast?.name ? `${featuredHero?.label || selectedBreakfast.name} full-screen picker preview` : `${title} preview`;
+  const hero = featuredHero?.image || heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
+  const title = protein && builderState.mode === "breakfast" ? `${protein.name} breakfast` : `${builderState.portion} ${mode.mealLabel} build`;
+  const heroAlt = featuredHero?.label ? `${featuredHero.label} full-screen picker preview` : `${title} preview`;
   const description = groups
     .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)
     .join(" / ");
@@ -999,12 +985,9 @@ function selectedCartComponents(build) {
 }
 
 function createCartPreview(build) {
-  const selectedBreakfast = builderState.mode === "breakfast"
-    ? selectedOptions("breakfast").find((item) => item.id !== "none" && !item.id.startsWith("no-"))
-    : null;
   const selectedProtein = selectedOptions("protein").find((item) => item.id !== "none" && !item.id.startsWith("no-"));
   const fallbackComponent = selectedCartComponents(build)[0];
-  const previewItem = selectedBreakfast || selectedProtein || fallbackComponent;
+  const previewItem = selectedProtein || fallbackComponent;
   const summaryParts = build.groups
     .map((group) => {
       const selected = group.selected.map((item) => item.name).join(", ") || "None";
@@ -1773,9 +1756,7 @@ builderOptions.addEventListener("click", (event) => {
   const optionId = optionButton.dataset.option;
   const option = getOption(group.id, optionId);
   const current = builderState.selections[builderState.mode][group.id];
-  if (builderState.mode !== "breakfast" || group.id === "breakfast") {
-    setFeaturedHero(option);
-  }
+  setFeaturedHero(option);
 
   if (group.multi) {
     const selected = Array.isArray(current) ? current : [];
@@ -1790,8 +1771,6 @@ builderOptions.addEventListener("click", (event) => {
         optionId,
       ];
     }
-  } else if (builderState.mode === "breakfast" && group.id === "breakfast") {
-    builderState.selections[builderState.mode][group.id] = optionId;
   } else {
     builderState.selections[builderState.mode][group.id] = current === optionId ? null : optionId;
   }
@@ -1807,12 +1786,9 @@ selectionStack.addEventListener("click", (event) => {
 
   const group = builderCatalog[builderState.mode].groups.find((item) => item.id === chip.dataset.selectionGroup);
   if (!group) return;
-  if (builderState.mode === "breakfast" && group.id === "breakfast") return;
 
   const current = builderState.selections[builderState.mode][group.id];
-  if (builderState.mode !== "breakfast") {
-    setFeaturedHero(getOption(group.id, chip.dataset.selectionOption));
-  }
+  setFeaturedHero(getOption(group.id, chip.dataset.selectionOption));
   if (group.multi) {
     builderState.selections[builderState.mode][group.id] = (Array.isArray(current) ? current : []).filter(
       (id) => id !== chip.dataset.selectionOption,
