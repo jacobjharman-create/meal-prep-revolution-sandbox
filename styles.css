@@ -273,6 +273,7 @@ p {
   font-size: clamp(15px, 1.2vw, 19px);
   line-height: 1;
   letter-spacing: 0;
+  margin-top: auto;
   text-shadow: 0 5px 18px rgba(0, 0, 0, 0.82);
 }
 
@@ -318,10 +319,6 @@ h1 .hero-h1-accent,
   color: var(--green);
 }
 
-.hero-headline-dot {
-  color: var(--green);
-}
-
 .hero-copy > p {
   max-width: 610px;
   color: #dbe6d8;
@@ -337,22 +334,23 @@ h1 .hero-h1-accent,
 
 .hero-proof-list {
   display: grid;
-  gap: clamp(10px, 0.9vw, 14px);
-  width: min(420px, 40vw);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px 20px;
+  width: min(840px, 66vw);
   margin-top: clamp(16px, 1.55vw, 22px);
 }
 
 .hero-proof-item {
   display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  gap: 11px;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
   color: var(--white);
 }
 
 .hero-proof-item svg {
-  width: 31px;
-  height: 31px;
+  width: 28px;
+  height: 28px;
   color: var(--green);
   stroke-width: 2.2;
   filter: drop-shadow(0 0 12px rgba(22, 209, 0, 0.38));
@@ -365,7 +363,7 @@ h1 .hero-h1-accent,
 }
 
 .hero-proof-item strong {
-  font-size: clamp(15px, 1.12vw, 18px);
+  font-size: clamp(14px, 1.02vw, 16px);
   font-weight: 900;
   line-height: 1.08;
 }
@@ -373,7 +371,7 @@ h1 .hero-h1-accent,
 .hero-proof-item span {
   margin-top: 4px;
   color: #d8dfd6;
-  font-size: clamp(13px, 1vw, 16px);
+  font-size: clamp(12px, 0.92vw, 15px);
   font-weight: 650;
   line-height: 1.12;
 }
@@ -424,7 +422,7 @@ h1 .hero-h1-accent,
   align-items: center;
   width: min(1370px, 100%);
   min-height: clamp(78px, 6.4vw, 94px);
-  margin-top: auto;
+  margin-top: clamp(18px, 2vw, 28px);
   padding: clamp(13px, 1.35vw, 19px);
   border: 1px solid rgba(140, 255, 120, 0.42);
   border-radius: 8px;
@@ -445,20 +443,24 @@ h1 .hero-h1-accent,
 }
 
 .hero-cta-icon {
-  display: grid;
+  display: inline-grid;
   width: clamp(50px, 4vw, 62px);
   height: clamp(50px, 4vw, 62px);
   place-items: center;
-  color: var(--green);
-  border: 5px solid currentColor;
+  color: var(--green) !important;
+  overflow: hidden;
+  border: 4px solid currentColor;
   border-radius: 50%;
   box-shadow: 0 0 24px rgba(22, 209, 0, 0.34);
 }
 
 .hero-cta-icon svg {
-  width: 45%;
-  height: 45%;
-  stroke-width: 2.5;
+  display: block;
+  width: 48%;
+  height: 48%;
+  color: currentColor;
+  stroke: currentColor;
+  stroke-width: 2.25;
 }
 
 .hero-cta-lockup strong,
@@ -466,6 +468,12 @@ h1 .hero-h1-accent,
   display: block;
   text-transform: uppercase;
   text-shadow: 0 5px 18px rgba(0, 0, 0, 0.8);
+}
+
+.hero-cta-lockup .hero-cta-icon {
+  display: inline-grid;
+  margin-top: 0;
+  place-items: center;
 }
 
 .hero-cta-lockup strong {
