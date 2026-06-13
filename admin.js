@@ -27,6 +27,8 @@ const elements = {
   ownerMetrics: document.querySelector("#ownerMetrics"),
   dailyBrief: document.querySelector("#dailyBrief"),
   copyDailyBrief: document.querySelector("#copyDailyBrief"),
+  paymentWatch: document.querySelector("#paymentWatch"),
+  paymentSignal: document.querySelector("#paymentSignal"),
   kitchenTickets: document.querySelector("#kitchenTickets"),
   prepBoard: document.querySelector("#prepBoard"),
   ticketCount: document.querySelector("#ticketCount"),
@@ -268,6 +270,23 @@ function orderAllergies(order) {
   return order.fulfillment?.allergies || order.customer?.allergies || "";
 }
 
+function orderPaymentStatus(order) {
+  const rawStatus = String(order.payment_status || "").trim();
+  const ops = ensureOps(order);
+  if (ops.paid || rawStatus.toLowerCase() === "paid") return "Paid";
+  return rawStatus || "Pending checkout";
+}
+
+function paymentNeedsAttention(order) {
+  return order.status !== "Fulfilled" && orderPaymentStatus(order).toLowerCase() !== "paid";
+}
+
+function checkoutStatusText(order) {
+  if (!order.checkout_started_at) return "Checkout not opened";
+  const wallet = order.checkout_wallet ? ` via ${order.checkout_wallet}` : "";
+  return `Checkout opened ${formatTime(order.checkout_started_at)}${wallet}`;
+}
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -452,7 +471,8 @@ function ticketMarkup(order) {
   const allergies = order.fulfillment?.allergies || order.customer?.allergies || "";
   const address = formatAddress(order.fulfillment?.address || order.customer?.address || {});
   const contactPreference = order.fulfillment?.contact_preference || order.customer?.contact_preference || "text";
-  const paymentStatus = order.payment_status || (ops.paid ? "Paid" : "Pending checkout");
+  const paymentStatus = orderPaymentStatus(order);
+  const checkoutStatus = order.checkout_started_at ? `Checkout: ${order.checkout_wallet || "opened"}` : "";
   const recurring = order.recurring_frequency ? `Repeat: ${order.recurring_frequency}` : "";
 
   return `
@@ -470,6 +490,7 @@ function ticketMarkup(order) {
       </div>
       <div class="ticket-tags">
         <span>${escapeHtml(paymentStatus)}</span>
+        ${checkoutStatus ? `<span>${escapeHtml(checkoutStatus)}</span>` : ""}
         ${recurring ? `<span>${escapeHtml(recurring)}</span>` : ""}
       </div>
       ${address ? `<div class="ticket-alert neutral"><strong>Delivery</strong><span>${escapeHtml(address)}</span></div>` : ""}
@@ -572,6 +593,7 @@ function buildDailyBriefText() {
   const active = activeOrders();
   const deliveries = active.filter((order) => order.fulfillment?.type === "delivery");
   const allergyOrders = active.filter((order) => orderAllergies(order).trim() !== "");
+  const pendingPayments = active.filter(paymentNeedsAttention);
   const ready = active.filter((order) => order.status === "Ready");
   const next = active
     .slice()
@@ -592,7 +614,7 @@ function buildDailyBriefText() {
     `MPR Daily Ops Brief - ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
     `Open tickets: ${active.length} / Active meals: ${totalMeals(active)} / Est. revenue: ${compactDollars(totalRevenue(active))}`,
     `Next handoff: ${next ? `${customerName(next)} - ${next.fulfillment?.type || "pickup"} / ${formatDate(next.fulfillment?.date)} / ${next.fulfillment?.window || "window"}` : "Clear"}`,
-    `Ready: ${ready.length} / Delivery stops: ${deliveries.length} / Allergy flags: ${allergyOrders.length}`,
+    `Ready: ${ready.length} / Pending payment: ${pendingPayments.length} / Delivery stops: ${deliveries.length} / Allergy flags: ${allergyOrders.length}`,
     `Prep focus: ${prepFocus || "No active prep load"}`,
     `Follow-up: ${followup ? `${followup.name} - ${followup.next_action}` : "No customer follow-up queued"}`,
   ].join("\n");
@@ -605,6 +627,43 @@ function renderDailyBrief() {
     .split("\n")
     .map((line, index) => index === 0 ? `<strong>${escapeHtml(line)}</strong>` : `<span>${escapeHtml(line)}</span>`)
     .join("");
+}
+
+function renderPaymentWatch() {
+  if (!elements.paymentWatch) return;
+  const pendingPayments = activeOrders()
+    .filter(paymentNeedsAttention)
+    .slice()
+    .sort((a, b) =>
+      Number(Boolean(b.checkout_started_at)) - Number(Boolean(a.checkout_started_at))
+      || String(b.checkout_started_at || b.created_at || "").localeCompare(String(a.checkout_started_at || a.created_at || ""))
+      || customerName(a).localeCompare(customerName(b))
+    );
+
+  if (elements.paymentSignal) {
+    elements.paymentSignal.textContent = pendingPayments.length ? `${pendingPayments.length} pending` : "Clear";
+  }
+
+  if (!pendingPayments.length) {
+    elements.paymentWatch.innerHTML = `
+      <div class="empty-state">
+        <strong>Payment queue clear.</strong>
+        <span>No active orders are waiting on wallet checkout.</span>
+      </div>
+    `;
+    return;
+  }
+
+  elements.paymentWatch.innerHTML = pendingPayments.slice(0, 6).map((order) => `
+    <div class="payment-item${order.checkout_started_at ? " checkout-started" : ""}">
+      <div>
+        <strong>${escapeHtml(customerName(order))}</strong>
+        <span>${escapeHtml(checkoutStatusText(order))}</span>
+        <small>${escapeHtml(order.id)} / ${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")}</small>
+      </div>
+      <strong>${escapeHtml(compactDollars(order.estimated_total || 0))}</strong>
+    </div>
+  `).join("");
 }
 
 function renderCustomerFollowups() {
@@ -754,6 +813,7 @@ function render() {
   renderPrepBoard();
   renderPipeline();
   renderDailyBrief();
+  renderPaymentWatch();
   renderCustomerFollowups();
   renderDeliveryRoute();
   renderAllergyWatch();
