@@ -748,16 +748,28 @@ function renderPaymentWatch() {
     return;
   }
 
-  elements.paymentWatch.innerHTML = pendingPayments.slice(0, 6).map((order) => `
+  elements.paymentWatch.innerHTML = pendingPayments.slice(0, 6).map((order) => {
+    const phone = String(order.customer?.phone || "").trim();
+    const email = String(order.customer?.email || "").trim();
+    const digits = phoneDigits(phone);
+    const actions = [
+      digits ? `<a href="sms:${escapeHtml(digits)}">Text</a>` : "",
+      email ? `<a href="mailto:${escapeHtml(encodeURIComponent(email))}">Email</a>` : "",
+      `<button type="button" data-action="copy-payment" data-ticket="${escapeHtml(order.id)}">Copy</button>`,
+    ].filter(Boolean).join("");
+
+    return `
     <div class="payment-item${order.checkout_started_at ? " checkout-started" : ""}">
       <div>
         <strong>${escapeHtml(customerName(order))}</strong>
         <span>${escapeHtml(checkoutStatusText(order))}</span>
         <small>${escapeHtml(order.id)} / ${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")}</small>
+        <div class="payment-actions">${actions}</div>
       </div>
       <strong>${escapeHtml(compactDollars(order.estimated_total || 0))}</strong>
     </div>
-  `).join("");
+  `;
+  }).join("");
 }
 
 function renderCustomerFollowups() {
@@ -1163,6 +1175,27 @@ elements.kitchenTickets.addEventListener("click", (event) => {
   const order = orders.find((item) => item.id === bumpButton.dataset.ticket);
   if (!order) return;
   updateTicket(order.id, "status", orderStatusNext(order.status));
+});
+
+elements.paymentWatch?.addEventListener("click", (event) => {
+  const copyButton = event.target.closest("[data-action='copy-payment']");
+  if (!copyButton) return;
+  const order = orders.find((item) => item.id === copyButton.dataset.ticket);
+  if (!order) return;
+  const originalText = copyButton.textContent;
+  navigator.clipboard.writeText(customerConfirmationMessage(order))
+    .then(() => {
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1400);
+    })
+    .catch(() => {
+      copyButton.textContent = "Select";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1800);
+    });
 });
 
 elements.customerFollowups?.addEventListener("click", (event) => {
