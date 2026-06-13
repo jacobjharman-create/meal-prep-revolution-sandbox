@@ -314,6 +314,23 @@ function deliveryHandoffMessage(order) {
   return `Hi ${firstName}, this is Meal Prep Revolution. Your ${meals}-meal delivery is scheduled for ${formatDate(order.fulfillment?.date)} during the ${order.fulfillment?.window || "selected"} window${address ? ` to ${address}` : ""}. Reply here if the drop-off details need to change.`;
 }
 
+function allergyLabelMessage(order) {
+  const meals = Number(order.total_meals) || 0;
+  const allergy = orderAllergies(order).trim();
+  const summaries = (order.line_items || [])
+    .map((item) => item.summary || item.name)
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(" | ");
+  return [
+    `ALLERGY ALERT - ${customerName(order)} / ${order.id}`,
+    `${meals} meals / ${formatDate(order.fulfillment?.date)} / ${order.fulfillment?.window || "window"} / ${order.fulfillment?.type || "pickup"}`,
+    `Allergy note: ${allergy}`,
+    summaries ? `Meal summary: ${summaries}` : "",
+    "Keep separate, label every container, and verify before handoff.",
+  ].filter(Boolean).join("\n");
+}
+
 function recurringIsInterest(value) {
   const frequency = String(value || "").trim().toLowerCase();
   return Boolean(frequency && frequency !== "one time only");
@@ -881,13 +898,16 @@ function renderAllergyWatch() {
   }
 
   elements.allergyWatch.innerHTML = allergyOrders.slice(0, 6).map((order) => `
-    <div class="allergy-item">
+    <div class="allergy-item allergy-item-actionable">
       <div>
         <strong>${escapeHtml(customerName(order))}</strong>
         <span>${escapeHtml(orderAllergies(order))}</span>
         <small>${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")} / ${escapeHtml(order.fulfillment?.type || "pickup")}</small>
       </div>
       <strong>${escapeHtml(order.total_meals || 0)} meals</strong>
+      <div class="allergy-actions">
+        <button type="button" data-action="copy-allergy" data-ticket="${escapeHtml(order.id)}">Copy Label</button>
+      </div>
     </div>
   `).join("");
 }
@@ -1224,6 +1244,27 @@ elements.deliveryRoute?.addEventListener("click", (event) => {
   if (!order) return;
   const originalText = copyButton.textContent;
   navigator.clipboard.writeText(deliveryHandoffMessage(order))
+    .then(() => {
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1400);
+    })
+    .catch(() => {
+      copyButton.textContent = "Select";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1800);
+    });
+});
+
+elements.allergyWatch?.addEventListener("click", (event) => {
+  const copyButton = event.target.closest("[data-action='copy-allergy']");
+  if (!copyButton) return;
+  const order = orders.find((item) => item.id === copyButton.dataset.ticket);
+  if (!order) return;
+  const originalText = copyButton.textContent;
+  navigator.clipboard.writeText(allergyLabelMessage(order))
     .then(() => {
       copyButton.textContent = "Copied";
       window.setTimeout(() => {
