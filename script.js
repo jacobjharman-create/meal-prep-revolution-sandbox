@@ -563,6 +563,32 @@ function validateOrderRequest(customer) {
   return "";
 }
 
+function focusOrderIssue(customer) {
+  let field = null;
+
+  if (!builderState.cart.length) {
+    field = addMealButton;
+  } else if (!customer.name) {
+    field = customerName;
+  } else if (!customer.phone && !customer.email) {
+    field = customerPhone || customerEmail;
+  } else if (customer.fulfillment === "delivery" && !customer.address.street) {
+    field = deliveryStreet;
+  } else if (customer.fulfillment === "delivery" && !customer.address.city) {
+    field = deliveryCity;
+  }
+
+  if (!field) return;
+  field.scrollIntoView({ behavior: "smooth", block: "center" });
+  window.setTimeout(() => {
+    try {
+      field.focus?.({ preventScroll: true });
+    } catch {
+      field.focus?.();
+    }
+  }, 320);
+}
+
 function setFeaturedHero(option) {
   if (!option?.image) return;
   builderState.featuredHeroByMode[builderState.mode] = {
@@ -1117,6 +1143,7 @@ async function prepareStoreOrder() {
 
   if (validationMessage) {
     orderNote.textContent = validationMessage;
+    focusOrderIssue(customer);
     return;
   }
 
