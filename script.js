@@ -258,7 +258,7 @@ const builderCatalog = {
       },
       {
         id: "grain",
-        label: "Grain",
+        label: "Carbs",
         icon: "icon-carb",
         multi: false,
         options: [
