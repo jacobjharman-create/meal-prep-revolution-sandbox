@@ -7,7 +7,8 @@ const squareLinks = {
   bulk: "https://ordermealpreprevolution.square.site/shop/bulk-items/5",
 };
 
-const defaultCheckoutUrl = "https://ordermealpreprevolution.square.site/";
+let defaultCheckoutUrl = "https://ordermealpreprevolution.square.site/";
+let activeCatalogVersion = "2026-06-13-js-fallback";
 
 const pickerImageVersion = "hires-20260612";
 const pickerImage = (src) => `${src}${src.includes("?") ? "&" : "?"}v=${pickerImageVersion}`;
@@ -142,6 +143,38 @@ const portionPricing = {
     large: 15,
   },
 };
+
+function applyCatalogConfig(config) {
+  if (!config || typeof config !== "object") return;
+  activeCatalogVersion = config.version || activeCatalogVersion;
+
+  if (typeof config.checkout?.url === "string" && /^https?:\/\//.test(config.checkout.url)) {
+    defaultCheckoutUrl = config.checkout.url;
+    if (!builderState.activeOrderId) builderState.checkoutUrl = defaultCheckoutUrl;
+    setWalletCheckoutUrl(defaultCheckoutUrl);
+  }
+
+  Object.entries(config.pricing || {}).forEach(([mode, prices]) => {
+    if (!portionPricing[mode] || !prices || typeof prices !== "object") return;
+    Object.entries(prices).forEach(([portion, price]) => {
+      const numericPrice = Number(price);
+      if (Number.isFinite(numericPrice) && numericPrice > 0 && portion in portionPricing[mode]) {
+        portionPricing[mode][portion] = numericPrice;
+      }
+    });
+  });
+}
+
+async function loadCatalogConfig() {
+  try {
+    const response = await fetch("catalog.json?v=20260613", { cache: "no-store" });
+    if (!response.ok) return false;
+    applyCatalogConfig(await response.json());
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const builderCatalog = {
   breakfast: {
@@ -765,6 +798,7 @@ function buildWooPayload() {
   return {
     source: "meal-prep-revolution-sandbox-builder",
     version: "2026-06-13-ops-foundation",
+    catalog_version: activeCatalogVersion,
     currency: "USD",
     customer,
     fulfillment: {
@@ -1016,9 +1050,14 @@ async function prepareStoreOrder() {
 
 }
 
-hydrateCustomerDraft();
-renderMenu("build");
-renderBuilder();
+async function bootCustomerApp() {
+  await loadCatalogConfig();
+  hydrateCustomerDraft();
+  renderMenu("build");
+  renderBuilder();
+}
+
+bootCustomerApp();
 
 document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", () => {

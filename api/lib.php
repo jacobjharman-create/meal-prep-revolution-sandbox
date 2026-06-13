@@ -202,6 +202,7 @@ function mpr_order_summary(array $order): array {
     'created_at' => $order['created_at'] ?? '',
     'updated_at' => $order['updated_at'] ?? '',
     'checkout_url' => $order['checkout_url'] ?? mpr_checkout_url(),
+    'catalog_version' => $order['catalog_version'] ?? '',
     'recurring_frequency' => $order['recurring_frequency'] ?? '',
     'checkout_started_at' => $order['checkout_started_at'] ?? '',
     'checkout_wallet' => $order['checkout_wallet'] ?? '',

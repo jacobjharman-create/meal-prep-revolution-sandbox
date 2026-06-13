@@ -115,6 +115,7 @@ $order = [
   'status' => 'New',
   'payment_status' => 'Pending checkout',
   'checkout_url' => $checkoutUrl,
+  'catalog_version' => mpr_text($body['catalog_version'] ?? '', 80),
   'customer' => $customer,
   'fulfillment' => [
     'type' => $fulfillmentType,
