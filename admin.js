@@ -291,6 +291,22 @@ function checkoutStatusText(order) {
   return `Checkout opened ${formatTime(order.checkout_started_at)}${wallet}`;
 }
 
+function fulfillmentLabel(order) {
+  return `${order.fulfillment?.type || "pickup"} on ${formatDate(order.fulfillment?.date)} during the ${order.fulfillment?.window || "selected"} window`;
+}
+
+function customerConfirmationMessage(order) {
+  const firstName = customerName(order).split(/\s+/)[0] || "there";
+  const meals = Number(order.total_meals) || 0;
+  const total = compactDollars(order.estimated_total || 0);
+  const checkoutUrl = order.checkout_url || "https://ordermealpreprevolution.square.site/";
+  const repeat = order.recurring_frequency ? ` Repeat preference: ${order.recurring_frequency}.` : "";
+  const payment = orderPaymentStatus(order).toLowerCase() === "paid"
+    ? "Payment is marked complete on our side."
+    : `Use this secure checkout link to finish payment: ${checkoutUrl}`;
+  return `Hi ${firstName}, this is Meal Prep Revolution. We have your ${meals}-meal order (${total}) for ${fulfillmentLabel(order)}. ${payment}${repeat} Reply here if anything needs to change.`;
+}
+
 function orderEventLabel(event = {}) {
   if (event.event === "order_created") return "Order ticket created";
   if (event.event === "checkout_started") return `Checkout opened${event.wallet ? ` / ${event.wallet}` : ""}`;
@@ -325,6 +341,7 @@ function contactActionsMarkup(order) {
     digits ? `<a href="sms:${escapeHtml(digits)}">Text</a>` : "",
     digits ? `<a href="tel:${escapeHtml(digits)}">Call</a>` : "",
     email ? `<a href="mailto:${escapeHtml(encodeURIComponent(email))}">Email</a>` : "",
+    `<button type="button" data-action="copy-confirmation" data-ticket="${escapeHtml(order.id)}">Copy</button>`,
   ].filter(Boolean).join("");
 
   return `
@@ -1089,9 +1106,30 @@ elements.kitchenTickets.addEventListener("input", (event) => {
 });
 
 elements.kitchenTickets.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-action='bump']");
-  if (!button) return;
-  const order = orders.find((item) => item.id === button.dataset.ticket);
+  const copyButton = event.target.closest("[data-action='copy-confirmation']");
+  if (copyButton) {
+    const order = orders.find((item) => item.id === copyButton.dataset.ticket);
+    if (!order) return;
+    const originalText = copyButton.textContent;
+    navigator.clipboard.writeText(customerConfirmationMessage(order))
+      .then(() => {
+        copyButton.textContent = "Copied";
+        window.setTimeout(() => {
+          copyButton.textContent = originalText;
+        }, 1400);
+      })
+      .catch(() => {
+        copyButton.textContent = "Select";
+        window.setTimeout(() => {
+          copyButton.textContent = originalText;
+        }, 1800);
+      });
+    return;
+  }
+
+  const bumpButton = event.target.closest("[data-action='bump']");
+  if (!bumpButton) return;
+  const order = orders.find((item) => item.id === bumpButton.dataset.ticket);
   if (!order) return;
   updateTicket(order.id, "status", orderStatusNext(order.status));
 });

@@ -711,6 +711,7 @@ textarea:focus {
 }
 
 .ticket-contact-actions a,
+.ticket-contact-actions button,
 .ticket-contact-actions span {
   display: inline-flex;
   min-height: 30px;
@@ -720,6 +721,8 @@ textarea:focus {
   background: var(--green);
   border: 1px solid var(--green-soft);
   border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
   font-size: 10px;
   font-weight: 950;
   text-transform: uppercase;
