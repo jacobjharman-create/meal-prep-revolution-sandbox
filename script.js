@@ -18,7 +18,10 @@ const mealImages = {
   steak: "assets/images/black-plate-builder/protein-steak.png",
   salmon: "assets/images/black-plate-builder/protein-salmon.png",
   salad: "assets/images/black-plate-builder/veg-asparagus.png",
-  breakfast: "assets/images/black-plate-builder/protein-eggs.png",
+  breakfast: "assets/images/black-plate-builder/breakfast-bowl.png",
+  breakfastBurrito: "assets/images/black-plate-builder/breakfast-burrito.png",
+  breakfastPancakeWaffle: "assets/images/black-plate-builder/breakfast-pancake-waffle.png",
+  breakfastBowl: "assets/images/black-plate-builder/breakfast-bowl.png",
   pack: "assets/images/black-plate-builder/protein-chicken.png",
 };
 
@@ -34,6 +37,9 @@ const builderItemImages = {
   shrimp: "assets/images/black-plate-builder/protein-shrimp.png",
   tofu: "assets/images/black-plate-builder/protein-tofu.png",
   eggs: "assets/images/black-plate-builder/protein-eggs.png",
+  "breakfast-burrito": "assets/images/black-plate-builder/breakfast-burrito.png",
+  "breakfast-pancake-waffle": "assets/images/black-plate-builder/breakfast-pancake-waffle.png",
+  "breakfast-bowl": "assets/images/black-plate-builder/breakfast-bowl.png",
   meatballs: "assets/images/black-plate-builder/protein-meatballs.png",
   "jasmine-rice": "assets/images/black-plate-builder/grain-jasmine-rice.png",
   "sweet-potato": "assets/images/black-plate-builder/grain-sweet-potato.png",
@@ -98,10 +104,9 @@ const menus = {
     ["Salmon Power Plate", "Salmon, quinoa, asparagus, and lemon.", "$14.49+", mealImages.salmon],
   ],
   breakfast: [
-    ["Protein Breakfast Bowl", "Eggs, potatoes, turkey, and fresh salsa.", "$10.49+", mealImages.breakfast],
-    ["Clean Morning Stack", "Balanced breakfast built for busy mornings.", "$10.49+", mealImages.pack],
-    ["Greek Yogurt Cup", "Fruit-forward, simple, and ready fast.", "$7.49+", mealImages.breakfast],
-    ["Breakfast Pack", "Stock the fridge for the early part of the week.", "Order", mealImages.breakfast],
+    ["Breakfast Burrito", "Egg whites, breakfast hash, protein, vegetables, and salsa in a 14-inch tortilla.", "$9.99 - $13.99", mealImages.breakfastBurrito],
+    ["Pancake or Waffle Breakfast", "Protein pancakes or waffles with sausage, syrup, and optional toppings.", "$10.99 - $12.99", mealImages.breakfastPancakeWaffle],
+    ["Breakfast Bowl", "Egg style, sausage, breakfast carbs, toppings, and add-ons in one bowl.", "$10.99 - $11.99", mealImages.breakfastBowl],
   ],
   salads: [
     ["Buffalo Chicken Salad", "Romaine, cucumber, tomato, carrots, blue cheese.", "$11.49+", mealImages.salad],
@@ -390,6 +395,34 @@ const doneForYouPlans = {
   },
 };
 
+const heroPlanSequence = [
+  {
+    key: "strength-athlete",
+    eyebrow: "12 meals / strength",
+    copy: "4 breakfast, 4 lunch, and 4 dinner meals for training weeks.",
+  },
+  {
+    key: "bodybuilder",
+    eyebrow: "12 meals / bodybuilder",
+    copy: "A higher-protein approval cart built around steak, chicken, rice, and greens.",
+  },
+  {
+    key: "womens-fitness",
+    eyebrow: "12 meals / fitness",
+    copy: "A lean, fresh plan with salmon, turkey, quinoa, greens, and sauce on the side.",
+  },
+  {
+    key: "single-mom",
+    eyebrow: "12 meals / family week",
+    copy: "Breakfasts and familiar lunch/dinner plates for a calmer weekday fridge.",
+  },
+  {
+    key: "business-lean",
+    eyebrow: "12 meals / lean workweek",
+    copy: "A lighter office-week cart with chicken, shrimp, salads, beans, and fajita vegetables.",
+  },
+];
+
 function applyCatalogConfig(config) {
   if (!config || typeof config !== "object") return;
   activeCatalogVersion = config.version || activeCatalogVersion;
@@ -426,10 +459,21 @@ const builderCatalog = {
   breakfast: {
     label: "Breakfast",
     mealLabel: "breakfast",
-    hero: builderItemImages.eggs,
+    hero: builderItemImages["breakfast-bowl"],
     defaultPortion: "medium",
-    defaultGroup: "protein",
+    defaultGroup: "breakfast",
     groups: [
+      {
+        id: "breakfast",
+        label: "Meal",
+        icon: "icon-protein",
+        multi: false,
+        options: [
+          { id: "breakfast-burrito", name: "Breakfast Burrito", image: builderItemImages["breakfast-burrito"] },
+          { id: "breakfast-pancake-waffle", name: "Pancake / Waffle", image: builderItemImages["breakfast-pancake-waffle"] },
+          { id: "breakfast-bowl", name: "Breakfast Bowl", image: builderItemImages["breakfast-bowl"] },
+        ],
+      },
       {
         id: "protein",
         label: "Protein",
@@ -496,6 +540,7 @@ const builderCatalog = {
       },
     ],
     defaults: {
+      breakfast: "breakfast-bowl",
       protein: "eggs",
       carbs: "potatoes",
       vegetables: ["peppers"],
@@ -585,10 +630,10 @@ const builderCatalog = {
 
 const heroByProtein = {
   breakfast: {
-    eggs: builderItemImages.eggs,
-    turkey: builderItemImages.turkey,
-    steak: builderItemImages.steak,
-    tofu: builderItemImages.tofu,
+    eggs: builderItemImages["breakfast-bowl"],
+    turkey: builderItemImages["breakfast-burrito"],
+    steak: builderItemImages["breakfast-burrito"],
+    tofu: builderItemImages["breakfast-bowl"],
   },
   lunch: {
     chicken: builderItemImages.chicken,
@@ -634,7 +679,7 @@ const builderState = {
     lunch: "medium",
   },
   activeGroupByMode: {
-    breakfast: "protein",
+    breakfast: "breakfast",
     lunch: "protein",
   },
   quantity: 12,
@@ -696,8 +741,14 @@ const allergyNotes = document.querySelector("#allergyNotes");
 const orderNotes = document.querySelector("#orderNotes");
 const saveCustomerProfile = document.querySelector("#saveCustomerProfile");
 const submitOrderButton = document.querySelector("#submitOrder");
+const heroPlanCard = document.querySelector("#heroPlanCard");
+const heroPlanEyebrow = document.querySelector("#heroPlanEyebrow");
+const heroPlanTitle = document.querySelector("#heroPlanTitle");
+const heroPlanCopy = document.querySelector("#heroPlanCopy");
+const heroPlanButton = document.querySelector("#heroPlanButton");
 let lastHeroImage = builderHeroImage?.getAttribute("src") || "";
 let heroSlideToken = 0;
+let heroPlanTimer = 0;
 
 function dollars(value) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
@@ -871,6 +922,10 @@ function setFeaturedHeroFromGroup(groupId) {
   setFeaturedHero(selected[0] || group?.options[0]);
 }
 
+function heroGroupForCurrentMode() {
+  return builderState.mode === "breakfast" ? "breakfast" : builderState.activeGroup;
+}
+
 function currentBuild() {
   const mode = getCurrentMode();
   const groups = mode.groups.map((group) => ({
@@ -879,6 +934,7 @@ function currentBuild() {
     selected: selectedOptions(group.id),
   }));
   const protein = selectedOptions("protein")[0];
+  const selectedBreakfast = builderState.mode === "breakfast" ? selectedOptions("breakfast")[0] : null;
   const unitPrice = portionPricing[builderState.mode][builderState.portion];
   const total = unitPrice * builderState.quantity;
   const summary = groups
@@ -892,9 +948,9 @@ function currentBuild() {
     ...groups.map((group) => `${group.id}:${group.selected.map((item) => item.id).sort().join("+") || "none"}`),
   ].join("|");
   const featuredHero = builderState.featuredHeroByMode[builderState.mode];
-  const hero = featuredHero?.image || heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
-  const title = `${builderState.portion} ${mode.mealLabel} build`;
-  const heroAlt = featuredHero?.label ? `${featuredHero.label} full-screen picker preview` : `${title} preview`;
+  const hero = featuredHero?.image || selectedBreakfast?.image || heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
+  const title = selectedBreakfast ? `${selectedBreakfast.name} build` : `${builderState.portion} ${mode.mealLabel} build`;
+  const heroAlt = featuredHero?.label || selectedBreakfast?.name ? `${featuredHero?.label || selectedBreakfast.name} full-screen picker preview` : `${title} preview`;
   const description = groups
     .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)
     .join(" / ");
@@ -930,9 +986,12 @@ function selectedCartComponents(build) {
 }
 
 function createCartPreview(build) {
+  const selectedBreakfast = builderState.mode === "breakfast"
+    ? selectedOptions("breakfast").find((item) => item.id !== "none" && !item.id.startsWith("no-"))
+    : null;
   const selectedProtein = selectedOptions("protein").find((item) => item.id !== "none" && !item.id.startsWith("no-"));
   const fallbackComponent = selectedCartComponents(build)[0];
-  const previewItem = selectedProtein || fallbackComponent;
+  const previewItem = selectedBreakfast || selectedProtein || fallbackComponent;
   const summaryParts = build.groups
     .map((group) => {
       const selected = group.selected.map((item) => item.name).join(", ") || "None";
@@ -1110,6 +1169,38 @@ function renderMenu(category) {
     `)
     .join("");
   categoryLink.href = squareLinks[category];
+}
+
+function setHeroPlan(index = 0) {
+  const item = heroPlanSequence[index % heroPlanSequence.length];
+  const plan = doneForYouPlans[item.key];
+  if (!item || !plan || !heroPlanButton) return;
+  if (heroPlanCard) {
+    heroPlanCard.classList.remove("is-refreshing");
+    void heroPlanCard.offsetWidth;
+    heroPlanCard.classList.add("is-refreshing");
+  }
+  if (heroPlanEyebrow) heroPlanEyebrow.textContent = item.eyebrow;
+  if (heroPlanTitle) heroPlanTitle.textContent = plan.title;
+  if (heroPlanCopy) heroPlanCopy.textContent = item.copy;
+  heroPlanButton.dataset.loadPlan = item.key;
+  heroPlanButton.setAttribute("aria-label", `Load ${plan.title} into the meal builder`);
+}
+
+function startHeroPlanSync() {
+  if (!heroPlanButton || !heroPlanSequence.length) return;
+  let index = 0;
+  const mobile = window.matchMedia("(max-width: 680px)");
+  const interval = () => (mobile.matches ? 8000 : 9000);
+  const tick = () => {
+    index = (index + 1) % heroPlanSequence.length;
+    setHeroPlan(index);
+    window.clearTimeout(heroPlanTimer);
+    heroPlanTimer = window.setTimeout(tick, interval());
+  };
+  setHeroPlan(index);
+  window.clearTimeout(heroPlanTimer);
+  heroPlanTimer = window.setTimeout(tick, interval());
 }
 
 function renderToggles() {
@@ -1603,6 +1694,7 @@ async function bootCustomerApp() {
   await loadCatalogConfig();
   hydrateCustomerDraft();
   hydrateCartState();
+  startHeroPlanSync();
   renderMenu("build");
   renderBuilder();
 }
@@ -1634,7 +1726,7 @@ modeButtons.forEach((button) => {
     builderState.mode = nextMode;
     builderState.portion = builderState.portionByMode[nextMode] || builderCatalog[nextMode].defaultPortion;
     builderState.activeGroup = builderState.activeGroupByMode[nextMode] || builderCatalog[nextMode].defaultGroup;
-    setFeaturedHeroFromGroup(builderState.activeGroup);
+    setFeaturedHeroFromGroup(heroGroupForCurrentMode());
     builderState.reviewReady = false;
     resetCheckoutFlow();
     renderBuilder();
@@ -1656,7 +1748,7 @@ builderGroups.addEventListener("click", (event) => {
   if (!button) return;
   builderState.activeGroup = button.dataset.builderStep;
   builderState.activeGroupByMode[builderState.mode] = builderState.activeGroup;
-  setFeaturedHeroFromGroup(builderState.activeGroup);
+  setFeaturedHeroFromGroup(heroGroupForCurrentMode());
   renderBuilder();
 });
 
@@ -1668,7 +1760,9 @@ builderOptions.addEventListener("click", (event) => {
   const optionId = optionButton.dataset.option;
   const option = getOption(group.id, optionId);
   const current = builderState.selections[builderState.mode][group.id];
-  setFeaturedHero(option);
+  if (builderState.mode !== "breakfast" || group.id === "breakfast") {
+    setFeaturedHero(option);
+  }
 
   if (group.multi) {
     const selected = Array.isArray(current) ? current : [];
@@ -1683,6 +1777,8 @@ builderOptions.addEventListener("click", (event) => {
         optionId,
       ];
     }
+  } else if (builderState.mode === "breakfast" && group.id === "breakfast") {
+    builderState.selections[builderState.mode][group.id] = optionId;
   } else {
     builderState.selections[builderState.mode][group.id] = current === optionId ? null : optionId;
   }
@@ -1698,9 +1794,12 @@ selectionStack.addEventListener("click", (event) => {
 
   const group = builderCatalog[builderState.mode].groups.find((item) => item.id === chip.dataset.selectionGroup);
   if (!group) return;
+  if (builderState.mode === "breakfast" && group.id === "breakfast") return;
 
   const current = builderState.selections[builderState.mode][group.id];
-  setFeaturedHero(getOption(group.id, chip.dataset.selectionOption));
+  if (builderState.mode !== "breakfast") {
+    setFeaturedHero(getOption(group.id, chip.dataset.selectionOption));
+  }
   if (group.multi) {
     builderState.selections[builderState.mode][group.id] = (Array.isArray(current) ? current : []).filter(
       (id) => id !== chip.dataset.selectionOption,

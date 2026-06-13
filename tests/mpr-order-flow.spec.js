@@ -137,6 +137,39 @@ test.describe("customer checkout review", () => {
   });
 });
 
+test.describe("breakfast picker photos", () => {
+  test.use({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+  });
+
+  test("uses generated breakfast offering photos for menu, hero, and cart preview", async ({ page }) => {
+    await page.addInitScript(() => localStorage.clear());
+    await page.goto("/");
+
+    await page.locator("[data-category='breakfast']").click();
+    await expect(page.locator(".meal-card")).toHaveCount(3);
+    await expect(page.locator(".meal-card").filter({ hasText: "Breakfast Burrito" }).locator("img")).toHaveAttribute("src", /breakfast-burrito/);
+    await expect(page.locator(".meal-card").filter({ hasText: "Pancake or Waffle Breakfast" }).locator("img")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+    await expect(page.locator(".meal-card").filter({ hasText: "Breakfast Bowl" }).locator("img")).toHaveAttribute("src", /breakfast-bowl/);
+
+    await page.locator("[data-mode='breakfast']").click();
+    await expect(page.locator("[data-builder-step='breakfast']")).toHaveClass(/active/);
+    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-bowl/);
+
+    await page.locator("[data-option='breakfast-pancake-waffle']").click();
+    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+
+    await page.locator("[data-builder-step='protein']").click();
+    await page.locator("[data-option='turkey']").click();
+    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+
+    await page.locator("#addMeal").click();
+    await expect(page.locator(".cart-item")).toContainText("Pancake / Waffle");
+    await expect(page.locator(".cart-meal-thumb img")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+  });
+});
+
 test.describe("admin owner handoff", () => {
   test.use({
     viewport: { width: 1280, height: 900 },
