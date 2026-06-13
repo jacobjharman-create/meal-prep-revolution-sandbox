@@ -189,6 +189,17 @@ function mpr_find_order_index(array $orders, string $id): int {
 }
 
 function mpr_order_summary(array $order): array {
+  $events = [];
+  foreach (array_slice((array) ($order['events'] ?? []), -8) as $event) {
+    if (!is_array($event)) continue;
+    $events[] = [
+      'event' => mpr_text($event['event'] ?? '', 80),
+      'at' => mpr_text($event['at'] ?? '', 80),
+      'wallet' => mpr_text($event['wallet'] ?? '', 80),
+      'frequency' => mpr_text($event['frequency'] ?? '', 80),
+    ];
+  }
+
   return [
     'id' => $order['id'] ?? '',
     'status' => $order['status'] ?? 'New',
@@ -206,5 +217,6 @@ function mpr_order_summary(array $order): array {
     'recurring_frequency' => $order['recurring_frequency'] ?? '',
     'checkout_started_at' => $order['checkout_started_at'] ?? '',
     'checkout_wallet' => $order['checkout_wallet'] ?? '',
+    'events' => $events,
   ];
 }

@@ -287,6 +287,30 @@ function checkoutStatusText(order) {
   return `Checkout opened ${formatTime(order.checkout_started_at)}${wallet}`;
 }
 
+function orderEventLabel(event = {}) {
+  if (event.event === "order_created") return "Order ticket created";
+  if (event.event === "checkout_started") return `Checkout opened${event.wallet ? ` / ${event.wallet}` : ""}`;
+  if (event.event === "recurring_selected") return `Repeat selected${event.frequency ? ` / ${event.frequency}` : ""}`;
+  if (event.event === "demo_imported") return "Demo ticket imported";
+  return String(event.event || "Customer activity").replaceAll("_", " ");
+}
+
+function customerActivityMarkup(order) {
+  const rows = Array.isArray(order.events) ? order.events.slice(-3).reverse() : [];
+  if (!rows.length) return "";
+  return `
+    <div class="ticket-activity" aria-label="Customer activity for ${escapeHtml(order.id)}">
+      <strong>Customer activity</strong>
+      ${rows.map((event) => `
+        <span>
+          <small>${escapeHtml(event.at ? formatTime(event.at) : "Now")}</small>
+          ${escapeHtml(orderEventLabel(event))}
+        </span>
+      `).join("")}
+    </div>
+  `;
+}
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -474,6 +498,7 @@ function ticketMarkup(order) {
   const paymentStatus = orderPaymentStatus(order);
   const checkoutStatus = order.checkout_started_at ? `Checkout: ${order.checkout_wallet || "opened"}` : "";
   const recurring = order.recurring_frequency ? `Repeat: ${order.recurring_frequency}` : "";
+  const activity = customerActivityMarkup(order);
 
   return `
     <article class="ticket-card${ops.priority ? " priority" : ""}" data-ticket-id="${escapeHtml(order.id)}">
@@ -495,6 +520,7 @@ function ticketMarkup(order) {
       </div>
       ${address ? `<div class="ticket-alert neutral"><strong>Delivery</strong><span>${escapeHtml(address)}</span></div>` : ""}
       ${allergies ? `<div class="ticket-alert"><strong>Allergies</strong><span>${escapeHtml(allergies)}</span></div>` : ""}
+      ${activity}
       <div class="ticket-items">${itemRows}</div>
       <div class="ticket-controls">
         <label class="ticket-field">
