@@ -21,6 +21,10 @@ function admin_ensure_ops(array &$ops, array $order): array {
   return $ops[$id];
 }
 
+function admin_recurring_is_interest(string $frequency): bool {
+  return $frequency !== '' && strtolower($frequency) !== 'one time only';
+}
+
 function admin_customer_followups(array $customers): array {
   $rows = [];
   foreach ($customers as $customer) {
@@ -33,10 +37,14 @@ function admin_customer_followups(array $customers): array {
     $reason = 'New customer';
     $nextAction = 'Thank them after handoff';
 
-    if ($recurring !== '') {
+    if (admin_recurring_is_interest($recurring)) {
       $priority = 100;
       $reason = 'Recurring requested';
       $nextAction = 'Confirm cadence and preferred meals';
+    } elseif (strtolower($recurring) === 'one time only') {
+      $priority = 20;
+      $reason = 'One-time preference';
+      $nextAction = 'Send thank-you only';
     } elseif ($orderCount > 1) {
       $priority = 70;
       $reason = 'Returning customer';
@@ -79,7 +87,7 @@ function admin_payload(array $orders, array $ops): array {
   }
   mpr_save_ops($ops);
   $customers = mpr_customers();
-  $recurring = array_filter($customers, fn ($customer) => trim((string) ($customer['recurring_frequency'] ?? '')) !== '');
+  $recurring = array_filter($customers, fn ($customer) => admin_recurring_is_interest(mpr_text($customer['recurring_frequency'] ?? '', 80)));
   $returning = array_filter($customers, fn ($customer) => (int) ($customer['order_count'] ?? 0) > 1);
   return [
     'orders' => array_map('mpr_order_summary', $orders),

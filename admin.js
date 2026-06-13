@@ -307,12 +307,21 @@ function customerConfirmationMessage(order) {
   return `Hi ${firstName}, this is Meal Prep Revolution. We have your ${meals}-meal order (${total}) for ${fulfillmentLabel(order)}. ${payment}${repeat} Reply here if anything needs to change.`;
 }
 
+function recurringIsInterest(value) {
+  const frequency = String(value || "").trim().toLowerCase();
+  return Boolean(frequency && frequency !== "one time only");
+}
+
 function customerFollowupMessage(customer = {}) {
   const firstName = String(customer.name || "there").split(/\s+/)[0] || "there";
   const meals = Number(customer.last_total_meals) || 0;
   const mealText = meals ? `${meals}-meal ` : "";
-  if (customer.recurring_frequency) {
+  const recurring = String(customer.recurring_frequency || "").trim();
+  if (recurringIsInterest(recurring)) {
     return `Hi ${firstName}, this is Meal Prep Revolution. I saw you marked ${customer.recurring_frequency} as your repeat preference for your ${mealText}order. Want us to set that up with the same meals, or should we make any changes first?`;
+  }
+  if (recurring.toLowerCase() === "one time only") {
+    return `Hi ${firstName}, this is Meal Prep Revolution. Thanks again for your ${mealText}order. We have this marked as one time only, so no recurring setup is needed. Reply here if you want anything changed.`;
   }
   return `Hi ${firstName}, this is Meal Prep Revolution. Thanks again for your ${mealText}order. Want us to repeat that meal prep for next week, or adjust anything before we build it?`;
 }
