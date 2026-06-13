@@ -670,6 +670,7 @@ h1 .hero-h1-accent {
   justify-self: end;
   justify-content: center;
   padding-inline: 12px;
+  white-space: nowrap;
 }
 
 .hero-cta-band p {
@@ -3055,8 +3056,8 @@ cite {
     grid-column: auto;
     justify-content: center;
     min-height: 46px;
-    width: min(100%, 168px);
-    justify-self: stretch;
+    width: max-content;
+    max-width: 168px;
   }
 
   h1 {
