@@ -934,6 +934,17 @@ textarea:focus {
   min-width: 0;
 }
 
+.route-item-actionable {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.route-item-actionable .route-actions {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+}
+
 .route-item strong:first-child,
 .allergy-item strong:first-child,
 .payment-item strong:first-child {
@@ -1126,7 +1137,8 @@ textarea:focus {
 }
 
 .followup-actions,
-.payment-actions {
+.payment-actions,
+.route-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -1137,7 +1149,9 @@ textarea:focus {
 .followup-actions a,
 .followup-actions button,
 .payment-actions a,
-.payment-actions button {
+.payment-actions button,
+.route-actions a,
+.route-actions button {
   display: inline-flex;
   min-height: 30px;
   align-items: center;
@@ -1158,7 +1172,9 @@ textarea:focus {
 .followup-actions a:hover,
 .followup-actions button:hover,
 .payment-actions a:hover,
-.payment-actions button:hover {
+.payment-actions button:hover,
+.route-actions a:hover,
+.route-actions button:hover {
   color: #041004;
   background: var(--green);
   border-color: var(--green);
@@ -1298,7 +1314,8 @@ textarea:focus {
   }
 
   .followup-actions,
-  .payment-actions {
+  .payment-actions,
+  .route-actions {
     justify-content: flex-start;
   }
 

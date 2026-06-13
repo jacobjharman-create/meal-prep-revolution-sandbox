@@ -307,6 +307,13 @@ function customerConfirmationMessage(order) {
   return `Hi ${firstName}, this is Meal Prep Revolution. We have your ${meals}-meal order (${total}) for ${fulfillmentLabel(order)}. ${payment}${repeat} Reply here if anything needs to change.`;
 }
 
+function deliveryHandoffMessage(order) {
+  const firstName = customerName(order).split(/\s+/)[0] || "there";
+  const meals = Number(order.total_meals) || 0;
+  const address = formatAddress(order.fulfillment?.address || order.customer?.address || {});
+  return `Hi ${firstName}, this is Meal Prep Revolution. Your ${meals}-meal delivery is scheduled for ${formatDate(order.fulfillment?.date)} during the ${order.fulfillment?.window || "selected"} window${address ? ` to ${address}` : ""}. Reply here if the drop-off details need to change.`;
+}
+
 function recurringIsInterest(value) {
   const frequency = String(value || "").trim().toLowerCase();
   return Boolean(frequency && frequency !== "one time only");
@@ -835,14 +842,26 @@ function renderDeliveryRoute() {
   elements.deliveryRoute.innerHTML = deliveries.slice(0, 6).map((order) => {
     const address = formatAddress(order.fulfillment?.address || order.customer?.address || {});
     const contactPreference = order.fulfillment?.contact_preference || order.customer?.contact_preference || "text";
+    const phone = String(order.customer?.phone || "").trim();
+    const email = String(order.customer?.email || "").trim();
+    const digits = phoneDigits(phone);
+    const mapsUrl = address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : "";
+    const actions = [
+      mapsUrl ? `<a href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener">Map</a>` : "",
+      digits ? `<a href="sms:${escapeHtml(digits)}">Text</a>` : "",
+      email ? `<a href="mailto:${escapeHtml(encodeURIComponent(email))}">Email</a>` : "",
+      `<button type="button" data-action="copy-delivery" data-ticket="${escapeHtml(order.id)}">Copy</button>`,
+    ].filter(Boolean).join("");
+
     return `
-      <div class="route-item">
+      <div class="route-item route-item-actionable">
         <div>
           <strong>${escapeHtml(customerName(order))}</strong>
           <span>${escapeHtml(formatDate(order.fulfillment?.date))} / ${escapeHtml(order.fulfillment?.window || "window")} / ${escapeHtml(contactPreference)}</span>
           <small>${escapeHtml(address || "Address needed")}</small>
         </div>
         <strong>${escapeHtml(order.total_meals || 0)} meals</strong>
+        <div class="route-actions">${actions}</div>
       </div>
     `;
   }).join("");
@@ -1184,6 +1203,27 @@ elements.paymentWatch?.addEventListener("click", (event) => {
   if (!order) return;
   const originalText = copyButton.textContent;
   navigator.clipboard.writeText(customerConfirmationMessage(order))
+    .then(() => {
+      copyButton.textContent = "Copied";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1400);
+    })
+    .catch(() => {
+      copyButton.textContent = "Select";
+      window.setTimeout(() => {
+        copyButton.textContent = originalText;
+      }, 1800);
+    });
+});
+
+elements.deliveryRoute?.addEventListener("click", (event) => {
+  const copyButton = event.target.closest("[data-action='copy-delivery']");
+  if (!copyButton) return;
+  const order = orders.find((item) => item.id === copyButton.dataset.ticket);
+  if (!order) return;
+  const originalText = copyButton.textContent;
+  navigator.clipboard.writeText(deliveryHandoffMessage(order))
     .then(() => {
       copyButton.textContent = "Copied";
       window.setTimeout(() => {
