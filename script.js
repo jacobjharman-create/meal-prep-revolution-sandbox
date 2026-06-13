@@ -742,8 +742,6 @@ function hydrateCartState() {
     builderState.checkoutUrl = draft.checkout_url || defaultCheckoutUrl;
     builderState.serverBacked = Boolean(draft.server_backed);
     builderState.detailsOpen = false;
-    const checkout = readStoredJson(orderStorage.checkoutStarted, {});
-    if (recurringChoice) recurringChoice.hidden = checkout.request_id !== draft.request_id;
     orderNote.innerHTML = `<strong>${draft.total_meals || builderState.cart.reduce((sum, item) => sum + item.quantity, 0)} meals</strong> already have a checkout ticket. Finish payment or edit the cart to start a fresh checkout.`;
     return;
   }
@@ -1014,10 +1012,7 @@ function resetCheckoutFlow() {
   builderState.serverBacked = false;
   if (checkoutStatus) checkoutStatus.hidden = true;
   if (recurringChoice) recurringChoice.hidden = true;
-  document.querySelectorAll("[data-recurring]").forEach((button) => {
-    button.classList.remove("is-selected");
-    button.setAttribute("aria-pressed", "false");
-  });
+  renderRecurringChoiceState("");
 }
 
 function activeCheckoutPayload(basePayload = buildWooPayload()) {
@@ -1052,7 +1047,7 @@ function renderCheckoutStatus(payload = {}) {
   const rows = [
     ["Order ticket", `${orderId} created`, true],
     ["Payment", checkoutMatches ? `${checkout.wallet || "Checkout"} opened${checkoutTime ? ` at ${checkoutTime}` : ""}` : "Choose Apple Pay, Amazon Pay, or card", checkoutMatches],
-    ["Repeat", recurringMatches ? repeatLabel : "Optional after checkout", recurringMatches],
+    ["Repeat", recurringMatches ? repeatLabel : "Choose weekly, monthly, or one time", recurringMatches],
   ];
 
   checkoutStatus.hidden = false;
@@ -1073,6 +1068,26 @@ function renderCheckoutStatus(payload = {}) {
       `).join("")}
     </div>
   `;
+}
+
+function hasActiveCheckout(orderId = builderState.activeOrderId) {
+  return Boolean(builderState.reviewReady && builderState.cart.length && orderId);
+}
+
+function renderRecurringChoiceState(orderId = builderState.activeOrderId) {
+  const recurring = readStoredJson(orderStorage.recurringPreference, {});
+  const recurringOrderId = recurring.request_id || recurring.order?.request_id || "";
+  document.querySelectorAll("[data-recurring]").forEach((button) => {
+    const selected = Boolean(orderId && recurringOrderId === orderId && recurring.frequency === button.dataset.recurring);
+    button.classList.toggle("is-selected", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+}
+
+function renderRecurringChoice(payload = {}) {
+  const orderId = builderState.activeOrderId || payload.request_id || "";
+  if (recurringChoice) recurringChoice.hidden = !hasActiveCheckout(orderId);
+  renderRecurringChoiceState(orderId);
 }
 
 function orderDetailsSummaryText() {
@@ -1154,6 +1169,7 @@ function renderCart() {
     submitOrderButton.textContent = builderState.reviewReady && builderState.activeOrderId ? "Checkout Ready" : "Continue to Secure Checkout";
   }
   renderOrderDetailsState();
+  renderRecurringChoice(payload);
   renderCheckoutStatus(payload);
   saveCartState();
   localStorage.setItem(orderStorage.wooDraft, JSON.stringify(payload));
@@ -1407,18 +1423,13 @@ purchaseActions?.addEventListener("click", (event) => {
       estimated_total: payload.estimated_total,
     });
     postOrderEvent("checkout_started", { wallet });
-    if (recurringChoice) recurringChoice.hidden = false;
+    renderRecurringChoice(payload);
     renderCheckoutStatus(payload);
-    orderNote.innerHTML = `<strong>${escapeHtml(wallet)}</strong> checkout opened. After payment, choose whether this should repeat.`;
+    orderNote.innerHTML = `<strong>${escapeHtml(wallet)}</strong> checkout opened. You can mark this weekly, monthly, or one time only here.`;
     return;
   }
 
   if (recurringButton) {
-    document.querySelectorAll("[data-recurring]").forEach((button) => {
-      const selected = button === recurringButton;
-      button.classList.toggle("is-selected", selected);
-      button.setAttribute("aria-pressed", String(selected));
-    });
     const order = readStoredJson(orderStorage.wooDraft, buildWooPayload());
     writeStoredJson(orderStorage.recurringPreference, {
       frequency: recurringButton.dataset.recurring,
@@ -1427,6 +1438,7 @@ purchaseActions?.addEventListener("click", (event) => {
       order,
     });
     postOrderEvent("recurring_selected", { frequency: recurringButton.dataset.recurring });
+    renderRecurringChoice(order);
     renderCheckoutStatus(order);
     orderNote.innerHTML = recurringButton.dataset.recurring === "one time only"
       ? "Perfect. This order will stay one time only."
