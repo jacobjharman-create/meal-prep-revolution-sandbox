@@ -10,7 +10,7 @@ const squareLinks = {
 let defaultCheckoutUrl = "https://ordermealpreprevolution.square.site/";
 let activeCatalogVersion = "2026-06-13-js-fallback";
 
-const pickerImageVersion = "hires-20260612";
+const pickerImageVersion = "breakfast-components-20260613";
 const pickerImage = (src) => `${src}${src.includes("?") ? "&" : "?"}v=${pickerImageVersion}`;
 
 const mealImages = {
@@ -40,6 +40,14 @@ const builderItemImages = {
   "breakfast-burrito": "assets/images/black-plate-builder/breakfast-burrito.png",
   "breakfast-pancake-waffle": "assets/images/black-plate-builder/breakfast-pancake-waffle.png",
   "breakfast-bowl": "assets/images/black-plate-builder/breakfast-bowl.png",
+  "breakfast-protein-pancakes": "assets/images/black-plate-builder/breakfast-protein-pancakes.png",
+  "breakfast-protein-waffles": "assets/images/black-plate-builder/breakfast-protein-waffles.png",
+  "breakfast-turkey-sausage": "assets/images/black-plate-builder/breakfast-turkey-sausage.png",
+  "breakfast-pork-sausage": "assets/images/black-plate-builder/breakfast-pork-sausage.png",
+  "breakfast-egg-whites": "assets/images/black-plate-builder/breakfast-egg-whites.png",
+  "breakfast-egg-bites": "assets/images/black-plate-builder/breakfast-egg-bites.png",
+  "breakfast-hash": "assets/images/black-plate-builder/breakfast-hash.png",
+  "breakfast-cinnamon-sweet-potato": "assets/images/black-plate-builder/breakfast-cinnamon-sweet-potato.png",
   meatballs: "assets/images/black-plate-builder/protein-meatballs.png",
   "jasmine-rice": "assets/images/black-plate-builder/grain-jasmine-rice.png",
   "sweet-potato": "assets/images/black-plate-builder/grain-sweet-potato.png",
@@ -253,7 +261,7 @@ const doneForYouPlans = {
     ],
   },
   "womens-fitness": {
-    title: "Women's Fitness Athlete",
+    title: "Lean Fitness Athlete",
     image: doneForYouPlanImages["womens-fitness"],
     focus: {
       mode: "lunch",
