@@ -832,3 +832,7 @@ mobileNav.querySelectorAll("a").forEach((link) => {
     toggle.setAttribute("aria-label", "Open menu");
   });
 });
+
+if (window.lucide) {
+  window.lucide.createIcons();
+}
