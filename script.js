@@ -473,13 +473,18 @@ const builderCatalog = {
     groups: [
       {
         id: "breakfast",
-        label: "Meal",
+        label: "Breakfast",
         icon: "icon-protein",
         multi: false,
         options: [
-          { id: "breakfast-burrito", name: "Breakfast Burrito", image: builderItemImages["breakfast-burrito"] },
-          { id: "breakfast-pancake-waffle", name: "Pancake / Waffle", image: builderItemImages["breakfast-pancake-waffle"] },
-          { id: "breakfast-bowl", name: "Breakfast Bowl", image: builderItemImages["breakfast-bowl"] },
+          { id: "breakfast-protein-pancakes", name: "Protein Pancakes", image: builderItemImages["breakfast-protein-pancakes"] },
+          { id: "breakfast-protein-waffles", name: "Protein Waffles", image: builderItemImages["breakfast-protein-waffles"] },
+          { id: "breakfast-turkey-sausage", name: "Turkey Sausage", image: builderItemImages["breakfast-turkey-sausage"] },
+          { id: "breakfast-pork-sausage", name: "Pork Sausage", image: builderItemImages["breakfast-pork-sausage"] },
+          { id: "breakfast-egg-whites", name: "Egg Whites", image: builderItemImages["breakfast-egg-whites"] },
+          { id: "breakfast-egg-bites", name: "Egg Bites", image: builderItemImages["breakfast-egg-bites"] },
+          { id: "breakfast-hash", name: "Breakfast Hash", image: builderItemImages["breakfast-hash"] },
+          { id: "breakfast-cinnamon-sweet-potato", name: "Cinnamon Sweet Potato", image: builderItemImages["breakfast-cinnamon-sweet-potato"] },
         ],
       },
       {
@@ -548,7 +553,7 @@ const builderCatalog = {
       },
     ],
     defaults: {
-      breakfast: "breakfast-bowl",
+      breakfast: "breakfast-protein-pancakes",
       protein: "eggs",
       carbs: "potatoes",
       vegetables: ["peppers"],
@@ -638,10 +643,10 @@ const builderCatalog = {
 
 const heroByProtein = {
   breakfast: {
-    eggs: builderItemImages["breakfast-bowl"],
-    turkey: builderItemImages["breakfast-burrito"],
-    steak: builderItemImages["breakfast-burrito"],
-    tofu: builderItemImages["breakfast-bowl"],
+    eggs: builderItemImages["breakfast-egg-whites"],
+    turkey: builderItemImages["breakfast-turkey-sausage"],
+    steak: builderItemImages["breakfast-egg-bites"],
+    tofu: builderItemImages["breakfast-protein-pancakes"],
   },
   lunch: {
     chicken: builderItemImages.chicken,
@@ -957,7 +962,7 @@ function currentBuild() {
   ].join("|");
   const featuredHero = builderState.featuredHeroByMode[builderState.mode];
   const hero = featuredHero?.image || selectedBreakfast?.image || heroByProtein[builderState.mode]?.[protein?.id] || mode.hero;
-  const title = selectedBreakfast ? `${selectedBreakfast.name} build` : `${builderState.portion} ${mode.mealLabel} build`;
+  const title = selectedBreakfast ? `${selectedBreakfast.name} breakfast` : `${builderState.portion} ${mode.mealLabel} build`;
   const heroAlt = featuredHero?.label || selectedBreakfast?.name ? `${featuredHero?.label || selectedBreakfast.name} full-screen picker preview` : `${title} preview`;
   const description = groups
     .map((group) => `${group.label}: ${group.selected.map((item) => item.name).join(", ") || "None"}`)

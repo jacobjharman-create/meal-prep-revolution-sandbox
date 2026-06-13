@@ -143,7 +143,7 @@ test.describe("breakfast picker photos", () => {
     isMobile: true,
   });
 
-  test("uses generated breakfast offering photos for menu, hero, and cart preview", async ({ page }) => {
+  test("uses generated breakfast component photos for menu, hero, and cart preview", async ({ page }) => {
     await page.addInitScript(() => localStorage.clear());
     await page.goto("/");
 
@@ -155,18 +155,27 @@ test.describe("breakfast picker photos", () => {
 
     await page.locator("[data-mode='breakfast']").click();
     await expect(page.locator("[data-builder-step='breakfast']")).toHaveClass(/active/);
-    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-bowl/);
+    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-protein-pancakes/);
+    await expect(page.locator("#builderOptions .option-card")).toHaveCount(8);
+    await expect(page.locator("[data-option='breakfast-protein-pancakes'] img")).toHaveAttribute("src", /breakfast-protein-pancakes/);
+    await expect(page.locator("[data-option='breakfast-protein-waffles'] img")).toHaveAttribute("src", /breakfast-protein-waffles/);
+    await expect(page.locator("[data-option='breakfast-turkey-sausage'] img")).toHaveAttribute("src", /breakfast-turkey-sausage/);
+    await expect(page.locator("[data-option='breakfast-pork-sausage'] img")).toHaveAttribute("src", /breakfast-pork-sausage/);
+    await expect(page.locator("[data-option='breakfast-egg-whites'] img")).toHaveAttribute("src", /breakfast-egg-whites/);
+    await expect(page.locator("[data-option='breakfast-egg-bites'] img")).toHaveAttribute("src", /breakfast-egg-bites/);
+    await expect(page.locator("[data-option='breakfast-hash'] img")).toHaveAttribute("src", /breakfast-hash/);
+    await expect(page.locator("[data-option='breakfast-cinnamon-sweet-potato'] img")).toHaveAttribute("src", /breakfast-cinnamon-sweet-potato/);
 
-    await page.locator("[data-option='breakfast-pancake-waffle']").click();
-    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+    await page.locator("[data-option='breakfast-egg-bites']").click();
+    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-egg-bites/);
 
     await page.locator("[data-builder-step='protein']").click();
     await page.locator("[data-option='turkey']").click();
-    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+    await expect(page.locator("#builderHeroImage")).toHaveAttribute("src", /breakfast-egg-bites/);
 
     await page.locator("#addMeal").click();
-    await expect(page.locator(".cart-item")).toContainText("Pancake / Waffle");
-    await expect(page.locator(".cart-meal-thumb img")).toHaveAttribute("src", /breakfast-pancake-waffle/);
+    await expect(page.locator(".cart-item")).toContainText("Egg Bites");
+    await expect(page.locator(".cart-meal-thumb img")).toHaveAttribute("src", /breakfast-egg-bites/);
   });
 });
 
