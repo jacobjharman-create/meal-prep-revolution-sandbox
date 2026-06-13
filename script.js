@@ -406,6 +406,7 @@ const builderState = {
   activeOrderId: "",
   checkoutUrl: defaultCheckoutUrl,
   serverBacked: false,
+  detailsOpen: false,
 };
 
 const menuGrid = document.querySelector("#mealGrid");
@@ -426,6 +427,9 @@ const cartItems = document.querySelector("#cartItems");
 const cartMealTotal = document.querySelector("#cartMealTotal");
 const cartPriceTotal = document.querySelector("#cartPriceTotal");
 const orderNote = document.querySelector("#orderNote");
+const orderDetailsCompact = document.querySelector("#orderDetailsCompact");
+const orderDetailsSummary = document.querySelector("#orderDetailsSummary");
+const toggleOrderDetails = document.querySelector("#toggleOrderDetails");
 const purchaseActions = document.querySelector("#purchaseActions");
 const checkoutSummary = document.querySelector("#checkoutSummary");
 const recurringChoice = document.querySelector("#recurringChoice");
@@ -475,6 +479,19 @@ function formatShortTime(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "";
   return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+}
+
+function titleCase(value) {
+  return String(value || "")
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatCustomerDate(value) {
+  if (!value) return "Date pending";
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 function getCurrentMode() {
@@ -579,6 +596,10 @@ function focusOrderIssue(customer) {
   }
 
   if (!field) return;
+  if (orderIntake?.hidden && orderIntake.contains(field)) {
+    builderState.detailsOpen = true;
+    renderCart();
+  }
   field.scrollIntoView({ behavior: "smooth", block: "center" });
   window.setTimeout(() => {
     try {
@@ -720,6 +741,7 @@ function hydrateCartState() {
     builderState.activeOrderId = draft.request_id;
     builderState.checkoutUrl = draft.checkout_url || defaultCheckoutUrl;
     builderState.serverBacked = Boolean(draft.server_backed);
+    builderState.detailsOpen = false;
     const checkout = readStoredJson(orderStorage.checkoutStarted, {});
     if (recurringChoice) recurringChoice.hidden = checkout.request_id !== draft.request_id;
     orderNote.innerHTML = `<strong>${draft.total_meals || builderState.cart.reduce((sum, item) => sum + item.quantity, 0)} meals</strong> already have a checkout ticket. Finish payment or edit the cart to start a fresh checkout.`;
@@ -1053,6 +1075,37 @@ function renderCheckoutStatus(payload = {}) {
   `;
 }
 
+function orderDetailsSummaryText() {
+  const customer = getCustomerDraft();
+  const contact = customer.name
+    ? [customer.name, customer.phone || customer.email].filter(Boolean).join(" / ")
+    : customer.phone || customer.email || "Contact details needed";
+  const handoff = [
+    titleCase(customer.fulfillment),
+    formatCustomerDate(customer.date),
+    titleCase(customer.window),
+  ].filter(Boolean).join(" / ");
+  const delivery = customer.fulfillment === "delivery" && customer.address.city ? ` / ${customer.address.city}` : "";
+  return `${contact} - ${handoff}${delivery}`;
+}
+
+function renderOrderDetailsState() {
+  const checkoutLocked = Boolean(builderState.reviewReady && builderState.activeOrderId && builderState.cart.length);
+  if (orderDetailsSummary) orderDetailsSummary.textContent = orderDetailsSummaryText();
+  if (orderDetailsCompact) orderDetailsCompact.hidden = !checkoutLocked;
+  if (orderIntake) orderIntake.hidden = checkoutLocked && !builderState.detailsOpen;
+  if (toggleOrderDetails) {
+    toggleOrderDetails.textContent = builderState.detailsOpen ? "Hide Details" : "Edit Details";
+    toggleOrderDetails.setAttribute("aria-expanded", String(builderState.detailsOpen));
+  }
+}
+
+function setDetailsChangedNote() {
+  orderNote.textContent = builderState.cart.length
+    ? "Order details updated. Continue to secure checkout when ready."
+    : "Order details saved. Add a meal build before checkout.";
+}
+
 function renderCart() {
   if (!builderState.cart.length) {
     cartItems.innerHTML = `<div class="cart-empty">Your selected meals will appear here after you add a build.</div>`;
@@ -1100,6 +1153,7 @@ function renderCart() {
   if (submitOrderButton && !submitOrderButton.disabled) {
     submitOrderButton.textContent = builderState.reviewReady && builderState.activeOrderId ? "Checkout Ready" : "Continue to Secure Checkout";
   }
+  renderOrderDetailsState();
   renderCheckoutStatus(payload);
   saveCartState();
   localStorage.setItem(orderStorage.wooDraft, JSON.stringify(payload));
@@ -1197,6 +1251,7 @@ async function prepareStoreOrder() {
 
   builderState.activeOrderId = payload.request_id;
   builderState.checkoutUrl = payload.checkout_url || defaultCheckoutUrl;
+  builderState.detailsOpen = false;
   saveOrderRequest(payload);
   saveInternalOrder(payload);
   renderCart();
@@ -1379,10 +1434,26 @@ purchaseActions?.addEventListener("click", (event) => {
   }
 });
 
+toggleOrderDetails?.addEventListener("click", () => {
+  builderState.detailsOpen = !builderState.detailsOpen;
+  renderCart();
+
+  if (!builderState.detailsOpen) return;
+  window.setTimeout(() => {
+    orderIntake?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    try {
+      customerName?.focus({ preventScroll: true });
+    } catch {
+      customerName?.focus();
+    }
+  }, 80);
+});
+
 orderIntake?.addEventListener("input", () => {
   writeStoredJson(orderStorage.draft, getCustomerDraft());
   builderState.reviewReady = false;
   resetCheckoutFlow();
+  setDetailsChangedNote();
   renderCart();
 });
 
@@ -1391,6 +1462,7 @@ orderIntake?.addEventListener("change", () => {
   writeStoredJson(orderStorage.draft, getCustomerDraft());
   builderState.reviewReady = false;
   resetCheckoutFlow();
+  setDetailsChangedNote();
   renderCart();
 });
 

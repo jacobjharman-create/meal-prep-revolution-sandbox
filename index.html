@@ -15,7 +15,7 @@
     >
     <meta property="og:image" content="assets/images/hero-single-black-container.png">
     <link rel="icon" href="https://mealpreprev.com/wp-content/uploads/2025/12/MPR-_ICON.jpg">
-    <link rel="stylesheet" href="styles.css?v=checkout-priority-20260613">
+    <link rel="stylesheet" href="styles.css?v=post-checkout-summary-20260613">
   </head>
   <body>
     <header class="site-header" id="top">
@@ -278,6 +278,14 @@
             </div>
             <p class="order-note" id="orderNote">Build a meal, add your details, then continue to checkout.</p>
 
+            <div class="order-details-compact" id="orderDetailsCompact" hidden>
+              <div>
+                <span>Saved handoff</span>
+                <strong id="orderDetailsSummary">Pickup details ready.</strong>
+              </div>
+              <button class="details-toggle" type="button" id="toggleOrderDetails" aria-controls="orderIntake" aria-expanded="false">Edit Details</button>
+            </div>
+
             <form class="order-intake" id="orderIntake" aria-label="Order handoff details">
               <div class="intake-grid">
                 <label>
@@ -518,6 +526,6 @@
       <a class="button button-primary" href="https://ordermealpreprevolution.square.site/">Order Online</a>
     </footer>
 
-    <script src="script.js?v=checkout-priority-20260613"></script>
+    <script src="script.js?v=post-checkout-summary-20260613"></script>
   </body>
 </html>
